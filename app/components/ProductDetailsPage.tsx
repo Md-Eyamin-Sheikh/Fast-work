@@ -1,17 +1,19 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Product } from '../data/products';
+import { Product, products, categories } from '../data/products';
 import { 
   Star, 
   ShoppingCart, 
   Shield, 
-  Clock, 
   Check, 
-  ChevronLeft,
-  Package,
-  Zap,
-  Info
+  ChevronRight,
+  Flame,
+  Eye,
+  CreditCard,
+  Facebook,
+  Twitter,
+  Linkedin
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
@@ -24,320 +26,365 @@ interface ProductDetailsPageProps {
   onBack?: () => void;
 }
 
-export function ProductDetailsPage({ product, onAddToCart, onBuyNow, onBack }: ProductDetailsPageProps) {
-  const [quantity] = useState(1);
+export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDetailsPageProps) {
+  const [quantity, setQuantity] = useState(1);
 
+  // Calculate discount percentage
   const discountPercent = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  const getBadgeColor = (badge: string) => {
-    switch (badge) {
-      case 'Shared':
-        return 'bg-amber-100 text-amber-700 border-amber-300';
-      case 'Personal':
-        return 'bg-green-100 text-green-700 border-green-300';
-      case 'Key Code':
-        return 'bg-blue-100 text-blue-700 border-blue-300';
-      case 'Email Invite':
-        return 'bg-purple-100 text-purple-700 border-purple-300';
-      default:
-        return 'bg-gray-100 text-gray-700 border-gray-300';
-    }
-  };
+  // Breadcrumbs
+  const categoryName = categories[product.category as keyof typeof categories]?.name || product.category;
+
+  // Related Products (Simulated by taking first 4 other products)
+  const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Back Button */}
-        <button
-          onClick={() => onBack ? onBack() : window.location.href = '/products'}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 w-fit"
-        >
-          <ChevronLeft className="w-5 h-5" />
-          Back to Products
-        </button>
+    <div className="min-h-screen bg-gray-50 pb-16">
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
+          <Link href="/" className="hover:text-blue-600">Home</Link>
+          <ChevronRight className="w-4 h-4" />
+          <Link href={`/products?category=${product.category}`} className="hover:text-blue-600">{categoryName}</Link>
+          <ChevronRight className="w-4 h-4" />
+          <span className="text-gray-900 font-medium truncate max-w-[200px]">{product.name}</span>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Product Image */}
-          <div className="bg-white rounded-xl p-8">
+        {/* Hero Section */}
+        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            {/* Left: Image */}
             <div className="relative">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-96 object-cover rounded-lg"
-              />
-              <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                <Badge className={`${getBadgeColor(product.badge)} border`}>
-                  {product.badge}
-                </Badge>
-                {discountPercent > 0 && (
-                  <Badge className="bg-red-500 text-white border-red-600">
-                    -{discountPercent}% OFF
-                  </Badge>
-                )}
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 border border-gray-100">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                />
               </div>
-              <div className="absolute top-4 right-4">
-                {product.deliveryType === 'auto' ? (
-                  <Badge className="bg-green-500 text-white border-green-600 flex items-center gap-1">
-                    <Zap className="w-4 h-4" />
-                    Instant Delivery
-                  </Badge>
-                ) : (
-                  <Badge className="bg-blue-500 text-white border-blue-600 flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    30 Min Delivery
-                  </Badge>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Product Info */}
-          <div className="bg-white rounded-xl p-8">
-            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-
-            {/* Rating */}
-            <div className="flex items-center gap-4 mb-4">
-              <div className="flex items-center gap-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-5 h-5 ${
-                      i < Math.floor(product.rating)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
-                    }`}
-                  />
-                ))}
-                <span className="font-semibold">{product.rating}</span>
-              </div>
-              <span className="text-gray-600">({product.reviews} reviews)</span>
-            </div>
-
-            {/* Price */}
-            <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-4xl font-bold text-gray-900">৳{product.price}</span>
-              {product.originalPrice && (
-                <>
-                  <span className="text-xl text-gray-500 line-through">
-                    ৳{product.originalPrice}
-                  </span>
-                  <span className="text-xl text-green-600 font-semibold">
-                    Save ৳{product.originalPrice - product.price}
-                  </span>
-                </>
+              {/* Badge Overlay */}
+              {product.badge && (
+                 <div className="absolute top-0 left-0">
+                    <div className="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-br-lg rounded-tl-lg transform -rotate-45 translate-y-4 -translate-x-3 shadow-lg w-20 text-center uppercase">
+                        {product.badge}
+                    </div>
+                 </div> 
+              )}
+               {discountPercent > 0 && (
+                <div className="absolute top-4 right-4 bg-green-100 text-green-700 font-bold px-3 py-1 rounded-full text-sm">
+                  -{discountPercent}%
+                </div>
               )}
             </div>
 
-            {/* Key Info */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="flex items-center gap-2 text-sm">
-                <Clock className="w-5 h-5 text-blue-600" />
-                <div>
-                  <p className="text-gray-600">Duration</p>
-                  <p className="font-semibold">{product.duration}</p>
+            {/* Right: Info */}
+            <div className="flex flex-col">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                {product.name}
+              </h1>
+
+              {/* Rating */}
+              <div className="flex items-center gap-2 mb-6">
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${
+                        i < Math.floor(product.rating)
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-gray-200'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-sm text-gray-500">({product.reviews} customer reviews)</span>
+              </div>
+
+              {/* Price */}
+              <div className="flex items-end gap-3 mb-6">
+                 {product.originalPrice && (
+                  <span className="text-2xl text-gray-400 line-through mb-1">
+                    ৳{product.originalPrice.toFixed(2)}
+                  </span>
+                )}
+                <span className="text-4xl font-bold text-green-600">
+                  ৳{product.price.toFixed(2)}
+                </span>
+              </div>
+
+              {/* Short Description */}
+              <div className="mb-8">
+                 <p className="text-gray-700 font-medium mb-3">{product.shortDescription}</p>
+                 <ul className="space-y-2">
+                    {product.highlights.map((highlight, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-gray-600 text-sm">
+                            <span className="mt-1.5 w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0" />
+                            {highlight}
+                        </li>
+                    ))}
+                 </ul>
+              </div>
+
+              {/* Stats Banners */}
+              <div className="space-y-3 mb-8">
+                <div className="bg-green-50 border border-green-100 rounded-lg p-3 flex items-center gap-3 text-green-800 text-sm">
+                    <Flame className="w-5 h-5 text-green-600 fill-green-100" />
+                    <span className="font-semibold">{product.soldLast23Hours} Items sold in last 23 hours</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Shield className="w-5 h-5 text-green-600" />
-                <div>
-                  <p className="text-gray-600">Warranty</p>
-                  <p className="font-semibold">{product.warranty}</p>
-                </div>
+
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                 <div className="flex border border-gray-300 rounded-lg h-12 w-32">
+                    <button 
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-l-lg transition"
+                    >
+                        -
+                    </button>
+                    <input 
+                        type="text" 
+                        value={quantity} 
+                        readOnly 
+                        className="flex-1 text-center font-semibold text-gray-900 outline-none"
+                    />
+                    <button 
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-r-lg transition"
+                    >
+                        +
+                    </button>
+                 </div>
+                 
+                 <button
+                    onClick={() => onAddToCart(product)}
+                    className="flex-1 bg-[#86EFAC] bg-opacity-80 hover:bg-opacity-100 text-green-900 font-bold h-12 rounded-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
+                  >
+                    ADD TO CART
+                  </button>
+                  
+                  <button
+                    onClick={() => onBuyNow(product)}
+                    className="flex-1 bg-black text-white font-bold h-12 rounded-lg hover:bg-gray-800 transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
+                  >
+                    Buy Now
+                  </button>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Package className="w-5 h-5 text-purple-600" />
-                <div>
-                  <p className="text-gray-600">Stock</p>
-                  <p className="font-semibold">
-                    {product.stock > 10 ? 'In Stock' : `Only ${product.stock} left`}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Info className="w-5 h-5 text-orange-600" />
-                <div>
-                  <p className="text-gray-600">Type</p>
-                  <p className="font-semibold capitalize">{product.productType.replace('-', ' ')}</p>
-                </div>
-              </div>
+
+             {/* Watching Banner */}
+             <div className="bg-green-50 border border-green-100 rounded-lg p-3 flex items-center gap-3 text-green-800 text-sm mb-8">
+                <Eye className="w-5 h-5 text-green-600" />
+                <span className="font-semibold">{product.peopleWatching} People watching this product now!</span>
             </div>
 
-            {/* Description */}
-            <p className="text-gray-600 mb-6">{product.description}</p>
-
-            {/* Actions */}
-            <div className="flex gap-4 mb-6">
-              <button
-                onClick={() => onAddToCart(product)}
-                className="flex-1 flex items-center justify-center gap-2 px-6 py-4 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                Add to Cart
-              </button>
-              <button
-                onClick={() => onBuyNow(product)}
-                className="flex-1 px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-              >
-                Buy Now
-              </button>
+            {/* Social Share */}
+            <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
+                <span className="text-xs font-bold bg-gray-800 text-white px-3 py-1 rounded-full">ALL ({product.reviews + 20})</span>
+                <button className="flex items-center gap-1 text-xs text-gray-600 hover:text-blue-600 font-medium border px-3 py-1 rounded-full">
+                    <Facebook className="w-3 h-3" /> FACEBOOK
+                </button>
+                 <button className="flex items-center gap-1 text-xs text-gray-600 hover:text-green-600 font-medium border px-3 py-1 rounded-full">
+                    <Shield className="w-3 h-3" /> TRUSTPILOT
+                </button>
             </div>
 
-            {/* Trust Badges */}
-            <div className="border-t pt-6 space-y-3">
-              <div className="flex items-center gap-2 text-sm text-green-600">
-                <Check className="w-5 h-5" />
-                <span>Guaranteed Replacement if product fails</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-green-600">
-                <Check className="w-5 h-5" />
-                <span>24/7 Customer Support</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-green-600">
-                <Check className="w-5 h-5" />
-                <span>Secure Payment & Data Protection</span>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Detailed Information Tabs */}
-        <div className="bg-white rounded-xl p-8">
-          <Tabs defaultValue="features">
-            <TabsList className="mb-6">
-              <TabsTrigger value="features">Features</TabsTrigger>
-              <TabsTrigger value="activation">How to Activate</TabsTrigger>
-              {product.systemRequirements && (
-                <TabsTrigger value="requirements">System Requirements</TabsTrigger>
-              )}
-              <TabsTrigger value="warranty">Warranty Policy</TabsTrigger>
-            </TabsList>
+        {/* Tabs Section */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 mb-12">
+            <Tabs defaultValue="description">
+                <div className="border-b px-6 md:px-8">
+                    <TabsList className="bg-transparent h-auto p-0 gap-8">
+                        <TabsTrigger 
+                            value="description" 
+                            className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-sm tracking-wide"
+                        >
+                            Description
+                        </TabsTrigger>
+                        <TabsTrigger 
+                            value="reviews" 
+                            className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-sm tracking-wide"
+                        >
+                            Reviews ({product.reviews})
+                        </TabsTrigger>
+                         <TabsTrigger 
+                            value="referral" 
+                            className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-sm tracking-wide"
+                        >
+                            Referral Program
+                        </TabsTrigger>
+                    </TabsList>
+                </div>
+                
+                <div className="p-6 md:p-8">
+                    <TabsContent value="description" className="mt-0 space-y-8 animate-in fade-in-50 duration-300">
+                        <div>
+                             <p className="text-gray-600 leading-relaxed text-lg">{product.description}</p>
+                             <h3 className="text-xl font-bold mt-4 mb-2">{product.name}</h3>
+                             <div className="w-20 h-1 bg-green-500 rounded-full mb-6"></div>
+                        </div>
 
-            <TabsContent value="features">
-              <h3 className="font-semibold text-xl mb-4">Product Features</h3>
-              <ul className="space-y-3">
-                {product.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
-                  </li>
+                        {/* What you get section */}
+                        {product.whatYouGet && product.whatYouGet.length > 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <h4 className="text-green-600 font-bold text-lg mb-1">What You will get ?</h4>
+                                    <h3 className="text-xl font-bold mb-6">Best {product.highlights[0] || 'Value'}</h3>
+                                    <p className="text-gray-600 mb-6 text-sm">
+                                        Boost your efficiency and productivity with our premium digital assets. Tailored for professionals, students, and anyone seeking a productivity boost.
+                                    </p>
+                                    
+                                    <div className="space-y-6">
+                                        {product.whatYouGet.map((item, idx) => (
+                                            <div key={idx} className="flex gap-4">
+                                                <div className={`w-12 h-12 rounded-full flex-shrink-0 ${item.color || 'bg-green-100'}`}></div>
+                                                <div>
+                                                    <h5 className="font-bold text-gray-900">{item.title}</h5>
+                                                    <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="hidden md:flex items-center justify-center bg-gray-50 rounded-xl p-8">
+                                     <img src={product.image} alt={product.name} className="max-h-[400px] object-contain drop-shadow-2xl" />
+                                </div>
+                            </div>
+                        )}
+                    </TabsContent>
+
+                    <TabsContent value="reviews" className="mt-0">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                            {/* Reviews List */}
+                            <div className="space-y-6">
+                                <h3 className="text-lg font-bold">{product.reviews} reviews for {product.name}</h3>
+                                {product.reviewsList && product.reviewsList.length > 0 ? (
+                                    product.reviewsList.map((review) => (
+                                        <div key={review.id} className="border border-gray-100 rounded-xl p-6 bg-gray-50">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <div className="flex items-center gap-2 font-bold text-sm">
+                                                    {review.author}
+                                                    {review.verified && <span className="text-xs font-normal text-gray-500">(verified owner)</span>}
+                                                </div>
+                                                <span className="text-xs text-gray-500">{review.date}</span>
+                                            </div>
+                                             <div className="flex items-center mb-2">
+                                              {[...Array(5)].map((_, i) => (
+                                                <Star
+                                                  key={i}
+                                                  className={`w-3.5 h-3.5 ${
+                                                    i < Math.floor(review.rating)
+                                                      ? 'fill-yellow-400 text-yellow-400'
+                                                      : 'text-gray-200'
+                                                  }`}
+                                                />
+                                              ))}
+                                            </div>
+                                            <p className="text-gray-600 text-sm italic">"{review.content}"</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500">No reviews yet.</p>
+                                )}
+                            </div>
+
+                            {/* Add Review Form */}
+                            <div>
+                                <h3 className="text-lg font-bold mb-2">Add a review</h3>
+                                <p className="text-xs text-gray-500 mb-6">Your email address will not be published. Required fields are marked *</p>
+                                
+                                <form className="space-y-4">
+                                     <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Your rating *</label>
+                                        <div className="flex gap-1">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <Star key={star} className="w-5 h-5 text-gray-300 hover:text-yellow-400 cursor-pointer transition-colors" />
+                                            ))}
+                                        </div>
+                                     </div>
+                                     
+                                     <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Your review *</label>
+                                        <textarea className="w-full h-32 rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" placeholder="Write your review here..."></textarea>
+                                     </div>
+
+                                     <div className="grid grid-cols-2 gap-4">
+                                         <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                                            <input type="text" className="w-full rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" />
+                                         </div>
+                                         <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                                            <input type="email" className="w-full rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" />
+                                         </div>
+                                     </div>
+
+                                     <div className="flex items-center gap-2">
+                                        <input type="checkbox" id="save-info" className="rounded border-gray-300 text-green-600 focus:ring-green-500" />
+                                        <label htmlFor="save-info" className="text-xs text-gray-500">Save my name, email, and website in this browser for the next time I comment.</label>
+                                     </div>
+
+                                     <button type="button" className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-sm transition-colors uppercase">
+                                        Submit
+                                     </button>
+                                </form>
+                            </div>
+                        </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="referral">
+                        <div className="p-8 text-center bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                            <h3 className="font-bold text-gray-900 mb-2">Refer & Earn</h3>
+                            <p className="text-gray-600">Share your referral link and earn 20% commission on every sale!</p>
+                            <button className="mt-4 text-green-600 font-bold hover:underline">Join Referral Program</button>
+                        </div>
+                    </TabsContent>
+                </div>
+            </Tabs>
+        </div>
+
+        {/* Related Products */}
+        <div>
+            <h2 className="text-2xl font-bold mb-8">Related Products</h2>
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {relatedProducts.map(related => (
+                    <div key={related.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow group">
+                        <div className="relative aspect-video bg-gray-100">
+                             <img src={related.image} alt={related.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                             {related.discount && (
+                                <span className="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                    -{related.discount}%
+                                </span>
+                             )}
+                              {related.badge && (
+                                <span className="absolute top-2 right-2 bg-yellow-400 text-black text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase">
+                                    {related.badge}
+                                </span>
+                             )}
+                        </div>
+                        <div className="p-4">
+                            <h3 className="font-bold text-gray-900 mb-1 truncate">{related.name}</h3>
+                            <p className="text-xs text-gray-500 mb-3 line-clamp-2">{related.deliveryType === 'auto' ? 'Instant Delivery' : 'Manual Delivery'} - {related.category}</p>
+                            
+                            <div className="flex items-center justify-between">
+                                <div className="flex flex-col">
+                                     {related.originalPrice && <span className="text-xs text-gray-400 line-through">৳{related.originalPrice}</span>}
+                                    <span className="font-bold text-green-600">৳{related.price}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                                    <span className="text-xs font-bold">{related.rating}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 ))}
-              </ul>
-            </TabsContent>
-
-            <TabsContent value="activation">
-              <h3 className="font-semibold text-xl mb-4">Installation & Activation Guide</h3>
-              {product.installationGuide ? (
-                <div className="space-y-4">
-                  {product.installationGuide.map((step, index) => (
-                    <div key={index} className="flex gap-4">
-                      <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
-                        {index + 1}
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-gray-700">{step}</p>
-                      </div>
-                    </div>
-                  ))}
-                  
-                  {product.productType === 'subscription' && (
-                    <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <p className="text-sm text-yellow-800">
-                        <strong>Note:</strong> For subscription products, you will need to provide your email address during checkout. We will send you an invitation within 30 minutes.
-                      </p>
-                    </div>
-                  )}
-                  
-                  {product.deliveryType === 'auto' && (
-                    <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                      <p className="text-sm text-green-800 flex items-center gap-2">
-                        <Zap className="w-4 h-4" />
-                        <strong>Instant Delivery:</strong> You will receive your credentials/key immediately after payment confirmation.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <p className="text-gray-600">Detailed activation instructions will be provided after purchase.</p>
-              )}
-            </TabsContent>
-
-            {product.systemRequirements && (
-              <TabsContent value="requirements">
-                <h3 className="font-semibold text-xl mb-4">System Requirements</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold mb-2 text-gray-700">Operating System</h4>
-                    <p className="text-gray-600">{product.systemRequirements.os}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2 text-gray-700">RAM</h4>
-                    <p className="text-gray-600">{product.systemRequirements.ram}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2 text-gray-700">Storage</h4>
-                    <p className="text-gray-600">{product.systemRequirements.storage}</p>
-                  </div>
-                  {product.systemRequirements.processor && (
-                    <div>
-                      <h4 className="font-semibold mb-2 text-gray-700">Processor</h4>
-                      <p className="text-gray-600">{product.systemRequirements.processor}</p>
-                    </div>
-                  )}
-                </div>
-                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    <strong>Important:</strong> Please ensure your system meets these requirements before purchasing to avoid compatibility issues.
-                  </p>
-                </div>
-              </TabsContent>
-            )}
-
-            <TabsContent value="warranty">
-              <h3 className="font-semibold text-xl mb-4">Warranty & Replacement Policy</h3>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  <strong>Warranty Period:</strong> {product.warranty}
-                </p>
-                <div>
-                  <strong className="block mb-2">What's Covered:</strong>
-                  <ul className="space-y-2 ml-6">
-                    <li className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span>Account/license not working or invalid</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span>Credentials changed by provider</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span>Subscription cancelled prematurely</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span>Technical issues with the product</span>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <strong className="block mb-2">How to Claim:</strong>
-                  <ol className="space-y-2 ml-6 list-decimal">
-                    <li>Go to your dashboard and find the order</li>
-                    <li>Click "Open Ticket" and describe the issue</li>
-                    <li>Our team will review within 2-4 hours</li>
-                    <li>Replacement will be provided if eligible</li>
-                  </ol>
-                </div>
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-sm text-green-800">
-                    We stand behind our products. If you experience any issues during the warranty period, we'll replace it at no additional cost.
-                  </p>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
+             </div>
         </div>
       </div>
     </div>
