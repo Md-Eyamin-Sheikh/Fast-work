@@ -356,9 +356,9 @@ export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDe
                     <div key={related.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow group">
                         <div className="relative aspect-video bg-gray-100">
                              <img src={related.image} alt={related.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                             {related.discount && (
+                             {related.originalPrice && related.originalPrice > related.price && (
                                 <span className="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                    -{related.discount}%
+                                    -{Math.round(((related.originalPrice - related.price) / related.originalPrice) * 100)}%
                                 </span>
                              )}
                               {related.badge && (
