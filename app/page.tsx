@@ -1,16 +1,17 @@
 "use client";
 
 import { HomePage } from "./components/HomePage";
+import { MegaMenu } from "./components/MegaMenu";
 
 export default function Home() {
   return (
-    <HomePage
-      onNavigate={(page, productId) => {
-        console.log(`Navigate to ${page} ${productId ? `with id ${productId}` : ""}`);
-      }}
-      onAddToCart={(product) => {
-        console.log("Add to cart", product);
-      }}
-    />
+    <>
+      <MegaMenu cartCount={0} isAuthenticated={true} />
+      <HomePage
+        onAddToCart={(product) => {
+          console.log("Add to cart", product);
+        }}
+      />
+    </>
   );
 }

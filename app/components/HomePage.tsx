@@ -3,13 +3,13 @@ import { ProductCard } from './ProductCard';
 import { products, bundles, categories } from '../data/products';
 import { Product } from '../data/products';
 import { ArrowRight, Zap, Shield, Clock, Headphones } from 'lucide-react';
+import Link from 'next/link';
 
 interface HomePageProps {
-  onNavigate: (page: string, productId?: string) => void;
   onAddToCart: (product: Product) => void;
 }
 
-export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
+export function HomePage({ onAddToCart }: HomePageProps) {
   const featuredProducts = products.slice(0, 6);
   const flashSaleProducts = products.filter(p => p.originalPrice && p.originalPrice > p.price).slice(0, 4);
 
@@ -26,18 +26,18 @@ export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
               Get instant access to ChatGPT, Adobe, Microsoft 365, and more at unbeatable prices
             </p>
             <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => onNavigate('products')}
+              <Link
+                href="/products"
                 className="px-8 py-4 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
               >
                 Browse Products
-              </button>
-              <button
-                onClick={() => onNavigate('bundles')}
+              </Link>
+              <Link
+                href="/bundles"
                 className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
               >
                 View Bundles 🔥
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -98,7 +98,6 @@ export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onViewDetails={(id) => onNavigate('product', id)}
                   onAddToCart={onAddToCart}
                 />
               ))}
@@ -115,13 +114,13 @@ export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
               <h2 className="text-3xl font-bold mb-2">🎁 Bundle Offers</h2>
               <p className="text-gray-600">Save more when you buy together</p>
             </div>
-            <button
-              onClick={() => onNavigate('bundles')}
+            <Link
+              href="/bundles"
               className="hidden md:flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
             >
               View All Bundles
               <ArrowRight className="w-5 h-5" />
-            </button>
+            </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {bundles.map((bundle) => (
@@ -142,12 +141,12 @@ export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
                   <span className="font-bold text-2xl text-purple-600">৳{bundle.price}</span>
                   <span className="text-sm text-gray-500 line-through">৳{bundle.originalPrice}</span>
                 </div>
-                <button
-                  onClick={() => onNavigate('bundles')}
-                  className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-colors"
+                <Link
+                  href="/bundles"
+                  className="block w-full text-center py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-colors"
                 >
                   View Bundle
-                </button>
+                </Link>
               </div>
             ))}
           </div>
@@ -160,14 +159,14 @@ export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
           <h2 className="text-3xl font-bold mb-8">Shop by Category</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {Object.entries(categories).map(([key, category]) => (
-              <button
+              <Link
                 key={key}
-                onClick={() => onNavigate('products', key)}
-                className="p-6 bg-white rounded-xl border hover:border-blue-600 hover:shadow-lg transition-all group"
+                href={`/products?category=${key}`}
+                className="p-6 bg-white rounded-xl border hover:border-blue-600 hover:shadow-lg transition-all group block"
               >
                 <h3 className="font-semibold mb-2 group-hover:text-blue-600">{category.name}</h3>
                 <p className="text-sm text-gray-600">{category.items.length} Products</p>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -181,20 +180,19 @@ export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
               <h2 className="text-3xl font-bold mb-2">Featured Products</h2>
               <p className="text-gray-600">Most popular digital assets</p>
             </div>
-            <button
-              onClick={() => onNavigate('products')}
+            <Link
+              href="/products"
               className="hidden md:flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
             >
               View All Products
               <ArrowRight className="w-5 h-5" />
-            </button>
+            </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                onViewDetails={(id) => onNavigate('product', id)}
                 onAddToCart={onAddToCart}
               />
             ))}
@@ -211,13 +209,13 @@ export function HomePage({ onNavigate, onAddToCart }: HomePageProps) {
           <p className="text-xl mb-8 text-blue-100">
             Join thousands of satisfied customers and get instant access to premium digital assets
           </p>
-          <button
-            onClick={() => onNavigate('products')}
+          <Link
+            href="/products"
             className="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center gap-2"
           >
             Browse All Products
             <ArrowRight className="w-5 h-5" />
-          </button>
+          </Link>
         </div>
       </section>
     </div>

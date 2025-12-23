@@ -1,15 +1,17 @@
+"use client";
+
 import React from 'react';
 import { Star, ShoppingCart, Eye, Clock } from 'lucide-react';
 import { Product } from '../data/products';
 import { Badge } from './ui/badge';
+import Link from 'next/link';
 
 interface ProductCardProps {
   product: Product;
-  onViewDetails: (productId: string) => void;
   onAddToCart: (product: Product) => void;
 }
 
-export function ProductCard({ product, onViewDetails, onAddToCart }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   const discountPercent = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
@@ -114,13 +116,13 @@ export function ProductCard({ product, onViewDetails, onAddToCart }: ProductCard
 
         {/* Actions */}
         <div className="flex gap-2">
-          <button
-            onClick={() => onViewDetails(product.id)}
+          <Link
+            href={`/products/${product.id}`}
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
           >
             <Eye className="w-4 h-4" />
             Details
-          </button>
+          </Link>
           <button
             onClick={() => onAddToCart(product)}
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
