@@ -42,12 +42,12 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">DA</span>
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1 overflow-hidden border border-gray-100">
+               <img src="/logo.png" alt="Victorians Academy" className="w-full h-full object-contain" />
             </div>
             <div className="hidden md:block">
-              <h1 className="font-bold text-xl">DigitalAssets</h1>
-              <p className="text-xs text-gray-500">Premium Subscriptions</p>
+              <h1 className="font-bold text-xl text-gray-900">Victorians Academy</h1>
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider">Trusted Agency</p>
             </div>
           </Link>
 
