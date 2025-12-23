@@ -100,7 +100,7 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
                               {category.items.map((item) => (
                                 <Link
                                   key={item}
-                                  href={`/products?category=${key}&type=${item.toLowerCase().replace(' ', '-')}`}
+                                  href={`/products?category=${key}&subcategory=${item.toLowerCase().replace(' ', '-')}`}
                                   onClick={() => setHoveredCategory(null)}
                                   className="block w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors flex items-center justify-between group/item"
                                 >

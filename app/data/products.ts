@@ -47,6 +47,7 @@ export interface Product {
   peopleWatching: number;
   shortDescription: string; // Bullet points in hero
   highlights: string[]; 
+  tags: string[]; // For search and subcategory filtering
 
   // Data for Tabs
   description: string; // Main long description
@@ -110,6 +111,7 @@ export const products: Product[] = [
       '1200+ Midjourney',
       'Best Midjourney Prompts with resell rights'
     ],
+    tags: ['midjourney', 'prompts', 'ai', 'art', 'design'],
     description: 'If you are looking for the best prompts to increase your design skill then you have come to the right place, because we are providing the Best 1200+ Midjourney Prompts Commands, designed to your imagination. Whether you\'re an aspiring writer, an artist seeking inspiration, or someone looking to infuse excitement into your daily routine, these prompts are your gateway to boundless creativity. Immerse yourself in a world where ideas flow effortlessly, and watch your creativity flourish.',
     whatYouGet: [
       {
@@ -180,6 +182,7 @@ export const products: Product[] = [
       'Email Writing Templates',
       'Content Creation Ideas'
     ],
+    tags: ['chatgpt', 'prompts', 'writing', 'coding', 'ai'],
     description: 'Unlock the full potential of ChatGPT with our massive library of prompts. Stop wasting time figuring out what to say and start getting results immediately.',
     whatYouGet: [
       {
@@ -223,6 +226,7 @@ export const products: Product[] = [
       'AI Voiceovers (30+ Languages)',
       'No Watermark Export'
     ],
+    tags: ['video', 'ai', 'editor', 'content-creation'],
     description: 'Revolutionize your content creation process. Simply type your script, select a style, and let the AI generate a high-quality video for you.',
     whatYouGet: [
       {
@@ -257,6 +261,7 @@ export const products: Product[] = [
       'Instant Updates',
       'Official License'
     ],
+    tags: ['adobe', 'design', 'video', 'photo', 'creative'],
     description: 'The ultimate creative toolkit. From photo editing to video production, UI design to social media, Creative Cloud has everything you need.',
     whatYouGet: [
         { title: 'Industry Standard Tools', description: 'Access the same tools used by professionals worldwide.', color: 'bg-red-100'}
@@ -287,6 +292,7 @@ export const products: Product[] = [
       'Content Optimization',
       'Rank Tracking'
     ],
+    tags: ['seo', 'marketing', 'ai', 'analytics', 'jasper'],
     description: 'Dominate search results with AI Wizard. Our advanced algorithms analyze the web to give you the competitive edge you need.',
     whatYouGet: [
         { title: 'Data-Driven Insights', description: 'Make informed decisions based on real-time data.', color: 'bg-green-100'}
@@ -297,7 +303,7 @@ export const products: Product[] = [
     id: 'chatgpt-1600',
     name: 'Best 1600+ ChatGPT AI Tools',
     category: 'ai-tools',
-    price: 250, // Corrected price from 250000 to be realistic based on similar items
+    price: 250, 
     originalPrice: 320,
     image: 'https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=600&q=80',
     badge: 'Key Code',
@@ -317,6 +323,7 @@ export const products: Product[] = [
       'Updated Monthly',
       'Lifetime Access'
     ],
+    tags: ['chatgpt', 'tools', 'ai', 'productivity'],
     description: 'Stop searching for the right AI tool. We have curated the best 1600+ AI tools across various categories including writing, design, video, audio, and more.',
     whatYouGet: [
         { title: 'Time Saver', description: 'Find the perfect tool in seconds.', color: 'bg-gray-200'}
@@ -347,6 +354,7 @@ export const products: Product[] = [
       'No Logs Policy',
       '6 Devices supported'
     ],
+    tags: ['vpn', 'security', 'software', 'antivirus', 'privacy'],
     description: 'Experience true internet freedom and privacy with NordVPN. Protect yourself from hackers and snoops while accessing content from anywhere.',
     whatYouGet: [
         { title: 'Privacy First', description: 'Your data is safe with military-grade encryption.', color: 'bg-blue-300'}
@@ -377,6 +385,7 @@ export const products: Product[] = [
       'Magic Resize',
       'Brand Kit'
     ],
+    tags: ['canva', 'design', 'templates', 'fonts', 'creative', 'graphics'],
     description: 'Get access to premium templates, images, and tools. Perfect for social media managers, entrepreneurs, and students.',
     whatYouGet: [
         { title: 'Unlimited Creativity', description: 'No limits on your designs.', color: 'bg-purple-300'}
@@ -407,6 +416,7 @@ export const products: Product[] = [
       'Official Updates',
       'Instant Delivery'
     ],
+    tags: ['windows', 'microsoft', 'software', 'os'],
     description: 'Genuine license key for Windows 11 Pro. Upgrade your PC to the latest operating system and enjoy enhanced performance and security.',
     whatYouGet: [
         { title: 'Genuine Software', description: 'Passes all Microsoft validation checks.', color: 'bg-sky-200'}
@@ -437,6 +447,7 @@ export const products: Product[] = [
       'Latest AI Features',
       'Offline Access'
     ],
+    tags: ['microsoft', 'office', 'software', 'productivity'],
     description: 'Get work done with the standard in office productivity. Collaborate in real-time and access your files from anywhere.',
     whatYouGet: [
         { title: 'Productivity Powerhouse', description: 'All the tools you need for school or work.', color: 'bg-orange-100'}

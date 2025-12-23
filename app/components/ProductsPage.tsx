@@ -34,6 +34,7 @@ export function ProductsPage({ onAddToCart }: ProductsPageProps) {
   
   const categoryParam = searchParams.get('category') || 'all';
   const typeParam = searchParams.get('type') || 'all';
+  const subcategoryParam = searchParams.get('subcategory') || 'all';
   const sortParam = searchParams.get('sort') || 'popular';
 
   const [selectedCategory, setSelectedCategory] = useState(categoryParam);
@@ -50,6 +51,8 @@ export function ProductsPage({ onAddToCart }: ProductsPageProps) {
     setSelectedCategory(newCategory);
     const params = new URLSearchParams(searchParams.toString());
     params.set('category', newCategory);
+    // Reset subcategory when changing main category to avoid confusion
+    params.delete('subcategory'); 
     router.push(`/products?${params.toString()}`);
     setIsMobileFiltersOpen(false);
   };
@@ -65,8 +68,18 @@ export function ProductsPage({ onAddToCart }: ProductsPageProps) {
     // Category Filter
     if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
     
-    // Type Filter (if present in URL)
+    // Type Filter (if present in URL - STRICT PRODUCT TYPE)
     if (typeParam !== 'all' && p.productType.toLowerCase().replace(' ', '-') !== typeParam) return false;
+
+    // Subcategory Filter (Flexible Search: Tags, Name, Description)
+    if (subcategoryParam !== 'all') {
+        const query = subcategoryParam.toLowerCase();
+        const hasTag = p.tags?.some(tag => tag.toLowerCase().includes(query)) || false;
+        const hasName = p.name.toLowerCase().includes(query);
+        const hasDesc = p.description.toLowerCase().includes(query);
+        
+        if (!hasTag && !hasName && !hasDesc) return false;
+    }
     
     return true;
   });
