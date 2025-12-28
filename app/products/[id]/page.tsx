@@ -16,6 +16,10 @@ export default function ProductDetailsRoute() {
     return notFound();
   }
 
+  const handleBuyNow = (product: any) => {
+    router.push(`/checkout?productId=${product.id}&quantity=1`);
+  };
+
   return (
     <>
       <MegaMenu cartCount={0} isAuthenticated={true} />
@@ -23,7 +27,7 @@ export default function ProductDetailsRoute() {
         product={product}
         onBack={() => router.back()}
         onAddToCart={() => console.log('Add to cart')}
-        onBuyNow={() => console.log('Buy now')}
+        onBuyNow={handleBuyNow}
       />
     </>
   );

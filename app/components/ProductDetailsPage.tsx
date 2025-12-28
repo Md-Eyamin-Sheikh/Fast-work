@@ -198,27 +198,29 @@ export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDe
         {/* Tabs Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 mb-12">
             <Tabs defaultValue="description">
-                <div className="border-b px-6 md:px-8">
-                    <TabsList className="bg-transparent h-auto p-0 gap-8">
-                        <TabsTrigger 
-                            value="description" 
-                            className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-sm tracking-wide"
-                        >
-                            Description
-                        </TabsTrigger>
-                        <TabsTrigger 
-                            value="reviews" 
-                            className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-sm tracking-wide"
-                        >
-                            Reviews ({product.reviews})
-                        </TabsTrigger>
-                         <TabsTrigger 
-                            value="referral" 
-                            className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-sm tracking-wide"
-                        >
-                            Referral Program
-                        </TabsTrigger>
-                    </TabsList>
+                <div className="border-b px-0 md:px-8 w-full">
+                    <div className="overflow-x-auto w-full px-4 md:px-0 scrollbar-hide">
+                        <TabsList className="bg-transparent h-auto p-0 gap-4 md:gap-8 flex-nowrap justify-start min-w-max">
+                            <TabsTrigger 
+                                value="description" 
+                                className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-2 md:px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-xs md:text-sm tracking-wide whitespace-nowrap"
+                            >
+                                Description
+                            </TabsTrigger>
+                            <TabsTrigger 
+                                value="reviews" 
+                                className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-2 md:px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-xs md:text-sm tracking-wide whitespace-nowrap"
+                            >
+                                Reviews ({product.reviews})
+                            </TabsTrigger>
+                             <TabsTrigger 
+                                value="referral" 
+                                className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-2 md:px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-xs md:text-sm tracking-wide whitespace-nowrap"
+                            >
+                                Referral Program
+                            </TabsTrigger>
+                        </TabsList>
+                    </div>
                 </div>
                 
                 <div className="p-6 md:p-8">

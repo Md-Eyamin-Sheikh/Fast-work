@@ -3,16 +3,19 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Product } from '../data/products';
 import { 
-  CreditCard, 
-  Wallet, 
-  ChevronLeft, 
-  Mail, 
-  ShoppingBag,
   Check,
-  Clock,
-  AlertCircle
+  AlertCircle,
+  CreditCard,
+  X
 } from 'lucide-react';
 import { Badge } from './ui/badge';
+import Image from 'next/image';
+
+// Payment Icon Components (Mock placeholders for specific brand icons)
+const VisaIcon = () => <div className="h-6 w-10 bg-blue-800 rounded text-white text-[8px] flex items-center justify-center font-bold italic">VISA</div>;
+const MastercardIcon = () => <div className="h-6 w-10 bg-black rounded text-white text-[8px] flex items-center justify-center font-bold">Master</div>;
+const AmexIcon = () => <div className="h-6 w-10 bg-blue-400 rounded text-white text-[8px] flex items-center justify-center font-bold">AMEX</div>;
+const BkashIcon = () => <div className="h-6 w-10 bg-pink-600 rounded text-white text-[8px] flex items-center justify-center font-bold">bKash</div>;
 
 interface CheckoutPageProps {
   items: { product: Product; quantity: number }[];
@@ -20,19 +23,17 @@ interface CheckoutPageProps {
 
 export function CheckoutPage({ items }: CheckoutPageProps) {
   const router = useRouter();
-  const [paymentMethod, setPaymentMethod] = useState<'bkash' | 'nagad' | 'wallet'>('bkash');
-  const [additionalEmails, setAdditionalEmails] = useState<Record<string, string>>({});
-  const [contactInfo, setContactInfo] = useState({
-    email: 'rafiq@example.com',
-    phone: '+880 1700-000000'
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'binance' | 'bybit' | 'crypto'>('online');
+  const [billingInfo, setBillingInfo] = useState({
+    fullName: '',
+    country: 'Bangladesh',
+    phone: '',
+    email: '',
+    createAccount: false
   });
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const total = subtotal;
-
-  const hasSubscriptionProducts = items.some(
-    item => item.product.productType === 'subscription'
-  );
 
   const handleCheckout = () => {
     // Simulate payment processing
@@ -41,268 +42,245 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
     }, 2000);
   };
 
+  if (items.length === 0) {
+      return (
+          <div className="min-h-screen bg-white py-12 text-center">
+              <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
+              <Link href="/" className="text-blue-600 hover:underline">Return to shop</Link>
+          </div>
+      )
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Back Button */}
-        <Link
-          href="/cart"
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 w-fit"
-        >
-          <ChevronLeft className="w-5 h-5" />
-          Back to Cart
-        </Link>
+    <div className="min-h-screen bg-gray-50 pb-16">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        
+        {/* Breadcrumbs */}
+        <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
+            <span className="text-gray-500">Shopping cart</span>
+            <span className="text-gray-300">→</span>
+            <span className="text-green-600 font-bold border-b-2 border-green-600 pb-0.5">Checkout</span>
+            <span className="text-gray-300">→</span>
+            <span className="text-gray-400">Order complete</span>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Checkout Form */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Contact Information */}
-            <div className="bg-white rounded-xl p-6">
-              <h2 className="text-xl font-bold mb-4">Contact Information</h2>
-              <div className="space-y-4">
+        {/* Notification */}
+        <div className="bg-white border-t-2 border-green-500 p-4 mb-8 flex items-center gap-2 text-sm text-gray-700 shadow-sm">
+            <Check className="w-5 h-5 text-green-500" />
+            <span><span className="text-gray-400">Continue shopping</span> "{items[0].product.name}" has been added to your cart.</span>
+        </div>
+
+        {/* Auth Links */}
+        <div className="space-y-3 mb-8 text-sm">
+            <div>
+                Returning customer? <a href="#" className="text-green-600 hover:underline">Click here to login</a>
+            </div>
+            <div>
+                 Have a coupon? <a href="#" className="text-green-600 hover:underline">Click here to enter your code</a>
+            </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          {/* Left Column: Billing Details */}
+          <div>
+             <h2 className="text-2xl font-bold text-gray-900 mb-6">Billing Details</h2>
+             
+             <form className="space-y-6 bg-white p-0 rounded-none bg-transparent">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Email Address</label>
-                  <input
-                    type="email"
-                    value={contactInfo.email}
-                    onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="your@email.com"
-                  />
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Full name <span className="text-red-500">*</span></label>
+                    <input 
+                        type="text" 
+                        value={billingInfo.fullName}
+                        onChange={(e) => setBillingInfo({...billingInfo, fullName: e.target.value})}
+                        className="w-full bg-gray-100 border-none rounded-md px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none transition-shadow"
+                    />
                 </div>
+
                 <div>
-                  <label className="block text-sm font-medium mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    value={contactInfo.phone}
-                    onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="+880 1XXX-XXXXXX"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Subscription Products - Additional Email Required */}
-            {hasSubscriptionProducts && (
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
-                <div className="flex items-start gap-3 mb-4">
-                  <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-blue-900 mb-1">
-                      Additional Information Required
-                    </h3>
-                    <p className="text-sm text-blue-700">
-                      For subscription products, we need your account email to send invitations.
-                    </p>
-                  </div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Country <span className="text-red-500">*</span></label>
+                    <select 
+                        value={billingInfo.country}
+                        onChange={(e) => setBillingInfo({...billingInfo, country: e.target.value})}
+                        className="w-full bg-white border border-gray-200 rounded-md px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none transition-shadow text-gray-700"
+                    >
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="United States">United States</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                    </select>
                 </div>
 
-                <div className="space-y-4">
-                  {items
-                    .filter(item => item.product.productType === 'subscription')
-                    .map(item => (
-                      <div key={item.product.id} className="bg-white rounded-lg p-4">
-                        <label className="block font-medium mb-2">
-                          Your {item.product.name.includes('Adobe') ? 'Adobe' : 
-                                item.product.name.includes('Microsoft') ? 'Microsoft' :
-                                item.product.name.includes('Google') ? 'Google' :
-                                item.product.name.includes('JetBrains') ? 'JetBrains' : ''} Email
-                        </label>
-                        <input
-                          type="email"
-                          value={additionalEmails[item.product.id] || ''}
-                          onChange={(e) => setAdditionalEmails({
-                            ...additionalEmails,
-                            [item.product.id]: e.target.value
-                          })}
-                          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="your.email@example.com"
-                        />
-                        <p className="text-xs text-gray-600 mt-2">
-                          We will send a team invitation to this email within 30 minutes
-                        </p>
-                      </div>
-                    ))}
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Phone <span className="text-red-500">*</span></label>
+                    <input 
+                        type="tel" 
+                        value={billingInfo.phone}
+                        onChange={(e) => setBillingInfo({...billingInfo, phone: e.target.value})}
+                        className="w-full bg-gray-100 border-none rounded-md px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none transition-shadow"
+                    />
                 </div>
-              </div>
-            )}
 
-            {/* Delivery Information */}
-            <div className="bg-white rounded-xl p-6">
-              <h2 className="text-xl font-bold mb-4">Delivery Method</h2>
-              <div className="space-y-3">
-                {items.map(item => (
-                  <div key={item.product.id} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                    <ShoppingBag className="w-5 h-5 text-gray-600 mt-0.5" />
-                    <div className="flex-1">
-                      <p className="font-medium">{item.product.name}</p>
-                      {item.product.deliveryType === 'auto' ? (
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge className="bg-green-500 text-white text-xs">
-                            ⚡ Instant Delivery
-                          </Badge>
-                          <span className="text-sm text-gray-600">
-                            {item.product.productType === 'account' && 'Email & Password will be shown after payment'}
-                            {item.product.productType === 'license-key' && 'License key will be shown after payment'}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge className="bg-blue-500 text-white text-xs flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            Manual Delivery
-                          </Badge>
-                          <span className="text-sm text-gray-600">
-                            Delivery within 30 minutes
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Payment Method */}
-            <div className="bg-white rounded-xl p-6">
-              <h2 className="text-xl font-bold mb-4">Payment Method</h2>
-              <div className="space-y-3">
-                <button
-                  onClick={() => setPaymentMethod('bkash')}
-                  className={`w-full flex items-center justify-between p-4 border-2 rounded-lg transition-all ${
-                    paymentMethod === 'bkash'
-                      ? 'border-pink-500 bg-pink-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center text-white font-bold">
-                      bK
-                    </div>
-                    <div className="text-left">
-                      <p className="font-semibold">bKash</p>
-                      <p className="text-sm text-gray-600">Pay with bKash</p>
-                    </div>
-                  </div>
-                  {paymentMethod === 'bkash' && (
-                    <Check className="w-6 h-6 text-pink-500" />
-                  )}
-                </button>
-
-                <button
-                  onClick={() => setPaymentMethod('nagad')}
-                  className={`w-full flex items-center justify-between p-4 border-2 rounded-lg transition-all ${
-                    paymentMethod === 'nagad'
-                      ? 'border-orange-500 bg-orange-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold">
-                      N
-                    </div>
-                    <div className="text-left">
-                      <p className="font-semibold">Nagad</p>
-                      <p className="text-sm text-gray-600">Pay with Nagad</p>
-                    </div>
-                  </div>
-                  {paymentMethod === 'nagad' && (
-                    <Check className="w-6 h-6 text-orange-500" />
-                  )}
-                </button>
-
-                <button
-                  onClick={() => setPaymentMethod('wallet')}
-                  className={`w-full flex items-center justify-between p-4 border-2 rounded-lg transition-all ${
-                    paymentMethod === 'wallet'
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                      <Wallet className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="text-left">
-                      <p className="font-semibold">Wallet Balance</p>
-                      <p className="text-sm text-gray-600">Available: ৳2,500</p>
-                    </div>
-                  </div>
-                  {paymentMethod === 'wallet' && (
-                    <Check className="w-6 h-6 text-green-500" />
-                  )}
-                </button>
-              </div>
-
-              {paymentMethod === 'wallet' && total > 2500 && (
-                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
-                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-red-800">
-                    Insufficient wallet balance. Please add ৳{total - 2500} more or choose another payment method.
-                  </p>
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Email address <span className="text-red-500">*</span></label>
+                    <input 
+                        type="email" 
+                        value={billingInfo.email}
+                        onChange={(e) => setBillingInfo({...billingInfo, email: e.target.value})}
+                        className="w-full bg-gray-100 border-none rounded-md px-4 py-3 focus:ring-2 focus:ring-green-500 outline-none transition-shadow"
+                    />
                 </div>
-              )}
-            </div>
+
+                <div className="flex items-center gap-2 pt-2">
+                    <input 
+                        type="checkbox" 
+                        id="create-account"
+                        checked={billingInfo.createAccount}
+                        onChange={(e) => setBillingInfo({...billingInfo, createAccount: e.target.checked})}
+                        className="rounded border-gray-300 text-green-600 focus:ring-green-500 w-4 h-4"
+                    />
+                    <label htmlFor="create-account" className="text-sm font-medium text-gray-700 cursor-pointer">Create an account?</label>
+                </div>
+
+                <div>
+                    <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">Additional Information</h3>
+                    <div className="h-px w-full bg-gray-200 mb-6"></div>
+                    {/* Placeholder for additional info textarea or notes if needed pattern matches screenshot which just shows header */}
+                </div>
+             </form>
           </div>
 
-          {/* Order Summary Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl p-6 sticky top-24">
-              <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-              
-              <div className="space-y-4 mb-6">
-                {items.map(item => (
-                  <div key={item.product.id} className="flex gap-3">
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="w-16 h-16 object-cover rounded-lg"
-                    />
-                    <div className="flex-1">
-                      <p className="font-medium text-sm line-clamp-2">{item.product.name}</p>
-                      <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
-                      <p className="font-semibold">৳{item.product.price}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t pt-4 space-y-3 mb-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-semibold">৳{subtotal}</span>
+          {/* Right Column: Your Order */}
+          <div className="bg-white p-8 rounded-xl border-2 border-gray-100 h-fit">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Order</h2>
+            
+            <div className="mb-6">
+                <div className="flex justify-between text-sm font-bold text-gray-700 mb-4">
+                    <span>Product</span>
+                    <span>Subtotal</span>
                 </div>
-                <div className="flex justify-between text-lg font-bold">
-                  <span>Total</span>
-                  <span className="text-blue-600">৳{total}</span>
+                <div className="space-y-4">
+                    {items.map(item => (
+                        <div key={item.product.id} className="flex items-center justify-between border-b border-gray-100 pb-4 last:border-0">
+                            <div className="flex items-center gap-4">
+                                <button className="text-gray-400 hover:text-red-500"><X className="w-4 h-4" /></button>
+                                <img src={item.product.image} alt={item.product.name} className="w-10 h-10 object-cover rounded" />
+                                <div className="text-sm text-gray-600 max-w-[200px]">
+                                    {item.product.name}  <span className="font-bold">× {item.quantity}</span>
+                                </div>
+                            </div>
+                            <span className="text-gray-500 font-medium">৳{item.product.price * item.quantity}.00</span>
+                        </div>
+                    ))}
                 </div>
-              </div>
-
-              <button
-                onClick={handleCheckout}
-                disabled={paymentMethod === 'wallet' && total > 2500}
-                className="w-full py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <CreditCard className="w-5 h-5" />
-                Complete Payment
-              </button>
-
-              <div className="mt-6 space-y-2 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-600" />
-                  <span>Secure payment processing</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-600" />
-                  <span>Instant delivery for eligible items</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-600" />
-                  <span>Money-back guarantee</span>
-                </div>
-              </div>
             </div>
+
+            <div className="space-y-3 pt-4 border-t border-gray-100 mb-8">
+                <div className="flex justify-between text-sm font-bold text-gray-700">
+                    <span>Subtotal</span>
+                    <span className="text-green-600">৳{subtotal}.00</span>
+                </div>
+                <div className="flex justify-between text-lg font-bold text-gray-900">
+                    <span>Total</span>
+                    <span className="text-green-600">৳{total}.00</span>
+                </div>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="space-y-4 mb-8">
+                {/* Pay Online */}
+                <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-start gap-3">
+                         <input 
+                            type="radio" 
+                            id="pay-online" 
+                            name="payment" 
+                            value="online"
+                            checked={paymentMethod === 'online'}
+                            onChange={() => setPaymentMethod('online')}
+                            className="mt-1 text-blue-600 focus:ring-blue-500"
+                        />
+                        <div className="flex-1">
+                            <label htmlFor="pay-online" className="block text-sm font-bold text-gray-900 cursor-pointer">
+                                Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+                            </label>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                                <VisaIcon />
+                                <MastercardIcon />
+                                <AmexIcon />
+                                <BkashIcon />
+                                {/* Add more icons as needed */}
+                            </div>
+                        </div>
+                    </div>
+                    {paymentMethod === 'online' && (
+                         <div className="mt-3 text-xs text-gray-600 bg-white p-3 rounded border border-gray-200">
+                            Accept global payments securely via VISA, MasterCard, bKash, or Bank. Select BDT (৳) from the right side before placing your order.
+                         </div>
+                    )}
+                </div>
+
+                 {/* Binance */}
+                 <div className="flex items-center gap-3">
+                     <input 
+                            type="radio" 
+                            id="binance" 
+                            name="payment" 
+                            value="binance"
+                            checked={paymentMethod === 'binance'}
+                            onChange={() => setPaymentMethod('binance')}
+                            className="text-yellow-500 focus:ring-yellow-500"
+                        />
+                    <label htmlFor="binance" className="text-sm font-bold text-gray-900 flex items-center gap-2 cursor-pointer">
+                        Binnace Payment <div className="bg-black text-yellow-500 rounded-full p-0.5"><div className="w-4 h-4 bg-yellow-500 rounded-full"></div></div>
+                    </label>
+                 </div>
+
+                  {/* Bybit */}
+                 <div className="flex items-center gap-3">
+                     <input 
+                            type="radio" 
+                            id="bybit" 
+                            name="payment" 
+                            value="bybit"
+                            checked={paymentMethod === 'bybit'}
+                            onChange={() => setPaymentMethod('bybit')}
+                            className="text-gray-900 focus:ring-gray-900"
+                        />
+                    <label htmlFor="bybit" className="text-sm font-bold text-gray-900 flex items-center gap-2 cursor-pointer">
+                        Bybit Payment <span className="font-bold">BYB<span className="text-yellow-500">i</span>T</span>
+                    </label>
+                 </div>
+
+                  {/* Crypto */}
+                 <div className="flex items-center gap-3">
+                     <input 
+                            type="radio" 
+                            id="crypto" 
+                            name="payment" 
+                            value="crypto"
+                            checked={paymentMethod === 'crypto'}
+                            onChange={() => setPaymentMethod('crypto')}
+                            className="text-blue-500 focus:ring-blue-500"
+                        />
+                    <label htmlFor="crypto" className="text-sm font-bold text-gray-900 flex items-center gap-2 cursor-pointer">
+                        Crypto Payment <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full border">Pay with crypto</span>
+                        {/* Icons row */}
+                    </label>
+                 </div>
+
+            </div>
+            
+            <p className="text-xs text-gray-500 mb-6 leading-relaxed">
+                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#" className="font-bold text-gray-900">privacy policy</a>.
+            </p>
+
+            <button 
+                onClick={handleCheckout}
+                className="w-full bg-[#42b72a] hover:bg-green-600 text-white font-bold py-4 rounded-md uppercase tracking-wide transition-colors"
+            >
+                PLACE ORDER
+            </button>
+
           </div>
         </div>
       </div>
