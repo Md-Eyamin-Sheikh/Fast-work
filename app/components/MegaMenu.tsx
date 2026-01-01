@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Search, ShoppingCart, User, Menu, X, Wallet, LogOut, Sparkles } from 'lucide-react';
+import { ChevronDown, Search, ShoppingCart, User, Menu, X, Wallet, LogOut, Sparkles, ShoppingBag } from 'lucide-react';
 import { categories } from '../data/products';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -34,7 +36,7 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
   return (
     <>
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-[#4F46E5] via-[#3B82F6] to-[#7C3AED] text-white py-2.5 relative overflow-hidden">
+      {/* <div className="bg-gradient-to-r from-[#4F46E5] via-[#3B82F6] to-[#7C3AED] text-white py-2.5 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center relative z-10">
           <motion.div 
@@ -50,7 +52,7 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
             <Link href="/help" className="hover:text-white transition-colors">Help Center</Link>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Header */}
       <header className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
@@ -58,7 +60,7 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-12 h-12 bg-white rounded-full flex items-center justify-center p-1.5 border border-indigo-100 shadow-sm group-hover:shadow-md transition-all duration-300">
+              <div className="relative w-16 h-16 bg-white rounded-full flex items-center justify-center p-1.5 border border-indigo-100 shadow-sm group-hover:shadow-md transition-all duration-300">
                  <img src="/logo.png" alt="Victorians Academy" className="w-full h-full object-contain" />
               </div>
               <div className="hidden md:block">
@@ -177,15 +179,97 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
                 <span className="text-sm font-bold">৳2,500</span>
               </Link>
 
-              {/* User */}
-              <Link
-                href="/dashboard"
-                className="p-1 rounded-full border border-gray-200 hover:border-blue-300 transition-all ml-1"
-              >
-                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors">
-                    <User className="w-5 h-5" />
-                 </div>
-              </Link>
+              {/* User Profile Dropdown */}
+              <div className="relative group ml-1 z-50">
+                <button className="flex items-center gap-2 p-1 rounded-full border border-gray-200 hover:border-blue-300 transition-all focus:outline-none">
+                  <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors overflow-hidden">
+                    {isAuthenticated ? (
+                       <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" className="w-full h-full object-cover" />
+                    ) : (
+                       <User className="w-5 h-5" />
+                    )}
+                  </div>
+                </button>
+
+                {/* Dropdown Menu */}
+                <div className="absolute right-0 top-full pt-4 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
+                  <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden ring-1 ring-black/5">
+                    
+                    {isAuthenticated ? (
+                      // Authenticated View
+                      <>
+                        <div className="p-4 bg-linear-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden">
+                              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" className="w-full h-full object-cover" />
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-gray-900 text-sm">Admin User</h4>
+                              <p className="text-xs text-gray-500 font-medium">admin@digitalassets.com</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-2">
+                          <Link href="/admin" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
+                            <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                                <Menu className="w-4 h-4" />
+                            </div>
+                            Dashboard
+                          </Link>
+                          <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
+                             <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">
+                                <User className="w-4 h-4" />
+                            </div>
+                            My Profile
+                          </Link>
+                          <Link href="/orders" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
+                             <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-600">
+                                <ShoppingBag className="w-4 h-4" />
+                            </div>
+                            My Orders
+                          </Link>
+                        </div>
+
+                        <div className="p-2 border-t border-gray-50">
+                          <button 
+                            onClick={onLogout}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                          >
+                             <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-500">
+                                <LogOut className="w-4 h-4" />
+                            </div>
+                            Log Out
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      // Guest View
+                      <div className="p-4 space-y-3">
+                        <div className="text-center mb-4">
+                          <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-600">
+                            <User className="w-6 h-6" />
+                          </div>
+                          <h4 className="font-bold text-gray-900">Welcome!</h4>
+                          <p className="text-xs text-gray-500 mt-1">Sign in to manage your account</p>
+                        </div>
+                        <Link 
+                          href="/admin/login" 
+                          className="flex items-center justify-center w-full py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200"
+                        >
+                          Log In
+                        </Link>
+                        <Link 
+                          href="/register" 
+                          className="flex items-center justify-center w-full py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
+                        >
+                          Create Account
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
 
               {/* Mobile Menu Toggle */}
               <button
@@ -240,18 +324,20 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
               className="lg:hidden bg-white border-t border-gray-100 overflow-y-auto max-h-[calc(100vh-80px)]"
             >
               <div className="px-4 py-6 space-y-6">
-                {/* Mobile Wallet */}
-                <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-emerald-800 font-medium flex items-center gap-2">
-                        <Wallet className="w-5 h-5" /> Wallet Balance
-                    </span>
-                    <span className="text-2xl font-bold text-emerald-700">৳2,500</span>
+                {/* Mobile Wallet - Authenticated Only */}
+                {isAuthenticated && (
+                  <div className="p-4 bg-linear-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-emerald-800 font-medium flex items-center gap-2">
+                          <Wallet className="w-5 h-5" /> Wallet Balance
+                      </span>
+                      <span className="text-2xl font-bold text-emerald-700">৳2,500</span>
+                    </div>
+                    <button className="w-full py-2 bg-emerald-600 text-white rounded-lg font-semibold text-sm hover:bg-emerald-700">
+                      Add Funds
+                    </button>
                   </div>
-                  <button className="w-full py-2 bg-emerald-600 text-white rounded-lg font-semibold text-sm hover:bg-emerald-700">
-                    Add Funds
-                  </button>
-                </div>
+                )}
 
                 <nav className="space-y-6">
                   {Object.entries(categories).map(([key, category]) => (
@@ -278,7 +364,7 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
                   <Link
                     href="/bundles"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block p-4 bg-gradient-to-r from-orange-50 to-pink-50 border border-orange-100 rounded-xl"
+                    className="block p-4 bg-linear-to-r from-orange-50 to-pink-50 border border-orange-100 rounded-xl"
                   >
                     <div className="flex items-center justify-between">
                         <span className="font-bold text-gray-900">Bundle Offers</span>
@@ -289,9 +375,32 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
                 </nav>
 
                 <div className="pt-6 border-t border-gray-100">
-                    <button className="w-full py-3 border-2 border-gray-200 rounded-xl font-bold text-gray-600 hover:bg-gray-50 transition-colors">
-                        Log Out
-                    </button>
+                    {isAuthenticated ? (
+                       <button 
+                         onClick={onLogout}
+                         className="w-full flex items-center justify-center gap-2 py-3 border-2 border-red-100 text-red-600 rounded-xl font-bold hover:bg-red-50 transition-colors"
+                       >
+                         <LogOut className="w-5 h-5" />
+                         Log Out
+                       </button>
+                    ) : (
+                      <div className="space-y-3">
+                        <Link 
+                           href="/admin/login"
+                           onClick={() => setMobileMenuOpen(false)}
+                           className="w-full flex items-center justify-center py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
+                        >
+                           Log In
+                        </Link>
+                        <Link 
+                           href="/register"
+                           onClick={() => setMobileMenuOpen(false)}
+                           className="w-full flex items-center justify-center py-3 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-colors"
+                        >
+                           Create Account
+                        </Link>
+                      </div>
+                    )}
                 </div>
               </div>
             </motion.div>

@@ -796,66 +796,6 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
               </button>
             </div>
             <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Product Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g., ChatGPT Plus"
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Category</label>
-                <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option>AI Tools</option>
-                  <option>Creative Cloud</option>
-                  <option>Productivity & Office</option>
-                  <option>Dev Tools</option>
-                  <option>Security</option>
-                </select>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Price (৳)</label>
-                  <input
-                    type="number"
-                    placeholder="2000"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Stock</label>
-                  <input
-                    type="number"
-                    placeholder="50"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Description</label>
-                <textarea
-                  rows={4}
-                  placeholder="Product description..."
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                ></textarea>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Delivery Type</label>
-                <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option>Auto Delivery</option>
-                  <option>Manual Delivery</option>
-                  <option>Email Invitation</option>
-                </select>
-              </div>
-            </div>
-            <div className="p-6 border-t flex gap-3">
-              <button
-                onClick={() => setShowAddProductModal(false)}
-                className="flex-1 py-2 border rounded-lg hover:bg-gray-50"
-              >
-                Cancel
-              </button>
               <button className="flex-1 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                 Add Product
               </button>

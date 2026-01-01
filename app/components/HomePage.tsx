@@ -1,13 +1,15 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { ProductCard } from './ProductCard';
-import { products, bundles, categories } from '../data/products';
+import { products as staticProducts, bundles, categories } from '../data/products';
 import { Product } from '../data/products';
 import { ArrowRight, Zap, Shield, Clock, Headphones, Star, CheckCircle, Gift, Users, Trophy, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 interface HomePageProps {
-  onAddToCart: (product: Product) => void;
+  initialProducts?: Product[];
 }
 
 const fadeInUp = {
@@ -24,9 +26,18 @@ const staggerContainer = {
   }
 };
 
-export function HomePage({ onAddToCart }: HomePageProps) {
-  const featuredProducts = products.slice(0, 6);
-  const flashSaleProducts = products.filter(p => p.originalPrice && p.originalPrice > p.price).slice(0, 4);
+export function HomePage({ initialProducts = [] }: HomePageProps) {
+  // Use dynamic products if available, otherwise fall back to static data (mostly for dev/demo if DB empty)
+  const displayProducts = initialProducts.length > 0 ? initialProducts : staticProducts;
+
+  const featuredProducts = displayProducts.slice(0, 6);
+  // Simple heuristic for flash sale if no explicit field exists, or use existing logic if compatible
+  const flashSaleProducts = displayProducts.filter(p => p.originalPrice && p.originalPrice > p.price).slice(0, 4);
+
+  const onAddToCart = (product: Product) => {
+    console.log("Add to cart (Client Side):", product);
+    // TODO: Implement actual cart logic (Context or State)
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
