@@ -133,7 +133,7 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Sidebar */}
       <aside className={`fixed left-0 top-0 h-full bg-white border-r transition-all duration-300 z-30 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
         <div className="h-full flex flex-col">
@@ -371,7 +371,7 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
                     <input
                       type="text"
                       placeholder="Search products..."
-                      className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                     />
                   </div>
                 </div>
@@ -700,7 +700,7 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
                     <input
                       type="text"
                       defaultValue="DigitalAssets"
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                     />
                   </div>
                   <div>
@@ -708,7 +708,7 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
                     <input
                       type="email"
                       defaultValue="support@digitalassets.com"
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                     />
                   </div>
                   <div>
@@ -716,7 +716,7 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
                     <input
                       type="tel"
                       defaultValue="+880 1XXX-XXXXXX"
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                     />
                   </div>
                 </div>
