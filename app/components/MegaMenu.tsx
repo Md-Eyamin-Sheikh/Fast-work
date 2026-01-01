@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -6,20 +7,26 @@ import { categories } from '../data/products';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 interface MegaMenuProps {
   cartCount: number;
-  isAuthenticated?: boolean;
+  // Deprecated: Auth is now handled via AuthContext, keeping for backward compat temporarily
+  isAuthenticated?: boolean; 
   onLogout?: () => void;
 }
 
-export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps) {
+export function MegaMenu({ cartCount }: MegaMenuProps) {
+  const { user, signOut } = useAuth();
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+
+  // Use context state
+  const isAuthenticated = !!user;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,39 +40,25 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
     e.preventDefault();
   };
 
+  const handleLogout = async () => {
+    await signOut();
+    setMobileMenuOpen(false);
+  };
+
   return (
     <>
-      {/* Top Banner */}
-      {/* <div className="bg-gradient-to-r from-[#4F46E5] via-[#3B82F6] to-[#7C3AED] text-white py-2.5 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 text-xs md:text-sm font-medium"
-          >
-            <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
-            <span>Flash Sale: Get <span className="font-bold text-yellow-300">30% OFF</span> on Premium Bundles!</span>
-          </motion.div>
-          <div className="hidden md:flex items-center gap-6 text-xs font-medium text-blue-100">
-            <Link href="/track-order" className="hover:text-white transition-colors">Track Order</Link>
-            <Link href="/help" className="hover:text-white transition-colors">Help Center</Link>
-          </div>
-        </div>
-      </div> */}
-
       {/* Main Header */}
       <header className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-24"> {/* Increased height for bigger logo */}
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-16 h-16 bg-white rounded-full flex items-center justify-center p-1.5 border border-indigo-100 shadow-sm group-hover:shadow-md transition-all duration-300">
+            <Link href="/" className="flex items-center gap-4 group">
+              <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center p-2 border border-indigo-100 shadow-sm group-hover:shadow-md transition-all duration-300">
                  <img src="/logo.png" alt="Victorians Academy" className="w-full h-full object-contain" />
               </div>
               <div className="hidden md:block">
-                <h1 className="font-bold text-xl text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors">Victorians Academy</h1>
-                <p className="text-[10px] font-semibold text-blue-600 uppercase tracking-widest">Trusted Digital Agency</p>
+                <h1 className="font-bold text-2xl text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors">Victorians Academy</h1>
+                <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest">Trusted Digital Agency</p>
               </div>
             </Link>
 
@@ -182,9 +175,9 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
               {/* User Profile Dropdown */}
               <div className="relative group ml-1 z-50">
                 <button className="flex items-center gap-2 p-1 rounded-full border border-gray-200 hover:border-blue-300 transition-all focus:outline-none">
-                  <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors overflow-hidden">
-                    {isAuthenticated ? (
-                       <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" className="w-full h-full object-cover" />
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors overflow-hidden">
+                    {isAuthenticated && user?.photoURL ? (
+                       <img src={user.photoURL} alt={user.displayName || "User"} className="w-full h-full object-cover" />
                     ) : (
                        <User className="w-5 h-5" />
                     )}
@@ -200,12 +193,16 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
                       <>
                         <div className="p-4 bg-linear-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden">
-                              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" className="w-full h-full object-cover" />
+                            <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden bg-gray-200 flex items-center justify-center">
+                              {user?.photoURL ? (
+                                <img src={user.photoURL} alt={user.displayName || "User"} className="w-full h-full object-cover" />
+                              ) : (
+                                <span className="text-lg font-bold text-gray-500">{user?.displayName?.charAt(0) || user?.email?.charAt(0) || "U"}</span>
+                              )}
                             </div>
-                            <div>
-                              <h4 className="font-bold text-gray-900 text-sm">Admin User</h4>
-                              <p className="text-xs text-gray-500 font-medium">admin@digitalassets.com</p>
+                            <div className="overflow-hidden">
+                              <h4 className="font-bold text-gray-900 text-sm truncate">{user?.displayName || "User"}</h4>
+                              <p className="text-xs text-gray-500 font-medium truncate">{user?.email}</p>
                             </div>
                           </div>
                         </div>
@@ -233,7 +230,7 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
 
                         <div className="p-2 border-t border-gray-50">
                           <button 
-                            onClick={onLogout}
+                            onClick={handleLogout}
                             className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors"
                           >
                              <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-500">
@@ -377,7 +374,7 @@ export function MegaMenu({ cartCount, isAuthenticated, onLogout }: MegaMenuProps
                 <div className="pt-6 border-t border-gray-100">
                     {isAuthenticated ? (
                        <button 
-                         onClick={onLogout}
+                         onClick={handleLogout}
                          className="w-full flex items-center justify-center gap-2 py-3 border-2 border-red-100 text-red-600 rounded-xl font-bold hover:bg-red-50 transition-colors"
                        >
                          <LogOut className="w-5 h-5" />
