@@ -1,36 +1,31 @@
+
 import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongodb';
-import { Product } from '@/app/data/products';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const client = await clientPromise;
-    const db = client.db("my-app"); // Using default DB name from URI or "my-app"
-    const products = await db.collection("products").find({}).toArray();
+    const { searchParams } = new URL(request.url);
+    const category = searchParams.get('category');
+    const id = searchParams.get('id');
     
-    return NextResponse.json(products);
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
-  }
-}
+    const client = await clientPromise;
+    const db = client.db('test');
+    const collection = db.collection('products');
 
-export async function POST(request: Request) {
-  try {
-    const client = await clientPromise;
-    const db = client.db("my-app");
-    const body: Product = await request.json();
-    
-    // Basic validation could go here
-    if (!body.name || !body.price) {
-        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    let query: any = {};
+
+    if (id) {
+        query.id = id;
+    }
+    else if (category) {
+      query.category = category;
     }
 
-    const result = await db.collection("products").insertOne(body);
-    
-    return NextResponse.json({ success: true, message: 'Product added successfully', id: result.insertedId });
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: 'Failed to add product' }, { status: 500 });
+    const products = await collection.find(query).toArray();
+
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error("Database Error:", error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
