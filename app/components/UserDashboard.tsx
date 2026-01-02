@@ -93,7 +93,7 @@ export function UserDashboard({ onLogout }: UserDashboardProps) {
         </Link>
 
         {/* Welcome Section */}
-        <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white mb-8 shadow-lg relative overflow-hidden group">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white mb-8 shadow-lg relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
           <div className="relative z-10">
             <h1 className="text-3xl font-bold mb-2 tracking-tight">Welcome back, {mockUser.name}!</h1>
@@ -223,7 +223,7 @@ export function UserDashboard({ onLogout }: UserDashboardProps) {
                             )}
                           </>
                         ) : (
-                          <Badge className="bg-purple-100 text-purple-700 border-purple-300 px-3 py-1">
+                          <Badge className="bg-indigo-100 text-indigo-700 border-indigo-300 px-3 py-1">
                             <CheckCircle className="w-4 h-4 mr-1.5" />
                             Lifetime License
                           </Badge>
@@ -304,7 +304,7 @@ export function UserDashboard({ onLogout }: UserDashboardProps) {
                     {product.licenseKey && (
                       <div className="bg-gray-50/80 rounded-xl p-5 border border-gray-100 shadow-sm">
                         <h4 className="font-bold text-gray-900 flex items-center gap-2 mb-4 text-sm uppercase tracking-wider">
-                           <div className="w-6 h-6 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
+                           <div className="w-6 h-6 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600">
                                 <Key className="w-3.5 h-3.5" />
                            </div>
                            License Key

@@ -24,7 +24,7 @@ export function BundlesPage({ onViewProduct, onAddToCart }: BundlesPageProps) {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">🔥 Bundle Offers</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">🔥 Bundle Offers</h1>
           <p className="text-xl text-gray-600">
             Save more when you buy together! Special discounts on curated product bundles.
           </p>
@@ -55,11 +55,11 @@ export function BundlesPage({ onViewProduct, onAddToCart }: BundlesPageProps) {
 
                 {/* Bundle Content */}
                 <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">{bundle.name}</h2>
+                  <h2 className="text-2xl font-bold mb-4 text-gray-900">{bundle.name}</h2>
 
                   {/* Included Products */}
                   <div className="mb-6">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <h3 className="font-semibold mb-3 flex items-center gap-2 text-gray-900">
                       <Check className="w-5 h-5 text-green-600" />
                       Included Products:
                     </h3>
@@ -69,7 +69,7 @@ export function BundlesPage({ onViewProduct, onAddToCart }: BundlesPageProps) {
                           <Check className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
                           <Link
                             href={`/products/${product.id}`}
-                            className="text-left hover:text-blue-600 hover:underline"
+                            className="text-gray-700 text-left hover:text-blue-600 hover:underline"
                             onClick={(e) => {
                               if (onViewProduct) {
                                 // optional: prevent default if we want to handle navigation manually
