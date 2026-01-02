@@ -30,6 +30,7 @@ import {
 import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import { useRouter } from 'next/navigation';
+import { AddProductForm } from './admin/AddProductForm';
 
 type AdminView = 'dashboard' | 'products' | 'orders' | 'users' | 'tickets' | 'settings';
 
@@ -784,24 +785,7 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
 
       {/* Add Product Modal */}
       {showAddProductModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b flex items-center justify-between sticky top-0 bg-white">
-              <h3 className="text-xl font-semibold">Add New Product</h3>
-              <button
-                onClick={() => setShowAddProductModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="p-6 space-y-4">
-              <button className="flex-1 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Add Product
-              </button>
-            </div>
-          </div>
-        </div>
+        <AddProductForm onClose={() => setShowAddProductModal(false)} />
       )}
     </div>
   );
