@@ -38,7 +38,7 @@ export function BundlesPage({ onViewProduct, onAddToCart }: BundlesPageProps) {
               .filter(Boolean) as typeof products;
 
             return (
-              <div key={bundle.id} className="bg-white rounded-xl overflow-hidden border-2 border-purple-200 hover:shadow-2xl transition-all">
+              <div key={bundle.id} className="bg-white rounded-xl overflow-hidden border-2 border-blue-200 hover:border-indigo-300 hover:shadow-2xl transition-all">
                 {/* Bundle Image */}
                 <div className="relative h-48">
                   <img
@@ -86,9 +86,9 @@ export function BundlesPage({ onViewProduct, onAddToCart }: BundlesPageProps) {
                   </div>
 
                   {/* Pricing */}
-                  <div className="mb-6 p-4 bg-linear-to-r from-purple-50 to-pink-50 rounded-lg">
+                  <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
                     <div className="flex items-baseline gap-2 mb-2">
-                      <span className="text-3xl font-bold text-purple-600">৳{bundle.price}</span>
+                      <span className="text-3xl font-bold text-blue-600">৳{bundle.price}</span>
                       <span className="text-lg text-gray-500 line-through">৳{bundle.originalPrice}</span>
                     </div>
                     <p className="text-sm text-green-600 font-semibold">
@@ -99,7 +99,7 @@ export function BundlesPage({ onViewProduct, onAddToCart }: BundlesPageProps) {
                   {/* Action Button */}
                   <button 
                     onClick={() => onAddToCart?.(bundle)}
-                    className="w-full py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-200"
                   >
                     <ShoppingCart className="w-5 h-5" />
                     Add Bundle to Cart
@@ -111,7 +111,7 @@ export function BundlesPage({ onViewProduct, onAddToCart }: BundlesPageProps) {
         </div>
 
         {/* Why Buy Bundles */}
-        <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-xl p-8 md:p-12 text-white">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 md:p-12 text-white shadow-2xl">
           <h2 className="text-3xl font-bold mb-6 text-center">Why Choose Our Bundles?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">

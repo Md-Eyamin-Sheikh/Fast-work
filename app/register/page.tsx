@@ -105,14 +105,14 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
              {/* Personal/Business Switch (Visual Only) */}
-             <div className="bg-gray-900/30 p-1 rounded-xl flex gap-1 mb-6">
+             {/* <div className="bg-gray-900/30 p-1 rounded-xl flex gap-1 mb-6">
                 <button type="button" className="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-white/10 text-white shadow-sm">
                     Personal
                 </button>
                 <button type="button" className="flex-1 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white transition-colors">
                     Business
                 </button>
-            </div>
+            </div> */}
 
             <div className="space-y-1">
               <label className="text-xs font-medium text-indigo-200 ml-1 uppercase tracking-wider">Full Name</label>

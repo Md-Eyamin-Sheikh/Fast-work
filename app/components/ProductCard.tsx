@@ -25,7 +25,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
       case 'Key Code':
         return 'bg-blue-100 text-blue-700 border-blue-300';
       case 'Email Invite':
-        return 'bg-purple-100 text-purple-700 border-purple-300';
+        return 'bg-indigo-100 text-indigo-700 border-indigo-300';
       default:
         return 'bg-gray-100 text-gray-700 border-gray-300';
     }

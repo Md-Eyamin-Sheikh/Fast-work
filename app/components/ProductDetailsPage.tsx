@@ -181,15 +181,15 @@ export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDe
             </div>
 
             {/* Social Share */}
-            <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
+            {/* <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
                 <span className="text-xs font-bold bg-gray-800 text-white px-3 py-1 rounded-full">ALL ({product.reviews + 20})</span>
-                <button className="flex items-center gap-1 text-xs text-gray-600 hover:text-blue-600 font-medium border px-3 py-1 rounded-full">
-                    <Facebook className="w-3 h-3" /> FACEBOOK
-                </button>
+                // {/* <button className="flex items-center gap-1 text-xs text-gray-600 hover:text-blue-600 font-medium border px-3 py-1 rounded-full">
+                //     <Facebook className="w-3 h-3" /> FACEBOOK
+                // </button> 
                  <button className="flex items-center gap-1 text-xs text-gray-600 hover:text-green-600 font-medium border px-3 py-1 rounded-full">
                     <Shield className="w-3 h-3" /> TRUSTPILOT
                 </button>
-            </div>
+            </div> */}
 
             </div>
           </div>

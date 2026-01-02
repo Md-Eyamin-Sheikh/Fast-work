@@ -3,23 +3,28 @@ import { MegaMenu } from "./components/MegaMenu";
 import { Product } from "./data/products";
 
 // Helper to fetch products
+import clientPromise from '@/app/lib/mongodb';
+
 async function getProducts(): Promise<Product[]> {
-  // In development, we can fetch directly or use an absolute URL. 
-  // For Server Components in Next.js, it's often better to call the DB directly if possible, 
-  // but to strictly follow the "API" architectural step requested, we'll fetch from the API.
-  // Note: Fetching from own API in Server Components requires absolute URL.
-  // Ideally, valid data fetching logic should be separated from API routes for reuse.
-  // For this task, assuming we are running on localhost:3000 or similar.
-  // However, a more robust way for Server Components is to just use the DB logic directly.
-  // Let's settle on fetching from the local API for strict adherence to the requested flow.
   try {
-    const res = await fetch('http://localhost:3000/api/products', { cache: 'no-store' }); // Ensure fresh data
-    if (!res.ok) {
-        throw new Error('Failed to fetch data');
-    }
-    return res.json();
+    const client = await clientPromise;
+    const db = client.db('test');
+    const collection = db.collection('products');
+    
+    // Fetch all products, convert _id to string if needed, and cast to Product[]
+    // Note: In a real app we might want to limit fields or limit count
+    const products = await collection.find({}).toArray();
+    
+    // Serialize _id to string for Client Components to handle easily if strictly typed, 
+    // or just pass as is if the type allows. simpler to map.
+    return products.map(product => ({
+      ...product,
+      _id: product._id.toString(),
+      id: product.id || product._id.toString()
+    })) as unknown as Product[];
+    
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error fetching products from DB:", error);
     return [];
   }
 }

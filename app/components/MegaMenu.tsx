@@ -53,7 +53,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
           <div className="flex items-center justify-between h-24"> {/* Increased height for bigger logo */}
             {/* Logo */}
             <Link href="/" className="flex items-center gap-4 group">
-              <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center p-2 border border-indigo-100 shadow-sm group-hover:shadow-md transition-all duration-300">
+              <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center p-2 border border-blue-100 shadow-sm group-hover:shadow-md transition-all duration-300">
                  <img src="/logo.png" alt="Victorians Academy" className="w-full h-full object-contain" />
               </div>
               <div className="hidden md:block">
@@ -125,8 +125,8 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                 href="/bundles"
                 className={`text-sm font-semibold transition-colors px-4 py-2 rounded-full ${
                   pathname === '/bundles' 
-                    ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-200' 
-                    : 'text-gray-700 hover:text-orange-600 hover:bg-orange-50'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-200' 
+                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >
                 Bundle Offers 🔥
@@ -208,24 +208,26 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                         </div>
 
                         <div className="p-2">
+{user?.email === 'admin123@gmail.com' && (
                           <Link href="/admin" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
                             <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                                 <Menu className="w-4 h-4" />
                             </div>
                             Dashboard
                           </Link>
-                          <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
+                          )}
+                          {/* <Link href="/profile" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
                              <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">
                                 <User className="w-4 h-4" />
                             </div>
                             My Profile
-                          </Link>
-                          <Link href="/orders" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
+                          </Link> */}
+                          {/* <Link href="/orders" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
                              <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-600">
                                 <ShoppingBag className="w-4 h-4" />
                             </div>
                             My Orders
-                          </Link>
+                          </Link> */}
                         </div>
 
                         <div className="p-2 border-t border-gray-50">

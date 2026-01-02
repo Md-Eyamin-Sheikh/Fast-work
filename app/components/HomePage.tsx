@@ -43,7 +43,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative bg-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
         
         <div className="max-w-7xl mx-auto px-4 pt-20 pb-24 md:pt-32 md:pb-32 relative">
@@ -53,7 +53,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
             variants={staggerContainer}
             className="max-w-4xl mx-auto text-center"
           >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-6">
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-6 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
@@ -62,7 +62,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
             </motion.div>
             
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-gray-900 leading-tight">
-              Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Digital Assets</span> <br />
+              Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700">Digital Assets</span> <br />
               At Unbeatable Prices
             </motion.h1>
             
@@ -73,32 +73,32 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/products"
-                className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 hover:shadow-xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2 hover:scale-105 duration-300"
               >
                 Start Exploring
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 href="/bundles"
-                className="w-full sm:w-auto px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-xl font-semibold hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 bg-white text-indigo-700 border-2 border-indigo-200 rounded-xl font-semibold hover:bg-indigo-50 hover:border-indigo-300 transition-all flex items-center justify-center gap-2 hover:scale-105 duration-300"
               >
                 View Bundles
-                <Gift className="w-5 h-5 text-purple-600" />
+                <Gift className="w-5 h-5 text-indigo-600" />
               </Link>
             </motion.div>
 
             {/* Trusted By / Stats Preview */}
-            <motion.div variants={fadeInUp} className="mt-16 pt-8 border-t border-gray-200/60 flex flex-wrap justify-center gap-8 md:gap-16 text-gray-500 font-medium">
+            <motion.div variants={fadeInUp} className="mt-16 pt-8 border-t border-blue-100/60 flex flex-wrap justify-center gap-8 md:gap-16 text-gray-500 font-medium">
               <div className="flex items-center gap-2">
-                 <CheckCircle className="w-5 h-5 text-green-500" />
+                 <CheckCircle className="w-5 h-5 text-blue-500" />
                  <span>10,000+ Happy Customers</span>
               </div>
               <div className="flex items-center gap-2">
-                 <CheckCircle className="w-5 h-5 text-green-500" />
+                 <CheckCircle className="w-5 h-5 text-blue-500" />
                  <span>Instant Delivery</span>
               </div>
               <div className="flex items-center gap-2">
-                 <CheckCircle className="w-5 h-5 text-green-500" />
+                 <CheckCircle className="w-5 h-5 text-blue-500" />
                  <span>24/7 Support</span>
               </div>
             </motion.div>
@@ -125,15 +125,15 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
               <p className="text-gray-500 text-sm">Orders Completed</p>
             </div>
             <div className="text-center group p-4 rounded-2xl hover:bg-gray-50 transition-colors">
-              <div className="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Star className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Star className="w-6 h-6 text-indigo-600" />
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-1">4.9/5</h3>
               <p className="text-gray-500 text-sm">Customer Rating</p>
             </div>
             <div className="text-center group p-4 rounded-2xl hover:bg-gray-50 transition-colors">
-              <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Trophy className="w-6 h-6 text-orange-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Trophy className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-1">Top #1</h3>
               <p className="text-gray-500 text-sm">In Bangladesh</p>
@@ -221,7 +221,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {/* Connecting Line (Desktop) */}
-            <div className="hidden md:block absolute top-12 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200 border-t-2 border-dashed border-gray-200" />
+            <div className="hidden md:block absolute top-12 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-blue-200 via-indigo-200 to-blue-200 border-t-2 border-dashed border-gray-200" />
             
             {[
               { 
@@ -234,13 +234,13 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
                 icon: <CreditCard className="w-6 h-6" />, 
                 title: "2. Secure Payment", 
                 desc: "Pay securely using Bkash, Nagad, or Rocket. Your transaction is 100% safe.",
-                color: "bg-purple-100 text-purple-600"
+                color: "bg-indigo-100 text-indigo-600"
               },
               { 
                 icon: <Zap className="w-6 h-6" />, 
                 title: "3. Instant Access", 
                 desc: "Receive your credentials or license key instantly via email or dashboard.",
-                color: "bg-green-100 text-green-600"
+                color: "bg-blue-100 text-blue-600"
               }
             ].map((step, idx) => (
               <div key={idx} className="relative bg-white p-8 rounded-2xl text-center hover:shadow-xl transition-shadow border border-gray-100 z-10">
@@ -296,9 +296,9 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
       {/* Bundle Offers */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-gradient-to-br from-indigo-900 to-blue-900 rounded-3xl p-8 md:p-16 text-white overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-[150px] opacity-20" />
-            <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full blur-[120px] opacity-20" />
+          <div className="bg-gradient-to-br from-blue-700 via-indigo-700 to-indigo-800 rounded-3xl p-8 md:p-16 text-white overflow-hidden relative shadow-2xl">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-[150px] opacity-20" />
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-400 rounded-full blur-[120px] opacity-20" />
             
             <div className="relative z-10 mb-12 text-center">
               <h2 className="text-3xl md:text-5xl font-bold mb-6">Unbeatable Bundle Offers 🎁</h2>
