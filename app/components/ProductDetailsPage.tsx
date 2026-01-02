@@ -117,24 +117,28 @@ export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDe
 
               {/* Short Description */}
               <div className="mb-8">
-                 <p className="text-gray-700 font-medium mb-3">{product.shortDescription}</p>
-                 <ul className="space-y-2">
-                    {product.highlights.map((highlight, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-gray-600 text-sm">
-                            <span className="mt-1.5 w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0" />
-                            {highlight}
-                        </li>
-                    ))}
-                 </ul>
+                 {product.shortDescription && <p className="text-gray-700 font-medium mb-3">{product.shortDescription}</p>}
+                 {product.highlights && product.highlights.length > 0 && (
+                   <ul className="space-y-2">
+                     {product.highlights.map((highlight, idx) => (
+                         <li key={idx} className="flex items-start gap-2 text-gray-600 text-sm">
+                             <span className="mt-1.5 w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0" />
+                             {highlight}
+                         </li>
+                     ))}
+                  </ul>
+                 )}
               </div>
 
               {/* Stats Banners */}
-              <div className="space-y-3 mb-8">
-                <div className="bg-green-50 border border-green-100 rounded-lg p-3 flex items-center gap-3 text-green-800 text-sm">
-                    <Flame className="w-5 h-5 text-green-600 fill-green-100" />
-                    <span className="font-semibold">{product.soldLast23Hours} Items sold in last 23 hours</span>
+              {product.soldLast23Hours && (
+                <div className="space-y-3 mb-8">
+                  <div className="bg-green-50 border border-green-100 rounded-lg p-3 flex items-center gap-3 text-green-800 text-sm">
+                      <Flame className="w-5 h-5 text-green-600 fill-green-100" />
+                      <span className="font-semibold">{product.soldLast23Hours} Items sold in last 23 hours</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -175,10 +179,12 @@ export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDe
               </div>
 
              {/* Watching Banner */}
-             <div className="bg-green-50 border border-green-100 rounded-lg p-3 flex items-center gap-3 text-green-800 text-sm mb-8">
-                <Eye className="w-5 h-5 text-green-600" />
-                <span className="font-semibold">{product.peopleWatching} People watching this product now!</span>
-            </div>
+             {product.peopleWatching && (
+               <div className="bg-green-50 border border-green-100 rounded-lg p-3 flex items-center gap-3 text-green-800 text-sm mb-8">
+                 <Eye className="w-5 h-5 text-green-600" />
+                 <span className="font-semibold">{product.peopleWatching} People watching this product now!</span>
+               </div>
+             )}
 
             {/* Social Share */}
             {/* <div className="flex items-center gap-4 pt-6 border-t border-gray-100">

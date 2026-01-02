@@ -62,76 +62,26 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-8">
-              {Object.entries(categories).map(([key, category]) => (
-                <div
-                  key={key}
-                  className="relative group"
-                  onMouseEnter={() => setHoveredCategory(key)}
-                  onMouseLeave={() => setHoveredCategory(null)}
-                >
-                  <button className="flex items-center gap-1.5 py-2 text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">
-                    {category.name}
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${hoveredCategory === key ? 'rotate-180' : ''}`} />
-                  </button>
 
-                  {/* Mega Menu Dropdown */}
-                  <AnimatePresence>
-                    {hoveredCategory === key && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-72"
-                      >
-                        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden ring-1 ring-black/5">
-                          <div className="p-1">
-                            <h3 className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50/50">
-                              Top {category.name}
-                            </h3>
-                            <div className="py-2">
-                              {category.items.map((item) => (
-                                <Link
-                                  key={item}
-                                  href={`/products?category=${key}&subcategory=${item.toLowerCase().replace(' ', '-')}`}
-                                  onClick={() => setHoveredCategory(null)}
-                                  className="block w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors flex items-center justify-between group/item"
-                                >
-                                  {item}
-                                  <ChevronDown className="-rotate-90 w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity text-blue-400" />
-                                </Link>
-                              ))}
-                            </div>
-                            <div className="p-2 border-t border-gray-50">
-                               <Link
-                                 href={`/products?category=${key}`}
-                                 onClick={() => setHoveredCategory(null)}
-                                 className="flex items-center justify-center gap-2 w-full py-2 text-xs font-bold text-blue-600 bg-blue-50/50 hover:bg-blue-50 rounded-lg transition-colors"
-                               >
-                                 View All
-                                 <ChevronDown className="-rotate-90 w-3 h-3" />
-                               </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-              <Link
-                href="/bundles"
-                className={`text-sm font-semibold transition-colors px-4 py-2 rounded-full ${
-                  pathname === '/bundles' 
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-200' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Bundle Offers 🔥
+            {/* Desktop Navigation - Simple Links */}
+            <nav className="hidden lg:flex items-center gap-1">
+              <Link href="/" className={`text-sm font-semibold transition-colors px-4 py-2 rounded-full ${pathname === '/' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}>
+                Home
+              </Link>
+              <Link href="/products" className={`text-sm font-semibold transition-colors px-4 py-2 rounded-full ${pathname === '/products' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}>
+                Product
+              </Link>
+              <Link href="/about" className={`text-sm font-semibold transition-colors px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}>
+                About Us
+              </Link>
+              <Link href="/contact" className={`text-sm font-semibold transition-colors px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}>
+                Contact
+              </Link>
+              <Link href="/blog" className={`text-sm font-semibold transition-colors px-4 py-2 rounded-full ${pathname === '/blog' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'}`}>
+                Blog
               </Link>
             </nav>
+
 
             {/* Right Actions */}
             <div className="flex items-center gap-3">
@@ -169,7 +119,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                 className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 rounded-full border border-emerald-100 hover:shadow-sm transition-all"
               >
                 <Wallet className="w-4 h-4" />
-                <span className="text-sm font-bold">৳2,500</span>
+                <span className="text-sm font-bold">৳00</span>
               </Link>
 
               {/* User Profile Dropdown */}
@@ -338,38 +288,46 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                   </div>
                 )}
 
-                <nav className="space-y-6">
-                  {Object.entries(categories).map(([key, category]) => (
-                    <div key={key}>
-                      <h3 className="font-bold text-gray-900 text-lg mb-3 flex items-center gap-2">
-                        {category.name}
-                        <div className="h-px bg-gray-100 flex-1" />
-                      </h3>
-                      <ul className="space-y-2 pl-2 border-l-2 border-gray-100 ml-1">
-                        {category.items.map((item) => (
-                          <li key={item}>
-                            <Link
-                              href={`/products?category=${key}`}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className="block py-2 px-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium text-sm"
-                            >
-                              {item}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
+                <nav className="space-y-2">
                   <Link
-                    href="/bundles"
+                    href="/"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block p-4 bg-linear-to-r from-orange-50 to-pink-50 border border-orange-100 rounded-xl"
+                    className={`flex items-center justify-between p-4 rounded-xl transition-colors ${pathname === '/' ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-gray-50 text-gray-700'}`}
                   >
-                    <div className="flex items-center justify-between">
-                        <span className="font-bold text-gray-900">Bundle Offers</span>
-                        <span className="text-xl">🔥</span>
-                    </div>
-                    <p className="text-sm text-gray-500 mt-1">Save up to 60% on premium packs</p>
+                    Home
+                    <ChevronDown className="-rotate-90 w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/products"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between p-4 rounded-xl transition-colors ${pathname === '/products' ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-gray-50 text-gray-700'}`}
+                  >
+                    Product
+                    <ChevronDown className="-rotate-90 w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/about"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between p-4 rounded-xl transition-colors ${pathname === '/about' ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-gray-50 text-gray-700'}`}
+                  >
+                    About Us
+                    <ChevronDown className="-rotate-90 w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between p-4 rounded-xl transition-colors ${pathname === '/contact' ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-gray-50 text-gray-700'}`}
+                  >
+                    Contact
+                    <ChevronDown className="-rotate-90 w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/blog"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between p-4 rounded-xl transition-colors ${pathname === '/blog' ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-gray-50 text-gray-700'}`}
+                  >
+                    Blog
+                    <ChevronDown className="-rotate-90 w-4 h-4" />
                   </Link>
                 </nav>
 

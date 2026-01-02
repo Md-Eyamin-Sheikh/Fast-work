@@ -75,7 +75,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
       {/* Content Section */}
       <div className="p-4">
-        <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">
           {product.name}
         </h3>
 
