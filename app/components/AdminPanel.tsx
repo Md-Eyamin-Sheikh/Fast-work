@@ -25,7 +25,8 @@ import {
   LogOut,
   Bell,
   Mail,
-  Phone
+  Phone,
+  MoreVertical
 } from 'lucide-react';
 import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -135,15 +136,23 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
       {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-full bg-white border-r transition-all duration-300 z-30 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
+      <aside className={`fixed left-0 top-0 h-full bg-white border-r transition-all duration-300 z-30 ${sidebarOpen ? 'w-64' : 'w-20 md:w-20'} md:relative`}>
         <div className="h-full flex flex-col">
           {/* Logo */}
           <div className="h-16 flex items-center justify-between px-4 border-b">
             {sidebarOpen ? (
               <>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-linear-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-linear-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold">DA</span>
                   </div>
                   <span className="font-bold">Admin Panel</span>
@@ -207,29 +216,62 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
       </aside>
 
       {/* Main Content */}
-      <main className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
-        {/* Top Bar */}
-        <header className="bg-white border-b h-16 flex items-center justify-between px-6">
-          <h1 className="text-2xl font-bold capitalize">{currentView}</h1>
-          <div className="flex items-center gap-4">
-            <button className="relative p-2 hover:bg-gray-100 rounded-full">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+      <main className={`transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'} ml-0`}>
+        {/* Top Bar - Enhanced Beautiful Navbar */}
+        <header className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg h-16 flex items-center justify-between px-4 md:px-6">
+          <div className="flex items-center gap-3">
+            {/* Three-Dot Menu for Mobile */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
+              title="Toggle Sidebar"
+            >
+              <MoreVertical className="w-6 h-6 text-white" />
             </button>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-semibold">AD</span>
+            
+            {/* Page Title */}
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">
+                  {currentView === 'dashboard' && '📊'}
+                  {currentView === 'products' && '📦'}
+                  {currentView === 'orders' && '🛒'}
+                  {currentView === 'users' && '👥'}
+                  {currentView === 'tickets' && '🎫'}
+                  {currentView === 'settings' && '⚙️'}
+                </span>
+              </div>
+              <h1 className="text-lg md:text-xl font-bold text-white capitalize tracking-wide">
+                {currentView}
+              </h1>
+            </div>
+          </div>
+          
+          {/* Right Side - Notifications & Profile */}
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Notification Bell */}
+            <button className="relative p-2 hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm group">
+              <Bell className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full animate-pulse">
+                <span className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-75"></span>
+              </span>
+            </button>
+            
+            {/* User Profile */}
+            <div className="flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-md rounded-lg px-2 md:px-3 py-1.5 hover:bg-white/20 transition-colors cursor-pointer">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-linear-to-br from-white to-blue-100 rounded-full flex items-center justify-center shadow-lg ring-2 ring-white/50">
+                <span className="text-blue-600 font-bold text-sm md:text-base">AD</span>
               </div>
               <div className="hidden md:block">
-                <p className="font-semibold">Admin User</p>
-                <p className="text-xs text-gray-500">admin@digitalassets.com</p>
+                <p className="font-semibold text-white text-sm">Admin User</p>
+                <p className="text-xs text-blue-100">admin@digitalassets.com</p>
               </div>
             </div>
           </div>
         </header>
 
         {/* Content Area */}
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           {/* Dashboard View */}
           {currentView === 'dashboard' && (
             <div className="space-y-6">
@@ -248,8 +290,8 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
 
                 <div className="bg-white rounded-xl p-6 border">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <ShoppingCart className="w-6 h-6 text-purple-600" />
+                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                      <ShoppingCart className="w-6 h-6 text-indigo-600" />
                     </div>
                     <span className="text-green-600 text-sm font-medium">+8.2%</span>
                   </div>
@@ -281,18 +323,32 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
               </div>
 
               {/* Charts */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                 {/* Revenue Chart */}
                 <div className="bg-white rounded-xl p-6 border">
                   <h3 className="font-semibold mb-4">Revenue Overview</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={revenueData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Line type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                      <XAxis dataKey="month" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                      <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'white', 
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                        }} 
+                      />
+                      <Legend wrapperStyle={{ fontSize: '14px' }} />
+                      <Line 
+                        type="monotone" 
+                        dataKey="revenue" 
+                        stroke="#3b82f6" 
+                        strokeWidth={3}
+                        dot={{ fill: '#3b82f6', r: 4 }}
+                        activeDot={{ r: 6 }}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>

@@ -1,28 +1,31 @@
-"use client";
+'use client';
 
-import React from 'react';
-import { AdminPanel } from '../components/AdminPanel';
-import { MegaMenu } from '../components/MegaMenu';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { AdminPanel } from '../components/AdminPanel';
 
-export default function AdminRoute() {
+export default function AdminPage() {
   const router = useRouter();
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/admin/logout', { method: 'POST' });
-      router.push('/admin/login');
-    } catch (error) {
-      console.error('Logout failed', error);
-      // Fallback redirect even if API fails
+  useEffect(() => {
+    const isAuthenticated = checkAuth();
+    
+    if (!isAuthenticated) {
       router.push('/admin/login');
     }
+  }, [router]);
+
+  const checkAuth = () => {
+    return true;
+  };
+
+  const handleLogout = () => {
+    router.push('/');
   };
 
   return (
-    <>
-     <MegaMenu cartCount={0} isAuthenticated={true} onLogout={handleLogout} />
-     <AdminPanel onLogout={handleLogout} />
-    </>
+    <div className="min-h-screen">
+      <AdminPanel onLogout={handleLogout} />
+    </div>
   );
 }
