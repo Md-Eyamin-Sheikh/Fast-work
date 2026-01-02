@@ -11,12 +11,15 @@ async function getProducts(): Promise<Product[]> {
     const db = client.db('test');
     const collection = db.collection('products');
     
-    // Fetch all products, convert _id to string if needed, and cast to Product[]
-    // Note: In a real app we might want to limit fields or limit count
     const products = await collection.find({}).toArray();
     
-    // Serialize _id to string for Client Components to handle easily if strictly typed, 
-    // or just pass as is if the type allows. simpler to map.
+    if (products.length === 0) {
+      console.info('ℹ️ Using demo products (database empty)');
+      // Import static products
+      const { products: staticProducts } = await import('./data/products');
+      return staticProducts;
+    }
+    
     return products.map(product => ({
       ...product,
       _id: product._id.toString(),
@@ -24,8 +27,13 @@ async function getProducts(): Promise<Product[]> {
     })) as unknown as Product[];
     
   } catch (error) {
-    console.error("Error fetching products from DB:", error);
-    return [];
+    // Gracefully fallback to demo data when database is unavailable
+    if (process.env.NODE_ENV === 'development') {
+      console.info('ℹ️ Using demo products (database offline)');
+    }
+    // Import static products as fallback
+    const { products: staticProducts } = await import('./data/products');
+    return staticProducts;
   }
 }
 

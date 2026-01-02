@@ -9,8 +9,10 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from './ui/utils';
 
+
 interface ProductsPageProps {
-  onAddToCart: (product: Product) => void;
+  onAddToCart?: (product: Product) => void; // Make it optional
+  initialProducts?: Product[]; // Optional prop for server-fetched products
 }
 
 const containerVariants = {
@@ -28,7 +30,7 @@ const itemVariants = {
   show: { opacity: 1, y: 0 }
 };
 
-export function ProductsPage({ onAddToCart }: ProductsPageProps) {
+export function ProductsPage({ onAddToCart, initialProducts }: ProductsPageProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   
@@ -40,6 +42,15 @@ export function ProductsPage({ onAddToCart }: ProductsPageProps) {
   const [selectedCategory, setSelectedCategory] = useState(categoryParam);
   const [sortBy, setSortBy] = useState(sortParam);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+  // Use initialProducts from props or fall back to imported static products
+  const allProducts = initialProducts || products;
+
+  // Provide default onAddToCart handler if not provided
+  const handleAddToCart = onAddToCart || ((product: Product) => {
+    console.log('Add to cart:', product.name);
+    // In a real app, this would dispatch to a cart context or state management
+  });
 
   // Update local state when URL params change
   useEffect(() => {
@@ -64,7 +75,7 @@ export function ProductsPage({ onAddToCart }: ProductsPageProps) {
     router.push(`/products?${params.toString()}`);
   };
 
-  const filteredProducts = products.filter(p => {
+  const filteredProducts = allProducts.filter(p => {
     // Category Filter
     if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
     
@@ -329,7 +340,7 @@ export function ProductsPage({ onAddToCart }: ProductsPageProps) {
                     <motion.div key={product.id} variants={itemVariants} layout>
                       <ProductCard
                         product={product}
-                        onAddToCart={onAddToCart}
+                        onAddToCart={handleAddToCart}
                       />
                     </motion.div>
                   ))}

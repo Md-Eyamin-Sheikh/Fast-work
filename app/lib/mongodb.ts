@@ -6,8 +6,9 @@ if (!process.env.MONGODB_URI) {
 
 const uri = process.env.MONGODB_URI;
 const options = {
-  connectTimeoutMS: 10000, // 10s connection timeout
-  socketTimeoutMS: 45000,  // 45s socket timeout
+  connectTimeoutMS: 3000,  // 3s connection timeout (reduced from 10s)
+  socketTimeoutMS: 5000,   // 5s socket timeout (reduced from 45s)
+  serverSelectionTimeoutMS: 3000, // 3s server selection timeout
 };
 
 let client;
