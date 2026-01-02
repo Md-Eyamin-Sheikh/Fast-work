@@ -46,65 +46,127 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
         
-        <div className="max-w-7xl mx-auto px-4 pt-20 pb-24 md:pt-32 md:pb-32 relative">
-          <motion.div 
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-6 shadow-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-              </span>
-              #1 Trusted Digital Marketplace in Bangladesh
-            </motion.div>
+        <div className="max-w-7xl mx-auto px-4 pt-16 pb-20 md:pt-24 md:pb-28 relative">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-gray-900 leading-tight">
-              Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700">Digital Assets</span> <br />
-              At Unbeatable Prices
-            </motion.h1>
-            
-            <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Get instant access to ChatGPT, Adobe Creative Cloud, Microsoft 365, and premium VPNs. 100% Genuine & Official.
-            </motion.p>
-            
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/products"
-                className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 hover:shadow-xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2 hover:scale-105 duration-300"
-              >
-                Start Exploring
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                href="/bundles"
-                className="w-full sm:w-auto px-8 py-4 bg-white text-indigo-700 border-2 border-indigo-200 rounded-xl font-semibold hover:bg-indigo-50 hover:border-indigo-300 transition-all flex items-center justify-center gap-2 hover:scale-105 duration-300"
-              >
-                View Bundles
-                <Gift className="w-5 h-5 text-indigo-600" />
-              </Link>
+            {/* Left: Content */}
+            <motion.div 
+              initial="initial"
+              animate="animate"
+              variants={staggerContainer}
+              className="text-center lg:text-left order-2 lg:order-1"
+            >
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-6 shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                #1 Trusted Digital Marketplace in Bangladesh
+              </motion.div>
+              
+              <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-gray-900 leading-tight">
+                Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700">Digital Assets</span>
+                <br className="hidden sm:block" /> At Unbeatable Prices
+              </motion.h1>
+              
+              <motion.p variants={fadeInUp} className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                Get instant access to ChatGPT, Adobe Creative Cloud, Microsoft 365, and premium VPNs. 100% Genuine & Official.
+              </motion.p>
+              
+              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-8">
+                <Link
+                  href="/products"
+                  className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 hover:shadow-xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2 hover:scale-105 duration-300"
+                >
+                  Start Exploring
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link
+                  href="/bundles"
+                  className="w-full sm:w-auto px-8 py-4 bg-white text-indigo-700 border-2 border-indigo-200 rounded-xl font-semibold hover:bg-indigo-50 hover:border-indigo-300 transition-all flex items-center justify-center gap-2 hover:scale-105 duration-300"
+                >
+                  View Bundles
+                  <Gift className="w-5 h-5 text-indigo-600" />
+                </Link>
+              </motion.div>
+
+              {/* Trust Badges */}
+              <motion.div variants={fadeInUp} className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                   <CheckCircle className="w-5 h-5 text-blue-500" />
+                   <span className="font-medium">10,000+ Customers</span>
+                </div>
+                <div className="flex items-center gap-2">
+                   <CheckCircle className="w-5 h-5 text-blue-500" />
+                   <span className="font-medium">Instant Delivery</span>
+                </div>
+                <div className="flex items-center gap-2">
+                   <CheckCircle className="w-5 h-5 text-blue-500" />
+                   <span className="font-medium">24/7 Support</span>
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* Trusted By / Stats Preview */}
-            <motion.div variants={fadeInUp} className="mt-16 pt-8 border-t border-blue-100/60 flex flex-wrap justify-center gap-8 md:gap-16 text-gray-500 font-medium">
-              <div className="flex items-center gap-2">
-                 <CheckCircle className="w-5 h-5 text-blue-500" />
-                 <span>10,000+ Happy Customers</span>
-              </div>
-              <div className="flex items-center gap-2">
-                 <CheckCircle className="w-5 h-5 text-blue-500" />
-                 <span>Instant Delivery</span>
-              </div>
-              <div className="flex items-center gap-2">
-                 <CheckCircle className="w-5 h-5 text-blue-500" />
-                 <span>24/7 Support</span>
+            {/* Right: Hero Image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, x: 50 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="relative order-1 lg:order-2"
+            >
+              <div className="relative">
+                {/* Animated glow effect behind image */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-3xl blur-3xl opacity-20 animate-pulse"></div>
+                
+                {/* Main image container */}
+                <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-white/50 backdrop-blur-sm transform hover:scale-105 transition-all duration-500">
+                  <img
+                    src="/hero-digital-transformation.jpg"
+                    alt="Digital Transformation - Premium Digital Assets"
+                    className="w-full h-auto object-cover"
+                  />
+                  
+                  {/* Gradient overlay for better blend */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent"></div>
+                </div>
+
+                {/* Floating badge - Hidden on mobile */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1 }}
+                  className="hidden lg:block absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center animate-pulse">
+                      <Zap className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-gray-900">42+</div>
+                      <div className="text-sm text-gray-600">Premium Products</div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Top right floating badge */}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 1.2 }}
+                  className="hidden lg:block absolute -top-4 -right-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl px-4 py-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">⚡</span>
+                    <span className="font-bold text-sm">Instant Access</span>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
-          </motion.div>
+
+          </div>
         </div>
       </section>
+      
 
       {/* Stats Section */}
       <section className="bg-white py-12 border-b border-gray-100">
