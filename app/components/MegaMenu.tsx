@@ -50,15 +50,20 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
       {/* Main Header */}
       <header className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-24"> {/* Increased height for bigger logo */}
+          <div className="flex items-center justify-between h-20 md:h-24"> {/* Reduced mobile height */}
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-4 group">
-              <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center p-2 border border-blue-100 shadow-sm group-hover:shadow-md transition-all duration-300">
-                 <img src="/logo.png" alt="Victorians Academy" className="w-full h-full object-contain" />
+            <Link href="/" className="flex items-center gap-2 md:gap-4 group">
+              <div className="relative w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center p-2 border border-blue-100 shadow-sm group-hover:shadow-md transition-all duration-300 shrink-0">
+                 <img src="/logo.png" alt="Victorians Academy" className="object-contain" />
               </div>
-              <div className="hidden md:block">
-                <h1 className="font-bold text-2xl text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors">Victorians Academy</h1>
-                <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest">Trusted Digital Agency</p>
+              <div className="flex flex-col">
+                <h1 className="font-bold text-lg md:text-2xl text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors leading-tight">
+                  <span className="md:hidden">Victorians</span>
+                  <span className="hidden md:inline">Victorians Academy</span>
+                </h1>
+                <p className="text-[10px] md:text-xs font-semibold text-blue-600 uppercase tracking-wider md:tracking-widest leading-tight">
+                  Trusted Digital Agency
+                </p>
               </div>
             </Link>
 
@@ -84,11 +89,11 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
 
 
             {/* Right Actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               {/* Search Toggle */}
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className={`p-2.5 rounded-full transition-all ${searchOpen ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-600'}`}
+                className={`p-2 md:p-2.5 rounded-full transition-all ${searchOpen ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-600'}`}
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -96,7 +101,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
               {/* Cart */}
               <Link
                 href="/cart"
-                className="relative p-2.5 hover:bg-gray-100 rounded-full text-gray-600 transition-colors group"
+                className="relative p-2 md:p-2.5 hover:bg-gray-100 rounded-full text-gray-600 transition-colors group"
               >
                 <ShoppingCart className="w-5 h-5 group-hover:text-blue-600 transition-colors" />
                 <AnimatePresence>
@@ -113,10 +118,10 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                 </AnimatePresence>
               </Link>
 
-              {/* Wallet - Desktop */}
+              {/* Wallet - Desktop & Tablet */}
               <Link
                 href="/dashboard"
-                className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 rounded-full border border-emerald-100 hover:shadow-sm transition-all"
+                className="hidden sm:flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 rounded-full border border-emerald-100 hover:shadow-sm transition-all"
               >
                 <Wallet className="w-4 h-4" />
                 <span className="text-sm font-bold">৳00</span>
