@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { DeleteConfirmModal } from './DeleteConfirmModal';
 import { products as staticProducts } from '@/app/data/products';
 
+// Inline SVG placeholder for broken images
+const PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Ctext fill='%239ca3af' font-family='system-ui, sans-serif' font-size='24' font-weight='600' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3ENo Image%3C/text%3E%3C/svg%3E";
+
 export function AllProducts() {
   const [products, setProducts] = useState(staticProducts);
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,7 +74,7 @@ export function AllProducts() {
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 onError={(e) => {
-                  e.currentTarget.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                  e.currentTarget.src = PLACEHOLDER_IMAGE;
                 }}
               />
               

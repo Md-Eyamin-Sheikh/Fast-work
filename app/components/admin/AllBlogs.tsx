@@ -22,6 +22,9 @@ interface Blog {
   likes: number;
 }
 
+// Inline SVG placeholder for broken images
+const PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400' viewBox='0 0 800 400'%3E%3Crect fill='%23f3f4f6' width='800' height='400'/%3E%3Ctext fill='%239ca3af' font-family='system-ui, sans-serif' font-size='32' font-weight='600' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3ENo Image%3C/text%3E%3C/svg%3E";
+
 export function AllBlogs() {
   const router = useRouter();
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -160,7 +163,7 @@ export function AllBlogs() {
                       alt={blog.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                       onError={(e) => {
-                        e.currentTarget.src = 'https://via.placeholder.com/800x400?text=No+Image';
+                        e.currentTarget.src = PLACEHOLDER_IMAGE;
                       }}
                     />
 
