@@ -23,6 +23,7 @@ export function WriteBlog() {
     tags: '',
     status: 'draft' as 'draft' | 'published'
   });
+  const [saving, setSaving] = useState(false);
 
   // Custom toolbar with only necessary buttons
   const modules = {
@@ -38,23 +39,78 @@ export function WriteBlog() {
   const formats = [
     'header',
     'bold', 'italic',
-    'list', 'bullet',
+    'list',
     'link'
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    setSaving(true);
+    
     try {
-      // TODO: Add API call to save blog
-      console.log('Saving blog:', formData);
+      const response = await fetch('/api/blogs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to save blog');
+      }
+
+      // Show success message with SweetAlert if available
+      if (typeof window !== 'undefined' && (window as any).Swal) {
+        (window as any).Swal.fire({
+          icon: 'success',
+          title: formData.status === 'published' ? 'Blog Published!' : 'Draft Saved!',
+          text: `Your blog has been ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`,
+          confirmButtonText: 'View Blogs',
+          showCancelButton: true,
+          cancelButtonText: 'Write Another'
+        }).then((result: any) => {
+          if (result.isConfirmed) {
+            router.push('/admin/blogs');
+          } else {
+            // Reset form for new blog
+            setFormData({
+              title: '',
+              slug: '',
+              content: '',
+              excerpt: '',
+              featuredImage: '',
+              category: 'AI Tools',
+              tags: '',
+              status: 'draft'
+            });
+          }
+        });
+      } else {
+        // Fallback to alert
+        alert(`Blog ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`);
+        router.push('/admin/blogs');
+      }
       
-      alert(`Blog ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`);
-      
-      router.push('/admin/blogs');
     } catch (error) {
       console.error('Error saving blog:', error);
-      alert('Failed to save blog');
+      
+      // Show error message with SweetAlert if available
+      if (typeof window !== 'undefined' && (window as any).Swal) {
+        (window as any).Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error instanceof Error ? error.message : 'Failed to save blog',
+        });
+      } else {
+        // Fallback to alert
+        alert('Failed to save blog: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -80,7 +136,7 @@ export function WriteBlog() {
               required
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-xl font-semibold"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-xl font-semibold text-gray-900"
               placeholder="e.g., Best AI Tools for 2024"
             />
           </div>
@@ -105,7 +161,7 @@ export function WriteBlog() {
               onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
               rows={2}
               maxLength={200}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none text-gray-900"
               placeholder="A brief summary of your blog post (max 200 characters)"
             />
             <p className="text-sm text-gray-500 mt-1 text-right">{formData.excerpt.length}/200</p>
@@ -122,7 +178,7 @@ export function WriteBlog() {
               required
               value={formData.featuredImage}
               onChange={(e) => setFormData({ ...formData, featuredImage: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-900"
               placeholder="https://images.unsplash.com/photo-..."
             />
             <ImagePreview url={formData.featuredImage} alt={formData.title} />
@@ -132,7 +188,7 @@ export function WriteBlog() {
           <div className="mb-6">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Blog Content * 
-              <span className="text-gray-500 text-xs ml-2">(Write your blog like a clean sheet of paper)</span>
+              <span className="text-gray-900 text-xs ml-2">(Write your blog like a clean sheet of paper)</span>
             </label>
             <div className="border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200 transition-all">
               <ReactQuill
@@ -142,7 +198,7 @@ export function WriteBlog() {
                 modules={modules}
                 formats={formats}
                 placeholder="Start writing your blog content..."
-                className="bg-white"
+                className="bg-white text-gray-800"
                 style={{ minHeight: '400px' }}
               />
             </div>
@@ -161,7 +217,7 @@ export function WriteBlog() {
                 required
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-900"
               >
                 <option value="AI Tools">AI Tools</option>
                 <option value="Software">Software</option>
@@ -179,7 +235,7 @@ export function WriteBlog() {
                 type="text"
                 value={formData.tags}
                 onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-900"
                 placeholder="AI, Productivity, Technology"
               />
             </div>

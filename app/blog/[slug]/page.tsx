@@ -3,17 +3,71 @@
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
-import { blogs } from '@/app/data/blogs';
+import { Calendar, User, Tag, ArrowLeft, Loader2 } from 'lucide-react';
 import { MegaMenu } from '@/app/components/MegaMenu';
+import { useEffect, useState } from 'react';
+
+interface Blog {
+  _id: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt: string;
+  featuredImage: string;
+  category: string;
+  tags: string;
+  status: 'draft' | 'published';
+  author: string;
+  createdAt: string;
+}
 
 export default function BlogDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
-  
-  const blog = blogs.find(b => b.slug === slug && b.status === 'published');
+  const [blog, setBlog] = useState<Blog | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  if (!blog) {
+  useEffect(() => {
+    async function fetchBlog() {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/blogs?slug=${slug}`);
+        const data = await response.json();
+        
+        if (data.length > 0 && data[0].status === 'published') {
+          setBlog(data[0]);
+        } else {
+          setError(true);
+        }
+      } catch (err) {
+        console.error('Error fetching blog:', err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (slug) {
+      fetchBlog();
+    }
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <>
+        <MegaMenu cartCount={0} isAuthenticated={false} />
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+            <p className="text-gray-600">Loading blog post...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (error || !blog) {
     return (
       <>
         <MegaMenu cartCount={0} isAuthenticated={false} />
@@ -33,6 +87,9 @@ export default function BlogDetailPage() {
       </>
     );
   }
+
+  // Parse tags (it's stored as a comma-separated string)
+  const tagsArray = blog.tags ? blog.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
 
   return (
     <>
@@ -105,11 +162,11 @@ export default function BlogDetailPage() {
             />
 
             {/* Tags */}
-            {blog.tags && blog.tags.length > 0 && (
+            {tagsArray.length > 0 && (
               <div className="mt-12 pt-8 border-t border-gray-200">
                 <h3 className="text-sm font-semibold text-gray-700 mb-4">Tags:</h3>
                 <div className="flex flex-wrap gap-2">
-                  {blog.tags.map((tag, idx) => (
+                  {tagsArray.map((tag, idx) => (
                     <span
                       key={idx}
                       className="px-4 py-2 bg-blue-50 text-blue-600 rounded-full flex items-center gap-2 font-medium"

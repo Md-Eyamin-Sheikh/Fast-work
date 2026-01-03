@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link2 } from 'lucide-react';
 
 interface AutoSlugInputProps {
@@ -12,6 +12,7 @@ interface AutoSlugInputProps {
 
 export function AutoSlugInput({ title, value, onChange, label = 'URL Slug' }: AutoSlugInputProps) {
   const [isManuallyEdited, setIsManuallyEdited] = useState(false);
+  const isManuallyEditedRef = useRef(false);
 
   const generateSlug = (text: string): string => {
     return text
@@ -24,18 +25,21 @@ export function AutoSlugInput({ title, value, onChange, label = 'URL Slug' }: Au
   };
 
   useEffect(() => {
-    if (!isManuallyEdited && title) {
-      onChange(generateSlug(title));
+    if (!isManuallyEditedRef.current && title) {
+      const newSlug = generateSlug(title);
+      onChange(newSlug);
     }
-  }, [title, isManuallyEdited, onChange]);
+  }, [title]); // Only depend on title, not onChange
 
   const handleManualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsManuallyEdited(true);
+    isManuallyEditedRef.current = true;
     onChange(generateSlug(e.target.value));
   };
 
   const handleRegenerateSlug = () => {
     setIsManuallyEdited(false);
+    isManuallyEditedRef.current = false;
     onChange(generateSlug(title));
   };
 
@@ -52,7 +56,7 @@ export function AutoSlugInput({ title, value, onChange, label = 'URL Slug' }: Au
           type="text"
           value={value}
           onChange={handleManualChange}
-          className="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-mono text-sm"
+          className="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-mono text-sm text-gray-900"
           placeholder="auto-generated-slug"
         />
       </div>
