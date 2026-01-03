@@ -41,21 +41,24 @@ export function AllBlogs() {
     try {
       const response = await fetch('/api/blogs?status=all');
       const data = await response.json();
-      setBlogs(data);
+      // Ensure data is an array
+      setBlogs(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching blogs:', error);
+      setBlogs([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredBlogs = blogs.filter(blog => {
+  // Ensure blogs is always an array before filtering
+  const filteredBlogs = Array.isArray(blogs) ? blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       blog.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
       blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = filterStatus === 'all' || blog.status === filterStatus;
     return matchesSearch && matchesStatus;
-  });
+  }) : [];
 
   const handleDelete = async (slug: string, title: string) => {
     const confirmed = await showConfirm(

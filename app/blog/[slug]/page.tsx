@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Calendar, User, Tag, ArrowLeft, Loader2, Clock, Share2 } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, Loader2, Clock, Share2, Check, Copy, Twitter, Facebook, Linkedin } from 'lucide-react';
 import { MegaMenu } from '@/app/components/MegaMenu';
 import { useEffect, useState } from 'react';
 
@@ -33,6 +33,7 @@ export default function BlogDetailPage() {
   const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -43,17 +44,37 @@ export default function BlogDetailPage() {
         const response = await fetch(`/api/blogs?slug=${slug}`);
         const data = await response.json();
         
-        if (data.length > 0 && data[0].status === 'published') {
-          setBlog(data[0]);
+        // Debug logging
+        console.log('Blog API Response:', data);
+        console.log('Is Array:', Array.isArray(data));
+        console.log('Length:', data?.length);
+        
+        // Check if data is an array and has content
+        if (Array.isArray(data) && data.length > 0) {
+          const foundBlog = data[0];
+          console.log('Found blog:', foundBlog);
+          console.log('Blog status:', foundBlog.status);
           
-          // Fetch related blogs (same category, excluding current)
-          const relatedResponse = await fetch('/api/blogs?status=published');
-          const allBlogs = await relatedResponse.json();
-          const related = allBlogs
-            .filter((b: Blog) => b.slug !== data[0].slug && b.category === data[0].category)
-            .slice(0, 3);
-          setRelatedBlogs(related);
+          // Only show published blogs on public page
+          if (foundBlog.status === 'published') {
+            setBlog(foundBlog);
+            
+            // Fetch related blogs (same category, excluding current)
+            const relatedResponse = await fetch('/api/blogs?status=published');
+            const allBlogs = await relatedResponse.json();
+            
+            if (Array.isArray(allBlogs)) {
+              const related = allBlogs
+                .filter((b: Blog) => b.slug !== foundBlog.slug && b.category === foundBlog.category)
+                .slice(0, 3);
+              setRelatedBlogs(related);
+            }
+          } else {
+            console.log('Blog exists but is not published');
+            setError(true);
+          }
         } else {
+          console.log('No blog found with slug:', slug);
           setError(true);
         }
       } catch (err) {
@@ -234,15 +255,71 @@ export default function BlogDetailPage() {
             )}
 
             {/* Share Buttons */}
-            <div className="mt-8 pt-8 flex space- border-t border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                <Share2 className="w-4 h-4" />
-                Share this article:
+            <div className="mt-8 sm:mt-10 pt-8 border-t border-gray-200">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2">
+                <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg">
+                  <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                </div>
+                Share this article
               </h3>
-              <div className="flex flex-wrap gap-3">
-                
-                <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
-                  Copy Link
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
+                {/* Twitter */}
+                <button
+                  onClick={() => {
+                    const url = encodeURIComponent(window.location.href);
+                    const text = encodeURIComponent(blog.title);
+                    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+                  }}
+                  className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white rounded-xl font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                >
+                  <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>Twitter</span>
+                </button>
+
+                {/* Facebook */}
+                <button
+                  onClick={() => {
+                    const url = encodeURIComponent(window.location.href);
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+                  }}
+                  className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-xl font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                >
+                  <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>Facebook</span>
+                </button>
+
+                {/* LinkedIn */}
+                <button
+                  onClick={() => {
+                    const url = encodeURIComponent(window.location.href);
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+                  }}
+                  className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-[#0A66C2] hover:bg-[#095196] text-white rounded-xl font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                >
+                  <Linkedin className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>LinkedIn</span>
+                </button>
+
+                {/* Copy Link */}
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800 rounded-xl font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg transform hover:scale-105 border border-gray-300"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                      <span className="text-green-600">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span>Copy Link</span>
+                    </>
+                  )}
                 </button>
               </div>
             </div>

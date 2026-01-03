@@ -35,10 +35,12 @@ export function BlogPage() {
         setLoading(true);
         const response = await fetch('/api/blogs?status=published');
         const data = await response.json();
-        setBlogs(data);
+        // Ensure data is an array
+        setBlogs(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Error fetching blogs:', err);
         setError(true);
+        setBlogs([]); // Set to empty array on error
       } finally {
         setLoading(false);
       }
@@ -47,11 +49,11 @@ export function BlogPage() {
     fetchBlogs();
   }, []);
 
-  // Parse tags from string to array
-  const parseBlogs = blogs.map(blog => ({
+  // Parse tags from string to array - with safety check
+  const parseBlogs = Array.isArray(blogs) ? blogs.map(blog => ({
     ...blog,
     tagsArray: blog.tags ? blog.tags.split(',').map(t => t.trim()).filter(Boolean) : []
-  }));
+  })) : [];
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
