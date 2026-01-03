@@ -6,6 +6,7 @@ import { ImagePreview } from './ImagePreview';
 import { AutoSlugInput } from './AutoSlugInput';
 import { Save, Image as ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { showSuccess, showError } from '@/app/lib/sweetalert';
 import 'react-quill-new/dist/quill.snow.css';
 
 // Dynamically import React Quill to avoid SSR issues - using react-quill-new for React 19 compatibility
@@ -63,52 +64,25 @@ export function WriteBlog() {
         throw new Error(data.error || 'Failed to save blog');
       }
 
-      // Show success message with SweetAlert if available
-      if (typeof window !== 'undefined' && (window as any).Swal) {
-        (window as any).Swal.fire({
-          icon: 'success',
-          title: formData.status === 'published' ? 'Blog Published!' : 'Draft Saved!',
-          text: `Your blog has been ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`,
-          confirmButtonText: 'View Blogs',
-          showCancelButton: true,
-          cancelButtonText: 'Write Another'
-        }).then((result: any) => {
-          if (result.isConfirmed) {
-            router.push('/admin/blogs');
-          } else {
-            // Reset form for new blog
-            setFormData({
-              title: '',
-              slug: '',
-              content: '',
-              excerpt: '',
-              featuredImage: '',
-              category: 'AI Tools',
-              tags: '',
-              status: 'draft'
-            });
-          }
-        });
-      } else {
-        // Fallback to alert
-        alert(`Blog ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`);
-        router.push('/admin/blogs');
-      }
+
+      // Show success message
+      const result = await showSuccess(
+        `Your blog has been ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`,
+        formData.status === 'published' ? 'Blog Published!' : 'Draft Saved!'
+      );
+      
+      // Always navigate to blogs page after success
+      router.push('/admin/blogs');
+      
       
     } catch (error) {
       console.error('Error saving blog:', error);
       
-      // Show error message with SweetAlert if available
-      if (typeof window !== 'undefined' && (window as any).Swal) {
-        (window as any).Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error instanceof Error ? error.message : 'Failed to save blog',
-        });
-      } else {
-        // Fallback to alert
-        alert('Failed to save blog: ' + (error instanceof Error ? error.message : 'Unknown error'));
-      }
+      // Show error message
+      showError(
+        error instanceof Error ? error.message : 'Failed to save blog',
+        'Oops...'
+      );
     } finally {
       setSaving(false);
     }

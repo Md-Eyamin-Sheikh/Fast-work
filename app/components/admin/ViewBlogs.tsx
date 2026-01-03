@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Eye, Edit, Trash2, Plus } from 'lucide-react';
+import { showConfirm, showSuccess, showError } from '@/app/lib/sweetalert';
 
 interface Blog {
   _id: string;
@@ -43,39 +44,25 @@ export function ViewBlogs() {
   }, [filter]);
 
   const handleDelete = async (slug: string) => {
-    if (typeof window !== 'undefined' && (window as any).Swal) {
-      const result = await (window as any).Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-      });
+    const confirmed = await showConfirm(
+      "You won't be able to revert this!",
+      'Are you sure?'
+    );
 
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(`/api/blogs?slug=${slug}`, {
-            method: 'DELETE',
-          });
-
-          if (response.ok) {
-            (window as any).Swal.fire('Deleted!', 'Blog has been deleted.', 'success');
-            fetchBlogs(); // Refresh list
-          } else {
-            throw new Error('Failed to delete');
-          }
-        } catch (error) {
-          (window as any).Swal.fire('Error!', 'Failed to delete blog.', 'error');
-        }
-      }
-    } else if (confirm('Are you sure you want to delete this blog?')) {
+    if (confirmed) {
       try {
-        await fetch(`/api/blogs?slug=${slug}`, { method: 'DELETE' });
-        fetchBlogs();
+        const response = await fetch(`/api/blogs?slug=${slug}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          await showSuccess('Blog has been deleted.', 'Deleted!');
+          fetchBlogs(); // Refresh list
+        } else {
+          throw new Error('Failed to delete');
+        }
       } catch (error) {
-        alert('Failed to delete blog');
+        showError('Failed to delete blog.', 'Error!');
       }
     }
   };

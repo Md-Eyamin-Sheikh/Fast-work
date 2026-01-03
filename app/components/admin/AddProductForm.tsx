@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { X, Plus, Trash2, Image as ImageIcon, Save, Eye } from 'lucide-react';
+import { showSuccess, showError } from '@/app/lib/sweetalert';
 
 interface WhatYouGetItem {
   title: string;
@@ -154,15 +155,15 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
       });
 
       if (response.ok) {
-        alert('Product added successfully!');
+        await showSuccess('Product has been added successfully!', 'Success!');
         onClose();
       } else {
         const error = await response.json();
-        alert(`Error: ${error.message || 'Failed to add product'}`);
+        showError(error.message || 'Failed to add product', 'Error');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to add product');
+      showError('Failed to add product. Please try again.', 'Error');
     } finally {
       setLoading(false);
     }

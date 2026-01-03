@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Edit, Trash2, Plus, Search, Eye, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { showConfirm, showSuccess, showError } from '@/app/lib/sweetalert';
 
 interface Blog {
   _id: string;
@@ -54,51 +55,25 @@ export function AllBlogs() {
   });
 
   const handleDelete = async (slug: string, title: string) => {
-    // Use SweetAlert if available
-    if (typeof window !== 'undefined' && (window as any).Swal) {
-      const result = await (window as any).Swal.fire({
-        title: 'Delete Blog?',
-        text: `Are you sure you want to delete "${title}"? This action cannot be undone.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-      });
+    const confirmed = await showConfirm(
+      `Are you sure you want to delete "${title}"? This action cannot be undone.`,
+      'Delete Blog?'
+    );
 
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(`/api/blogs?slug=${slug}`, {
-            method: 'DELETE',
-          });
+    if (confirmed) {
+      try {
+        const response = await fetch(`/api/blogs?slug=${slug}`, {
+          method: 'DELETE',
+        });
 
-          if (response.ok) {
-            (window as any).Swal.fire('Deleted!', 'Blog has been deleted.', 'success');
-            fetchBlogs(); // Refresh the list
-          } else {
-            throw new Error('Failed to delete');
-          }
-        } catch (error) {
-          (window as any).Swal.fire('Error!', 'Failed to delete blog.', 'error');
+        if (response.ok) {
+          await showSuccess('Blog has been deleted.', 'Deleted!');
+          fetchBlogs(); // Refresh the list
+        } else {
+          throw new Error('Failed to delete');
         }
-      }
-    } else {
-      // Fallback to confirm
-      if (confirm(`Are you sure you want to delete "${title}"?`)) {
-        try {
-          const response = await fetch(`/api/blogs?slug=${slug}`, {
-            method: 'DELETE',
-          });
-
-          if (response.ok) {
-            alert('Blog deleted successfully!');
-            fetchBlogs();
-          } else {
-            alert('Failed to delete blog');
-          }
-        } catch (error) {
-          alert('Error deleting blog');
-        }
+      } catch (error) {
+        showError('Failed to delete blog.', 'Error!');
       }
     }
   };

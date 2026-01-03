@@ -5,6 +5,7 @@ import { ImagePreview } from './ImagePreview';
 import { AutoSlugInput } from './AutoSlugInput';
 import { Save, Eye } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { showSuccess, showError } from '@/app/lib/sweetalert';
 
 export function AddProduct() {
   const router = useRouter();
@@ -34,13 +35,16 @@ export function AddProduct() {
       console.log('Saving product:', formData);
       
       // Show success message
-      alert(`Product ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`);
+      await showSuccess(
+        `Product ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`,
+        'Success!'
+      );
       
       // Redirect to products list
       router.push('/admin/products');
     } catch (error) {
       console.error('Error saving product:', error);
-      alert('Failed to save product');
+      showError('Failed to save product. Please try again.', 'Error');
     }
   };
 
