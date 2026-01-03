@@ -6,10 +6,10 @@ import { ImagePreview } from './ImagePreview';
 import { AutoSlugInput } from './AutoSlugInput';
 import { Save, Image as ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 
-// Dynamically import React Quill to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// Dynamically import React Quill to avoid SSR issues - using react-quill-new for React 19 compatibility
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export function WriteBlog() {
   const router = useRouter();
