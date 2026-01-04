@@ -20,10 +20,16 @@ export default function AdminLogin() {
       setLoading(true);
       setError('');
       const result = await signInWithPopup(auth, provider);
-      // Here you would typically send the token to your backend to create a session
-      // For now, we'll just redirect to admin panel
-      console.log('Logged in user:', result.user);
-      router.push('/admin');
+      
+      // Store admin info
+      const userEmail = result.user.email || 'admin@victorians.com';
+      const userName = result.user.displayName || result.user.email?.split('@')[0] || 'Admin';
+      
+      localStorage.setItem('adminEmail', userEmail);
+      localStorage.setItem('adminName', userName);
+      localStorage.setItem('lastLogin', new Date().toISOString());
+      
+      router.push('/admin/dashboard');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -49,7 +55,12 @@ export default function AdminLogin() {
         throw new Error(data.error || 'Login failed');
       }
 
-      router.push('/admin');
+      // Store admin info in localStorage for dashboard
+      localStorage.setItem('adminEmail', email);
+      localStorage.setItem('adminName', email.split('@')[0] || 'Admin');
+      localStorage.setItem('lastLogin', new Date().toISOString());
+
+      router.push('/admin/dashboard');
     } catch (err: any) {
       setError(err.message);
     } finally {
