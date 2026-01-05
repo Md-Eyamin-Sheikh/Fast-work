@@ -52,13 +52,13 @@ export function AddProduct() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Add New Product</h1>
-        <p className="text-gray-600">Create a new product with live image preview</p>
+        <h1 className="md:text-4xl text-2xl font-bold text-gray-900 mb-2">Add New Product</h1>
+        <p className="text-gray-600 text-sm md:text-md">Create a new product with live image preview</p>
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-4xl">
         {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100 mb-6">
+        <div className="bg-white rounded-2xl md:shadow-md md:p-8 p-4 border border-gray-100 mb-6">
           {/* Product Name */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -248,7 +248,7 @@ export function AddProduct() {
         <div className="flex gap-4">
           <button
             type="submit"
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
+            className="flex-1 flex items-center justify-center gap-2 md:px-6 px-4 md:py-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
           >
             <Save className="w-5 h-5" />
             {formData.status === 'published' ? 'Publish Product' : 'Save as Draft'}
@@ -256,7 +256,7 @@ export function AddProduct() {
           <button
             type="button"
             onClick={() => router.push('/admin/products')}
-            className="px-6 py-4 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all"
+            className="md:px-6 px-4 md:py-4 py-2  bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all"
           >
             Cancel
           </button>

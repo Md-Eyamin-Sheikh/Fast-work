@@ -82,7 +82,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
 
   return (
     <div className='bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen pb-24 lg:pb-10'>
-      <div className='max-w-7xl mx-auto py-3 sm:py-6 px-3 sm:px-4 lg:px-8'>
+      <div className='max-w-7xl mx-auto  sm:py-6  sm:px-4 lg:px-8'>
         {/* Enhanced Header - Mobile Optimized */}
         <motion.div 
           initial={{ y: -20, opacity: 0 }}

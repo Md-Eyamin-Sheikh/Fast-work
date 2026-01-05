@@ -72,14 +72,14 @@ export function ViewBlogs() {
       {/* Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">All Blogs</h1>
-          <p className="text-gray-600">Manage your blog posts</p>
+          <h1 className="md:text-4xl text-2xl font-bold text-gray-900 mb-2">All Blogs</h1>
+          <p className="text-gray-600 text-sm md:text-md">Manage your blog posts</p>
         </div>
         <Link
           href="/admin/blogs/write"
           className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="md:w-5 w-3 md:h-5 h-3" />
           Write New Blog
         </Link>
       </div>

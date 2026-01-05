@@ -95,16 +95,16 @@ export function AllBlogs() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">All Blogs</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">All Blogs</h1>
+          <p className="text-sm md:text-base text-gray-600">
             {blogs.length} blog{blogs.length !== 1 ? 's' : ''} in total
           </p>
         </div>
         <Link
           href="/admin/blogs/write"
-          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all w-full md:w-auto text-sm md:text-base"
         >
           <Plus className="w-5 h-5" />
           Write Blog
@@ -124,12 +124,12 @@ export function AllBlogs() {
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
           {(['all', 'published', 'draft'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all capitalize ${
+              className={`px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold transition-all capitalize whitespace-nowrap text-sm md:text-base ${
                 filterStatus === status
                   ? 'bg-blue-600 text-white shadow-lg'
                   : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-300'
@@ -170,8 +170,8 @@ export function AllBlogs() {
                       }}
                     />
 
-                    {/* Action Icons */}
-                    <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    {/* Action Icons - Always visible on mobile, hover on desktop */}
+                    <div className="absolute top-3 right-3 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                       <Link
                         href={`/blog/${blog.slug}`}
                         target="_blank"
