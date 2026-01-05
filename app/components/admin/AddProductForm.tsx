@@ -195,7 +195,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.name}
                   onChange={(e) => handleNameChange(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="Adobe Creative Cloud"
                 />
               </div>
@@ -206,7 +206,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.productId}
                   onChange={(e) => setFormData(prev => ({ ...prev, productId: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 text-gray-900"
                   placeholder="adobe-creative-cloud-personal"
                 />
                 <p className="text-xs text-gray-500 mt-1">Auto-generated from name, can be edited</p>
@@ -217,7 +217,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.category}
                   onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="creative">Creative Tools</option>
                   <option value="productivity">Productivity</option>
@@ -233,7 +233,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.duration}
                   onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="1 Month"
                 />
               </div>
@@ -255,7 +255,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   min="0"
                   value={formData.price}
                   onChange={(e) => setFormData(prev => ({ ...prev, price: parseInt(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="1000"
                 />
               </div>
@@ -266,7 +266,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   min="0"
                   value={formData.originalPrice}
                   onChange={(e) => setFormData(prev => ({ ...prev, originalPrice: parseInt(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="40000"
                 />
                 <p className="text-xs text-gray-500 mt-1">Leave empty if no discount</p>
@@ -295,11 +295,11 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                 required
                 value={formData.image}
                 onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 placeholder="https://images.unsplash.com/..."
               />
               {formData.image && (
-                <div className="mt-4 relative w-full h-48 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                <div className="mt-4 relative w-full h-48 text-gray-800 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
                   <img
                     src={formData.image}
                     alt="Preview"
@@ -327,7 +327,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.badge}
                   onChange={(e) => setFormData(prev => ({ ...prev, badge: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 >
                   <option value="Personal">Personal</option>
                   <option value="Shared">Shared</option>
@@ -341,7 +341,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.productType}
                   onChange={(e) => setFormData(prev => ({ ...prev, productType: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 >
                   <option value="account">Account</option>
                   <option value="key">Key</option>
@@ -354,7 +354,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.deliveryType}
                   onChange={(e) => setFormData(prev => ({ ...prev, deliveryType: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 >
                   <option value="manual">Manual (30 min)</option>
                   <option value="auto">Auto (Instant)</option>
@@ -367,7 +367,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.warranty}
                   onChange={(e) => setFormData(prev => ({ ...prev, warranty: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="Full Warranty"
                 />
               </div>
@@ -389,7 +389,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   min="0"
                   value={formData.stock}
                   onChange={(e) => setFormData(prev => ({ ...prev, stock: parseInt(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="999"
                 />
               </div>
@@ -403,7 +403,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   step="0.1"
                   value={formData.rating}
                   onChange={(e) => setFormData(prev => ({ ...prev, rating: parseFloat(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="5"
                 />
               </div>
@@ -414,7 +414,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   min="0"
                   value={formData.reviews}
                   onChange={(e) => setFormData(prev => ({ ...prev, reviews: parseInt(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="120"
                 />
               </div>
@@ -425,7 +425,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   min="0"
                   value={formData.soldLast23Hours}
                   onChange={(e) => setFormData(prev => ({ ...prev, soldLast23Hours: parseInt(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="15"
                 />
               </div>
@@ -436,7 +436,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   min="0"
                   value={formData.peopleWatching}
                   onChange={(e) => setFormData(prev => ({ ...prev, peopleWatching: parseInt(e.target.value) }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="45"
                 />
               </div>
@@ -457,7 +457,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   required
                   value={formData.shortDescription}
                   onChange={(e) => setFormData(prev => ({ ...prev, shortDescription: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="Get the entire collection of 20+ creative desktop and mobile apps."
                 />
               </div>
@@ -468,7 +468,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="The ultimate creative toolkit. From photo editing to video production..."
                 />
               </div>
@@ -488,7 +488,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   value={currentHighlight}
                   onChange={(e) => setCurrentHighlight(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHighlight())}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="Add a highlight (e.g., Photoshop, Illustrator, Premiere Pro)"
                 />
                 <button
@@ -530,7 +530,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                   value={currentTag}
                   onChange={(e) => setCurrentTag(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   placeholder="Add a tag (e.g., adobe, design, creative)"
                 />
                 <button
@@ -585,13 +585,13 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                       type="text"
                       value={item.title}
                       onChange={(e) => updateWhatYouGetItem(index, 'title', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
                       placeholder="Title (e.g., Private Account)"
                     />
                     <select
                       value={item.color}
                       onChange={(e) => updateWhatYouGetItem(index, 'color', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
                     >
                       <option value="bg-red-100">Red</option>
                       <option value="bg-blue-100">Blue</option>
@@ -605,7 +605,7 @@ export function AddProductForm({ onClose }: { onClose: () => void }) {
                     type="text"
                     value={item.description}
                     onChange={(e) => updateWhatYouGetItem(index, 'description', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
                     placeholder="Description (e.g., Your own personal account.)"
                   />
                 </div>
