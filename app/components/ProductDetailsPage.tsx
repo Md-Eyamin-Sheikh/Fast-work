@@ -31,6 +31,16 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
   const { addToCart } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+  
+  // Review Form State
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [reviewForm, setReviewForm] = useState({
+    name: '',
+    email: '',
+    message: '',
+    saveInfo: false
+  });
 
   const onAddToCart = (product: Product) => {
     addToCart(product);
@@ -387,22 +397,27 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                             {/* Reviews List */}
                             <div className="space-y-6">
-                                <h3 className="text-lg font-bold">{product.reviews} reviews for {product.name}</h3>
+                                <h3 className="text-xl font-bold text-gray-900">{product.reviews} reviews for {product.name}</h3>
                                 {product.reviewsList && product.reviewsList.length > 0 ? (
                                     product.reviewsList.map((review) => (
-                                        <div key={review.id} className="border border-gray-100 rounded-xl p-6 bg-gray-50">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <div className="flex items-center gap-2 font-bold text-sm">
-                                                    {review.author}
-                                                    {review.verified && <span className="text-xs font-normal text-gray-500">(verified owner)</span>}
+                                        <div key={review.id} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
+                                            <div className="flex items-center gap-4 mb-4">
+                                                <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold text-lg">
+                                                    {review.author.charAt(0)}
                                                 </div>
-                                                <span className="text-xs text-gray-500">{review.date}</span>
+                                                <div>
+                                                    <div className="flex items-center gap-2">
+                                                        <h5 className="font-bold text-gray-900">{review.author}</h5>
+                                                        {review.verified && <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-green-200 text-xs py-0.5">Verified</Badge>}
+                                                    </div>
+                                                    <p className="text-xs text-gray-500 mt-0.5">{review.date}</p>
+                                                </div>
                                             </div>
-                                             <div className="flex items-center mb-2">
+                                             <div className="flex items-center mb-3">
                                               {[...Array(5)].map((_, i) => (
                                                 <Star
                                                   key={i}
-                                                  className={`w-3.5 h-3.5 ${
+                                                  className={`w-4 h-4 ${
                                                     i < Math.floor(review.rating)
                                                       ? 'fill-yellow-400 text-yellow-400'
                                                       : 'text-gray-200'
@@ -410,52 +425,96 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                                                 />
                                               ))}
                                             </div>
-                                            <p className="text-gray-600 text-sm italic">"{review.content}"</p>
+                                            <p className="text-gray-600 leading-relaxed">"{review.content}"</p>
                                         </div>
                                     ))
                                 ) : (
-                                    <p className="text-gray-500">No reviews yet.</p>
+                                    <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                        <p className="text-gray-500">No reviews yet. Be the first to add a review!</p>
+                                    </div>
                                 )}
                             </div>
 
                             {/* Add Review Form */}
-                            <div>
-                                <h3 className="text-lg font-bold mb-2">Add a review</h3>
-                                <p className="text-xs text-gray-500 mb-6">Your email address will not be published. Required fields are marked *</p>
+                            <div className="bg-gray-50 p-6 md:p-8 rounded-2xl border border-gray-100">
+                                <h3 className="text-xl font-bold mb-2 text-gray-900">Add a review</h3>
+                                <p className="text-sm text-gray-500 mb-6">Your email address will not be published. Required fields are marked *</p>
                                 
-                                <form className="space-y-4">
+                                <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); /* Handle submit */ }}>
                                      <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Your rating *</label>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Your rating *</label>
                                         <div className="flex gap-1">
                                             {[1, 2, 3, 4, 5].map((star) => (
-                                                <Star key={star} className="w-5 h-5 text-gray-300 hover:text-yellow-400 cursor-pointer transition-colors" />
+                                                <button
+                                                    key={star}
+                                                    type="button"
+                                                    onClick={() => setRating(star)}
+                                                    onMouseEnter={() => setHoverRating(star)}
+                                                    onMouseLeave={() => setHoverRating(0)}
+                                                    className="focus:outline-none transition-transform hover:scale-110"
+                                                >
+                                                    <Star 
+                                                        className={`w-6 h-6 transition-colors ${
+                                                            star <= (hoverRating || rating)
+                                                                ? 'fill-yellow-400 text-yellow-400' 
+                                                                : 'text-gray-300'
+                                                        }`} 
+                                                    />
+                                                </button>
                                             ))}
                                         </div>
                                      </div>
                                      
                                      <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Your review *</label>
-                                        <textarea className="w-full h-32 rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" placeholder="Write your review here..."></textarea>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Your review *</label>
+                                        <textarea 
+                                            value={reviewForm.message}
+                                            onChange={(e) => setReviewForm({...reviewForm, message: e.target.value})}
+                                            className="w-full h-32 rounded-xl border border-gray-200 p-4 text-gray-700 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all placeholder:text-gray-400 bg-white" 
+                                            placeholder="Write your review here..."
+                                            required
+                                        ></textarea>
                                      </div>
 
-                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                          <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
-                                            <input type="text" className="w-full rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" />
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Name *</label>
+                                            <input 
+                                                type="text" 
+                                                value={reviewForm.name}
+                                                onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})}
+                                                className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 h-11 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all bg-white" 
+                                                required
+                                            />
                                          </div>
                                          <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                                            <input type="email" className="w-full rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" />
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                                            <input 
+                                                type="email" 
+                                                value={reviewForm.email}
+                                                onChange={(e) => setReviewForm({...reviewForm, email: e.target.value})}
+                                                className="w-full rounded-xl border border-gray-200 text-gray-700 p-3 h-11 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all bg-white" 
+                                                required
+                                            />
                                          </div>
                                      </div>
 
-                                     <div className="flex items-center gap-2">
-                                        <input type="checkbox" id="save-info" className="rounded border-gray-300 text-green-600 focus:ring-green-500" />
-                                        <label htmlFor="save-info" className="text-xs text-gray-500">Save my name, email, and website in this browser for the next time I comment.</label>
+                                     <div className="flex items-center gap-2 pt-2">
+                                        <input 
+                                            type="checkbox" 
+                                            id="save-info" 
+                                            checked={reviewForm.saveInfo}
+                                            onChange={(e) => setReviewForm({...reviewForm, saveInfo: e.target.checked})}
+                                            className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500 text-gray-700 cursor-pointer" 
+                                        />
+                                        <label htmlFor="save-info" className="text-sm text-gray-600 cursor-pointer select-none">Save my name, email, and website in this browser for the next time I comment.</label>
                                      </div>
 
-                                     <button type="button" className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-sm transition-colors uppercase">
-                                        Submit
+                                     <button 
+                                        type="submit" 
+                                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-xl text-sm transition-all shadow-lg hover:shadow-green-500/30 uppercase tracking-wide active:scale-95 w-full md:w-auto"
+                                     >
+                                        Submit Review
                                      </button>
                                 </form>
                             </div>
