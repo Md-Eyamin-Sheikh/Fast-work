@@ -3,21 +3,14 @@
 import React, { Suspense } from 'react';
 import { CheckoutPage } from '../components/CheckoutPage';
 import { MegaMenu } from '../components/MegaMenu';
-import { products } from '../data/products';
-import { useSearchParams } from 'next/navigation';
+import { useCart } from '../context/CartContext';
 
 function CheckoutContent() {
-  const searchParams = useSearchParams();
-  const productId = searchParams.get('productId');
-  const quantity = parseInt(searchParams.get('quantity') || '1');
-
-  const product = products.find(p => p.id === productId);
-
-  const items = product ? [{ product, quantity }] : [];
+  const { items } = useCart();
 
   return (
     <>
-      <MegaMenu cartCount={0} isAuthenticated={true} />
+      <MegaMenu />
       <CheckoutPage items={items} />
     </>
   );

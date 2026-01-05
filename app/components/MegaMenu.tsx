@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 
 interface MegaMenuProps {
-  cartCount: number;
+  cartCount?: number;
   // Deprecated: Auth is now handled via AuthContext, keeping for backward compat temporarily
   isAuthenticated?: boolean; 
   onLogout?: () => void;
@@ -105,7 +105,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
               >
                 <ShoppingCart className="w-5 h-5 group-hover:text-blue-600 transition-colors" />
                 <AnimatePresence>
-                  {cartCount > 0 && (
+                  {cartCount !== undefined && cartCount > 0 && (
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}

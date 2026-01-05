@@ -16,18 +16,28 @@ import {
   Linkedin
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Badge } from './ui/badge';
+import { useCart } from '../context/CartContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface ProductDetailsPageProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
-  onBuyNow: (product: Product) => void;
   onBack?: () => void;
 }
 
-export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDetailsPageProps) {
+export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps) {
+  const { addToCart } = useCart();
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+
+  const onAddToCart = (product: Product) => {
+    addToCart(product);
+  };
+
+  const onBuyNow = (product: Product) => {
+    addToCart(product);
+    router.push('/checkout');
+  };
 
   // Calculate discount percentage
   const discountPercent = product.originalPrice
@@ -242,7 +252,7 @@ export function ProductDetailsPage({ product, onAddToCart, onBuyNow }: ProductDe
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div>
                                     <h4 className="text-green-600 font-bold text-lg mb-1">What You will get ?</h4>
-                                    <h3 className="text-xl font-bold mb-6">Best {product.highlights[0] || 'Value'}</h3>
+                                    <h3 className="text-xl font-bold mb-6">Best {product.highlights?.[0] || 'Value'}</h3>
                                     <p className="text-gray-600 mb-6 text-sm">
                                         Boost your efficiency and productivity with our premium digital assets. Tailored for professionals, students, and anyone seeking a productivity boost.
                                     </p>

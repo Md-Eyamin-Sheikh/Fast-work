@@ -1,14 +1,13 @@
-"use client";
-
 import React from 'react';
 import { Product } from '../data/products';
 import { CheckCircle, Copy, Eye, EyeOff, Download, Home } from 'lucide-react';
 import { Badge } from './ui/badge';
 
 import Link from 'next/link';
+import { CartItem } from '../context/CartContext';
 
 interface OrderSuccessPageProps {
-  items: { product: Product; quantity: number }[];
+  items: CartItem[];
 }
 
 export function OrderSuccessPage({ items }: OrderSuccessPageProps) {
@@ -47,7 +46,7 @@ export function OrderSuccessPage({ items }: OrderSuccessPageProps) {
     setShowPasswords(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
 
-  const orderId = `ORD-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+  const orderId = typeof window !== 'undefined' ? localStorage.getItem('lastOrderId') || `ORD-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}` : '';
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -69,20 +68,20 @@ export function OrderSuccessPage({ items }: OrderSuccessPageProps) {
         {/* Delivery Information */}
         <div className="space-y-6 mb-8">
           {items.map((item) => {
-            const deliveryInfo = getDeliveryInfo(item.product);
+            const deliveryInfo = getDeliveryInfo(item); // item is CartItem which extends Product
             
             return (
-              <div key={item.product.id} className="bg-white rounded-xl p-6 border-2 border-green-200">
+              <div key={item.id} className="bg-white rounded-xl p-6 border-2 border-green-200">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h2 className="text-xl font-bold mb-1">{item.product.name}</h2>
+                    <h2 className="text-xl font-bold mb-1">{item.name}</h2>
                     <Badge className="bg-green-100 text-green-700 border-green-300">
-                      {item.product.deliveryType === 'auto' ? '⚡ Delivered' : '⏳ Processing'}
+                      {item.deliveryType === 'auto' ? '⚡ Delivered' : '⏳ Processing'}
                     </Badge>
                   </div>
                   <img
-                    src={item.product.image}
-                    alt={item.product.name}
+                    src={item.image}
+                    alt={item.name}
                     className="w-20 h-20 object-cover rounded-lg"
                   />
                 </div>
@@ -102,10 +101,10 @@ export function OrderSuccessPage({ items }: OrderSuccessPageProps) {
                             {deliveryInfo.email}
                           </div>
                           <button
-                            onClick={() => handleCopy(deliveryInfo.email!, `${item.product.id}-email`)}
+                            onClick={() => handleCopy(deliveryInfo.email!, `${item.id}-email`)}
                             className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                           >
-                            {copiedField === `${item.product.id}-email` ? (
+                            {copiedField === `${item.id}-email` ? (
                               <CheckCircle className="w-5 h-5" />
                             ) : (
                               <Copy className="w-5 h-5" />
@@ -117,25 +116,25 @@ export function OrderSuccessPage({ items }: OrderSuccessPageProps) {
                         <label className="text-sm text-gray-600 block mb-1">Password</label>
                         <div className="flex items-center gap-2">
                           <div className="flex-1 px-3 py-2 bg-white border rounded-lg font-mono">
-                            {showPasswords[item.product.id] 
+                            {showPasswords[item.id] 
                               ? deliveryInfo.password 
                               : '••••••••••••'}
                           </div>
                           <button
-                            onClick={() => togglePasswordVisibility(item.product.id)}
+                            onClick={() => togglePasswordVisibility(item.id)}
                             className="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
                           >
-                            {showPasswords[item.product.id] ? (
+                            {showPasswords[item.id] ? (
                               <EyeOff className="w-5 h-5" />
                             ) : (
                               <Eye className="w-5 h-5" />
                             )}
                           </button>
                           <button
-                            onClick={() => handleCopy(deliveryInfo.password!, `${item.product.id}-password`)}
+                            onClick={() => handleCopy(deliveryInfo.password!, `${item.id}-password`)}
                             className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                           >
-                            {copiedField === `${item.product.id}-password` ? (
+                            {copiedField === `${item.id}-password` ? (
                               <CheckCircle className="w-5 h-5" />
                             ) : (
                               <Copy className="w-5 h-5" />
@@ -162,10 +161,10 @@ export function OrderSuccessPage({ items }: OrderSuccessPageProps) {
                         {deliveryInfo.key}
                       </div>
                       <button
-                        onClick={() => handleCopy(deliveryInfo.key!, `${item.product.id}-key`)}
+                        onClick={() => handleCopy(deliveryInfo.key!, `${item.id}-key`)}
                         className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
-                        {copiedField === `${item.product.id}-key` ? (
+                        {copiedField === `${item.id}-key` ? (
                           <CheckCircle className="w-5 h-5" />
                         ) : (
                           <Copy className="w-5 h-5" />

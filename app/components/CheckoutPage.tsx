@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Product } from '../data/products';
+import { CartItem } from '../context/CartContext';
+import { useCart } from '../context/CartContext'; // Import useCart for clearing cart
 import { 
   Check,
   AlertCircle,
@@ -18,11 +19,12 @@ const AmexIcon = () => <div className="h-6 w-10 bg-blue-400 rounded text-white t
 const BkashIcon = () => <div className="h-6 w-10 bg-pink-600 rounded text-white text-[8px] flex items-center justify-center font-bold">bKash</div>;
 
 interface CheckoutPageProps {
-  items: { product: Product; quantity: number }[];
+  items: CartItem[];
 }
 
 export function CheckoutPage({ items }: CheckoutPageProps) {
   const router = useRouter();
+  const { clearCart } = useCart(); // Use hook
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'binance' | 'bybit' | 'crypto'>('online');
   const [billingInfo, setBillingInfo] = useState({
     fullName: '',
@@ -32,12 +34,21 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
     createAccount: false
   });
 
-  const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal;
 
   const handleCheckout = () => {
+    // Save order to localStorage for Success Page
+    // We only save basic info needed for display
+    localStorage.setItem('lastOrder', JSON.stringify(items));
+    
+    // Create an order ID
+    const orderId = `ORD-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+    localStorage.setItem('lastOrderId', orderId);
+
     // Simulate payment processing
     setTimeout(() => {
+      clearCart();
       router.push('/order-success');
     }, 2000);
   };
@@ -67,7 +78,7 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
         {/* Notification */}
         <div className="bg-white border-t-2 border-green-500 p-4 mb-8 flex items-center gap-2 text-sm text-gray-700 shadow-sm">
             <Check className="w-5 h-5 text-green-500" />
-            <span><span className="text-gray-400">Continue shopping</span> "{items[0].product.name}" has been added to your cart.</span>
+            <span><span className="text-gray-400">Continue shopping</span> "{items[0].name}" has been added to your cart.</span>
         </div>
 
         {/* Auth Links */}
@@ -160,15 +171,15 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
                 </div>
                 <div className="space-y-4">
                     {items.map(item => (
-                        <div key={item.product.id} className="flex items-center justify-between border-b border-gray-100 pb-4 last:border-0">
+                        <div key={item.id} className="flex items-center justify-between border-b border-gray-100 pb-4 last:border-0">
                             <div className="flex items-center gap-4">
                                 <button className="text-gray-400 hover:text-red-500"><X className="w-4 h-4" /></button>
-                                <img src={item.product.image} alt={item.product.name} className="w-10 h-10 object-cover rounded" />
+                                <img src={item.image} alt={item.name} className="w-10 h-10 object-cover rounded" />
                                 <div className="text-sm text-gray-600 max-w-[200px]">
-                                    {item.product.name}  <span className="font-bold">× {item.quantity}</span>
+                                    {item.name}  <span className="font-bold">× {item.quantity}</span>
                                 </div>
                             </div>
-                            <span className="text-gray-500 font-medium">৳{item.product.price * item.quantity}.00</span>
+                            <span className="text-gray-500 font-medium">৳{item.price * item.quantity}.00</span>
                         </div>
                     ))}
                 </div>
