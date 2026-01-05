@@ -50,7 +50,7 @@ export function WriteBlog() {
     setSaving(true);
     
     try {
-      const response = await fetch('/api/blogs', {
+      let response = await fetch('/api/blogs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,20 @@ export function WriteBlog() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      let data = await response.json();
+
+      // If slug already exists (Conflict), try updating instead
+      if (response.status === 409) {
+        console.log('Slug exists, attempting update...');
+        response = await fetch('/api/blogs', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        data = await response.json();
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to save blog');
