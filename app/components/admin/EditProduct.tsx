@@ -1,14 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ImagePreview } from './ImagePreview';
 import { AutoSlugInput } from './AutoSlugInput';
-import { Save, Eye } from 'lucide-react';
+import { Save, Eye, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { showSuccess, showError } from '@/app/lib/sweetalert';
+import Link from 'next/link';
 
-export function AddProduct() {
+interface EditProductProps {
+  id: string;
+}
+
+export function EditProduct({ id }: EditProductProps) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -30,15 +38,61 @@ export function AddProduct() {
     status: 'draft' as 'draft' | 'published'
   });
 
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`/api/products?id=${id}`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                 showError('Product not found', 'Error');
+                 router.push('/admin/products');
+                 return;
+            }
+            throw new Error('Failed to fetch product');
+        }
+        const data = await response.json();
+        
+        // Populate form data, converting numbers back to strings for inputs
+        setFormData({
+            name: data.name || '',
+            slug: data.slug || '',
+            category: data.category || 'ai-tools',
+            productType: data.productType || 'Shared Account',
+            badge: data.badge || 'Shared',
+            price: data.price?.toString() || '',
+            originalPrice: data.originalPrice?.toString() || '',
+            duration: data.duration || '1 Month',
+            deliveryType: data.deliveryType || 'auto',
+            warranty: data.warranty || '30 Days Replacement',
+            rating: data.rating?.toString() || '4.5',
+            stock: data.stock?.toString() || '',
+            image: data.image || '',
+            description: data.description || '',
+            reviews: data.reviews?.toString() || '',
+            soldLast23Hours: data.soldLast23Hours?.toString() || '',
+            peopleWatching: data.peopleWatching?.toString() || '',
+            status: data.status || 'draft'
+        });
+      } catch (error) {
+        console.error('Error fetching product:', error);
+        showError('Failed to load product details', 'Error');
+      } finally {
+        setFetching(false);
+      }
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
     try {
-      // Prepare data (convert numeric strings to numbers if needed, though API handles it)
       const payload = {
+        id, // Include ID for the PUT request
         ...formData,
         price: Number(formData.price),
         originalPrice: formData.originalPrice ? Number(formData.originalPrice) : 0,
@@ -50,7 +104,7 @@ export function AddProduct() {
       };
 
       const response = await fetch('/api/products', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -60,31 +114,45 @@ export function AddProduct() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to save product');
+        throw new Error(data.error || 'Failed to update product');
       }
       
-      // Show success message
       await showSuccess(
-        `Product ${formData.status === 'published' ? 'published' : 'saved as draft'} successfully!`,
+        'Product updated successfully!',
         'Success!'
       );
       
-      // Redirect to products list
       router.push('/admin/products');
     } catch (error: any) {
-      console.error('Error saving product:', error);
-      showError(error.message || 'Failed to save product. Please try again.', 'Error');
+      console.error('Error updating product:', error);
+      showError(error.message || 'Failed to update product', 'Error');
     } finally {
       setLoading(false);
     }
   };
 
+  if (fetching) {
+      return (
+          <div className="flex items-center justify-center min-h-[400px]">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+      );
+  }
+
   return (
     <div>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="md:text-4xl text-2xl font-bold text-gray-900 mb-2">Add New Product</h1>
-        <p className="text-gray-600 text-sm md:text-md">Create a new product with live image preview</p>
+      <div className="mb-8 flex items-center gap-4">
+        <Link 
+            href="/admin/products"
+            className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+        >
+            <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <div>
+            <h1 className="md:text-4xl text-2xl font-bold text-gray-900 mb-2">Edit Product</h1>
+            <p className="text-gray-600 text-sm md:text-md">Update product details</p>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-4xl">
@@ -191,11 +259,11 @@ export function AddProduct() {
               required
               value={formData.image}
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-900"
               placeholder="https://images.unsplash.com/photo-..."
             />
             
-            {/* Live Image Preview - The Magic Feature! */}
+            {/* Live Image Preview */}
             <ImagePreview url={formData.image} alt={formData.name} />
           </div>
 
@@ -278,11 +346,12 @@ export function AddProduct() {
         {/* Action Buttons */}
         <div className="flex gap-4">
           <button
+            type="submit"
             disabled={loading}
             className="flex-1 flex items-center justify-center gap-2 md:px-6 px-4 md:py-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Save className="w-5 h-5" />
-            {loading ? 'Saving...' : (formData.status === 'published' ? 'Publish Product' : 'Save as Draft')}
+            {loading ? 'Saving...' : 'Update Product'}
           </button>
           <button
             type="button"
