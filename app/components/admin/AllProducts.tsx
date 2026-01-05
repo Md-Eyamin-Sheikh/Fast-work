@@ -31,37 +31,37 @@ export function AllProducts() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      {/* Header - Mobile Responsive */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">All Products</h1>
-          <p className="text-gray-600">Manage your products in beautiful card view</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">All Products</h1>
+          <p className="text-sm sm:text-base text-gray-600">Manage your products in beautiful card view</p>
         </div>
         <Link
           href="/admin/products/add"
-          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
+          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all text-sm sm:text-base"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
           Add Product
         </Link>
       </div>
 
-      {/* Search Bar */}
-      <div className="mb-6">
-        <div className="relative max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+      {/* Search Bar - Mobile Responsive */}
+      <div className="mb-4 sm:mb-6">
+        <div className="relative w-full sm:max-w-md">
+          <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products..."
-            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
           />
         </div>
       </div>
 
-      {/* Product Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* Product Cards Grid - Mobile Responsive */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 pb-24 lg:pb-0">
         {filteredProducts.map((product) => (
           <div
             key={product.id}
@@ -78,48 +78,48 @@ export function AllProducts() {
                 }}
               />
               
-              {/* Action Icons */}
-              <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Action Icons - Always visible on mobile */}
+              <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex gap-1.5 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                 <Link
                   href={`/admin/products/edit/${product.id}`}
-                  className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+                  className="p-1.5 sm:p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </Link>
                 <button
                   onClick={() => handleDelete(product.id, product.name)}
-                  className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-lg"
+                  className="p-1.5 sm:p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-lg"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
 
-              {/* Badge */}
-              <div className="absolute top-3 left-3">
-                <span className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">
+              {/* Badge - Mobile Responsive */}
+              <div className="absolute top-2 sm:top-3 left-2 sm:left-3">
+                <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-blue-600 text-white text-[10px] sm:text-xs font-bold rounded-full">
                   {product.badge}
                 </span>
               </div>
             </div>
 
-            {/* Product Info */}
-            <div className="p-4">
-              <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">
+            {/* Product Info - Mobile Responsive */}
+            <div className="p-3 sm:p-4">
+              <h3 className="font-bold text-base sm:text-lg text-gray-900 mb-1.5 sm:mb-2 line-clamp-1">
                 {product.name}
               </h3>
               
-              <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-2xl font-bold text-gray-900">৳{product.price}</span>
+              <div className="flex items-baseline gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                <span className="text-xl sm:text-2xl font-bold text-gray-900">৳{product.price}</span>
                 {product.originalPrice && (
-                  <span className="text-sm text-gray-500 line-through">
+                  <span className="text-xs sm:text-sm text-gray-500 line-through">
                     ৳{product.originalPrice}
                   </span>
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-sm text-gray-600">
-                <span className="capitalize">{product.category.replace('-', ' ')}</span>
-                <span className={`font-medium ${product.stock > 10 ? 'text-green-600' : 'text-orange-600'}`}>
+              <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600">
+                <span className="capitalize truncate">{product.category.replace('-', ' ')}</span>
+                <span className={`font-medium ml-2 shrink-0 ${product.stock > 10 ? 'text-green-600' : 'text-orange-600'}`}>
                   Stock: {product.stock}
                 </span>
               </div>

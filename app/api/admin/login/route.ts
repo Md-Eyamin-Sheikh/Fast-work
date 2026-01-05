@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('my-app-db'); // Giving it a specific DB name or default
+    const db = client.db('my-app-db');
     const admins = db.collection('admins');
 
     const admin = await admins.findOne({ email });
@@ -52,8 +52,10 @@ export async function POST(request: Request) {
 
     return response;
 
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  } catch (e: any) {
+    console.error('Login Route Error:', e);
+    // Print stack trace
+    if (e.stack) console.error(e.stack);
+    return NextResponse.json({ error: 'Internal Server Error', details: e.message }, { status: 500 });
   }
 }

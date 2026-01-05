@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     const status = searchParams.get('status'); // published or draft
     
     const client = await clientPromise;
-    const db = client.db('test');
+    const db = client.db('my-app-db');
     const collection = db.collection('blogs');
 
     let query: any = {};
@@ -31,10 +31,11 @@ export async function GET(request: Request) {
 
     return NextResponse.json(blogs);
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching blogs:', error);
+    if (error.stack) console.error(error.stack);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error.message },
       { status: 500 }
     );
   }
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('test');
+    const db = client.db('my-app-db');
     const collection = db.collection('blogs');
 
     // Check if slug already exists
@@ -118,7 +119,7 @@ export async function PUT(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('test');
+    const db = client.db('my-app-db');
     const collection = db.collection('blogs');
 
     const result = await collection.updateOne(
@@ -165,7 +166,7 @@ export async function DELETE(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('test');
+    const db = client.db('my-app-db');
     const collection = db.collection('blogs');
 
     const result = await collection.deleteOne({ slug });

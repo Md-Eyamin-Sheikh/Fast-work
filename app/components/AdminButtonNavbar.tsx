@@ -42,18 +42,26 @@ export function AdminButtonNavbar() {
       
       {/* Bottom Button Navigation - Admin Panel (Mobile & Tablet Only) */}
       <nav 
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-indigo-200/50 shadow-2xl"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-xl border-t border-gray-200 shadow-2xl"
         aria-label="Admin navigation"
       >
-        {/* Gradient accent line at top - Admin theme (indigo-purple) */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-indigo-600 via-purple-600 to-indigo-600 opacity-90" />
+        {/* Professional gradient accent line - Primary blue-indigo */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 via-indigo-600 to-blue-600" />
         
         <div className="max-w-7xl mx-auto px-2 sm:px-4 py-2.5 sm:py-3">
           {/* Optimized 5-column grid for admin items */}
           <div className="grid grid-cols-5 gap-1.5 sm:gap-2.5">
             {adminNavItems.map((item) => {
-              const isActive = pathname === item.path || 
-                              (item.path !== '/admin' && pathname.startsWith(item.path));
+              // Exact match or subpath match, but prioritize exactness
+              const isExactMatch = pathname === item.path;
+              const isSubPath = item.path !== '/admin' && pathname?.startsWith(item.path);
+              
+              // Prevent "Blogs" (/admin/blogs) from being active when "Write" (/admin/blogs/write) is active
+              const isActive = isExactMatch || (
+                isSubPath && !adminNavItems.some(
+                  other => other !== item && other.path.length > item.path.length && pathname?.startsWith(other.path)
+                )
+              );
               const IconComponent = item.icon;
               
               return (
@@ -64,15 +72,15 @@ export function AdminButtonNavbar() {
                   aria-label={item.label}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  {/* Enhanced Button Container - Admin Theme */}
+                  {/* Professional Button Container - Primary Theme */}
                   <motion.div
                     className={`
                       relative flex flex-col items-center justify-center
                       w-full min-h-[64px] sm:min-h-[72px] md:min-h-[80px]
                       rounded-2xl sm:rounded-3xl transition-all duration-300
                       ${isActive 
-                        ? 'bg-linear-to-br from-indigo-600 via-purple-600 to-indigo-700 shadow-xl shadow-indigo-500/40' 
-                        : 'bg-indigo-50/80 hover:bg-indigo-100/90 active:bg-indigo-200/90 shadow-sm hover:shadow-md'
+                        ? 'bg-linear-to-br from-blue-600 via-indigo-600 to-blue-700 shadow-xl shadow-blue-500/50' 
+                        : 'bg-gray-50 hover:bg-blue-50 active:bg-blue-100 shadow-sm hover:shadow-md border border-gray-200 hover:border-blue-200'
                       }
                     `}
                     whileTap={{ scale: 0.90 }}
@@ -87,7 +95,7 @@ export function AdminButtonNavbar() {
                           transition-all duration-300
                           ${isActive 
                             ? 'text-white drop-shadow-lg' 
-                            : 'text-indigo-700 group-hover:text-indigo-900'
+                            : 'text-gray-700 group-hover:text-blue-600'
                           }
                         `}
                         strokeWidth={isActive ? 2.5 : 2}
@@ -100,7 +108,7 @@ export function AdminButtonNavbar() {
                         mt-1.5 text-[11px] sm:text-xs font-medium transition-all duration-300
                         ${isActive 
                           ? 'text-white font-semibold tracking-wide' 
-                          : 'text-indigo-700 group-hover:text-indigo-900'
+                          : 'text-gray-700 group-hover:text-blue-600'
                         }
                       `}
                     >

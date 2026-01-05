@@ -6,9 +6,9 @@ if (!process.env.MONGODB_URI) {
 
 const uri = process.env.MONGODB_URI;
 const options = {
-  connectTimeoutMS: 3000,  // 3s connection timeout (reduced from 10s)
-  socketTimeoutMS: 5000,   // 5s socket timeout (reduced from 45s)
-  serverSelectionTimeoutMS: 3000, // 3s server selection timeout
+  connectTimeoutMS: 10000, // 10s connection timeout
+  socketTimeoutMS: 45000,  // 45s socket timeout
+  serverSelectionTimeoutMS: 10000, // 10s server selection timeout
 };
 
 let client;
@@ -18,14 +18,14 @@ if (process.env.NODE_ENV === 'development') {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   let globalWithMongo = global as typeof globalThis & {
-    _mongoClientPromise?: Promise<MongoClient>;
+    _mongoClientPromise_fixed?: Promise<MongoClient>;
   };
 
-  if (!globalWithMongo._mongoClientPromise) {
+  if (!globalWithMongo._mongoClientPromise_fixed) {
     client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+    globalWithMongo._mongoClientPromise_fixed = client.connect();
   }
-  clientPromise = globalWithMongo._mongoClientPromise;
+  clientPromise = globalWithMongo._mongoClientPromise_fixed;
 } else {
   // In production mode, it's best to not use a global variable.
   client = new MongoClient(uri, options);
