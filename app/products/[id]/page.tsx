@@ -49,8 +49,8 @@ async function getProductAndRelated(id: string): Promise<{ product: Product | un
   }
 }
 
-export default async function ProductDetailsRoute({ params }: { params: { id: string } }) {
-  // In Next.js 15, we might need to await params.
+export default async function ProductDetailsRoute(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const id = params.id;
   const { product, relatedProducts } = await getProductAndRelated(id);
 

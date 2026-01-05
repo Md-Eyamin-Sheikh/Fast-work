@@ -62,7 +62,7 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
         </div>
 
         {/* Hero Section */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 mb-8">
+        <div className="bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-gray-100 mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             
             {/* Left: Image */}
@@ -150,11 +150,12 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
               )}
 
               {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                 <div className="flex border border-gray-300 rounded-lg h-12 w-full sm:w-32">
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                 <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl h-14 w-full sm:w-36 px-2">
                     <button 
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-l-lg transition"
+                        className="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900 hover:bg-white rounded-lg transition-all shadow-sm active:scale-95 text-xl font-medium"
                     >
                         -
                     </button>
@@ -162,29 +163,33 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                         type="text" 
                         value={quantity} 
                         readOnly 
-                        className="flex-1 text-center font-semibold text-gray-900 outline-none"
+                        className="flex-1 text-center font-bold text-gray-900 bg-transparent outline-none text-lg"
                     />
                     <button 
                         onClick={() => setQuantity(quantity + 1)}
-                        className="w-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-r-lg transition"
+                        className="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900 hover:bg-white rounded-lg transition-all shadow-sm active:scale-95 text-xl font-medium"
                     >
                         +
                     </button>
                  </div>
                  
-                 <button
-                    onClick={() => onAddToCart(product)}
-                    className="flex-1 bg-[#86EFAC] bg-opacity-80 hover:bg-opacity-100 text-green-900 font-bold h-12 rounded-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
-                  >
-                    ADD TO CART
-                  </button>
-                  
-                  <button
-                    onClick={() => onBuyNow(product)}
-                    className="flex-1 bg-black text-white font-bold h-12 rounded-lg hover:bg-gray-800 transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
-                  >
-                    Buy Now
-                  </button>
+                 <div className="flex flex-1 gap-4 w-full">
+                     <button
+                        onClick={() => onAddToCart(product)}
+                        className="group flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold h-14 rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-green-500/25 active:scale-95 px-2"
+                      >
+                        <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform shrink-0" />
+                        <span className="uppercase tracking-wide text-xs sm:text-sm md:text-base whitespace-nowrap">Add to Cart</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => onBuyNow(product)}
+                        className="group flex-1 bg-gray-900 hover:bg-black text-white font-bold h-14 rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-gray-900/25 active:scale-95 px-2"
+                      >
+                        <CreditCard className="w-5 h-5 group-hover:scale-110 transition-transform shrink-0" />
+                        <span className="uppercase tracking-wide text-xs sm:text-sm md:text-base whitespace-nowrap">Buy Now</span>
+                      </button>
+                 </div>
               </div>
 
              {/* Watching Banner */}
@@ -211,7 +216,7 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
         </div>
 
         {/* Tabs Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 mb-12">
+        <div className="bg-white rounded-2xl py-4 md:py-8  border border-gray-100 mb-12">
             <Tabs defaultValue="description">
                 <div className="border-b px-0 md:px-8 w-full">
                     <div className="overflow-x-auto w-full px-4 md:px-0 scrollbar-hide">
@@ -244,11 +249,11 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                     </div>
                 </div>
                 
-                <div className="p-6 md:p-8">
+                <div className="p-2 md:p-8">
                     <TabsContent value="description" className="mt-0 space-y-8 animate-in fade-in-50 duration-300">
                         <div>
                              <p className="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{product.description}</p>
-                             <h3 className="text-xl font-bold mt-4 mb-2">{product.name}</h3>
+                             <h3 className="text-xl font-bold mt-4 mb-2 text-gray-700">{product.name}</h3>
                              <div className="w-20 h-1 bg-green-500 rounded-full mb-6"></div>
                         </div>
 
@@ -257,7 +262,7 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                                 <div>
                                     <h4 className="text-green-600 font-bold text-lg mb-1">What You will get?</h4>
-                                    <h3 className="text-xl font-bold mb-6">Best {product.highlights?.[0] || 'Value'}</h3>
+                                    <h3 className="text-xl font-bold mb-6 text-gray-700">Best {product.highlights?.[0] || 'Value'}</h3>
                                     <p className="text-gray-600 mb-6 text-sm">
                                         Boost your efficiency and productivity with our premium digital assets. Tailored for professionals, students, and anyone seeking a productivity boost.
                                     </p>
@@ -283,28 +288,28 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                         {/* Why Choose Us Section */}
                         <div className="border-t border-gray-100 pt-8">
                             <h3 className="text-2xl font-bold text-gray-900 mb-6">Why Choose Us?</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <div className="bg-gray-50 p-6 rounded-xl">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                                <div className="bg-gray-50 p-3 md:p-6 rounded-xl">
                                     <h4 className="font-bold text-lg mb-2 text-gray-900">Effective Payment</h4>
                                     <p className="text-sm text-gray-600">With bKash, Nagad, and Rocket, the leading mobile financial services in Bangladesh, you can conveniently purchase your subscription.</p>
                                 </div>
-                                <div className="bg-gray-50 p-6 rounded-xl">
+                                <div className="bg-gray-50 p-3 md:p-6 rounded-xl">
                                     <h4 className="font-bold text-lg mb-2 text-gray-900">Bangladesh Friendly</h4>
                                     <p className="text-sm text-gray-600">We understand local needs. Integrated local payment options ensure a hassle-free experience tailored to your preferences.</p>
                                 </div>
-                                <div className="bg-gray-50 p-6 rounded-xl">
+                                <div className="bg-gray-50 p-3 md:p-6 rounded-xl">
                                     <h4 className="font-bold text-lg mb-2 text-gray-900">Instant Activation</h4>
                                     <p className="text-sm text-gray-600">No waiting around. Once payment is made, your account or license key will be delivered instantly via dashboard/email.</p>
                                 </div>
-                                <div className="bg-gray-50 p-6 rounded-xl">
+                                <div className="bg-gray-50 p-3 md:p-6 rounded-xl">
                                     <h4 className="font-bold text-lg mb-2 text-gray-900">Secure Transactions</h4>
                                     <p className="text-sm text-gray-600">Your security matters to us. We use robust security measures to give you peace of mind when making purchases.</p>
                                 </div>
-                                <div className="bg-gray-50 p-6 rounded-xl">
+                                <div className="bg-gray-50 p-3 md:p-6 rounded-xl">
                                     <h4 className="font-bold text-lg mb-2 text-gray-900">Affordable Access</h4>
                                     <p className="text-sm text-gray-600">Premium subscriptions offer incredible value for your money, eliminating worries about currency conversions or international payments.</p>
                                 </div>
-                                <div className="bg-gray-50 p-6 rounded-xl">
+                                <div className="bg-gray-50 p-3 md:p-6 rounded-xl">
                                     <h4 className="font-bold text-lg mb-2 text-gray-900">Customer Support</h4>
                                     <p className="text-sm text-gray-600">Need assistance? Our friendly customer support team is ready to guide you through every step and answer any questions.</p>
                                 </div>
@@ -313,21 +318,21 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
 
                         {/* FAQ Section */}
                         <div className="border-t border-gray-100 pt-8">
-                             <h3 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h3>
+                             <h3 className="text-2xl font-bold text-gray-900 mb-3 md:mb-6">Frequently Asked Questions</h3>
                              <div className="space-y-4">
-                                <div className="border border-gray-200 rounded-lg p-5">
+                                <div className="border border-gray-200 rounded-lg p-3 md:p-6">
                                     <h5 className="font-bold text-gray-900 mb-2">How do I receive access after purchase?</h5>
                                     <p className="text-sm text-gray-600">After payment, you will receive login credentials or a license key via email and on your specific user dashboard. Instructions will be provided.</p>
                                 </div>
-                                <div className="border border-gray-200 rounded-lg p-5">
+                                <div className="border border-gray-200 rounded-lg p-3 md:p-6">
                                     <h5 className="font-bold text-gray-900 mb-2">Is this a one-time payment?</h5>
                                     <p className="text-sm text-gray-600">It depends on the product. Some are monthly subscriptions (like shared accounts) while others might be one-time purchases (like keys). Check the product details.</p>
                                 </div>
-                                <div className="border border-gray-200 rounded-lg p-5">
+                                <div className="border border-gray-200 rounded-lg p-3 md:p-6">
                                     <h5 className="font-bold text-gray-900 mb-2">Can I return to the free version?</h5>
                                     <p className="text-sm text-gray-600">Yes, you can switch back to free versions of services at any time by simply not renewing your subscription with us.</p>
                                 </div>
-                                <div className="border border-gray-200 rounded-lg p-5">
+                                <div className="border border-gray-200 rounded-lg p-3 md:p-6">
                                     <h5 className="font-bold text-gray-900 mb-2">What payment methods are available?</h5>
                                     <p className="text-sm text-gray-600">We accept bKash, Nagad, Rocket, and direct bank transfers for easy local payments.</p>
                                 </div>
@@ -470,7 +475,7 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
 
         {/* Related Products */}
         <div>
-            <h2 className="text-2xl font-bold mb-8">Related Products</h2>
+            <h2 className="text-2xl font-bold mb-8 text-gray-700">Related Products</h2>
              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                 {relatedProducts.map(related => (
                     <ProductCard 
