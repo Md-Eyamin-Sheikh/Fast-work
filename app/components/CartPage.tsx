@@ -1,11 +1,11 @@
-import React from 'react';
 import { Product } from '../data/products';
+import { CartItem } from '../context/CartContext';
 import { Trash2, Plus, Minus, ShoppingBag, ChevronLeft } from 'lucide-react';
 import { Badge } from './ui/badge';
 import Link from 'next/link';
 
 interface CartPageProps {
-  items: { product: Product; quantity: number }[];
+  items: CartItem[];
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
   onCheckout?: () => void;
@@ -19,39 +19,43 @@ export function CartPage({
   onCheckout,
   onContinueShopping,
 }: CartPageProps) {
-  const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal;
 
   const savings = items.reduce((sum, item) => {
-    if (item.product.originalPrice) {
-      return sum + (item.product.originalPrice - item.product.price) * item.quantity;
+    if (item.originalPrice) {
+      return sum + (item.originalPrice - item.price) * item.quantity;
     }
     return sum;
   }, 0);
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto px-4">
-          <button
-            onClick={() => onContinueShopping ? onContinueShopping() : window.location.href = '/products'}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 w-fit"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Back
-          </button>
-
-          <div className="bg-white rounded-xl p-12 text-center">
-            <ShoppingBag className="w-24 h-24 text-gray-300 mx-auto mb-6" />
-            <h2 className="text-2xl font-bold mb-2">Your Cart is Empty</h2>
-            <p className="text-gray-600 mb-8">Add some products to get started!</p>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="max-w-6xl mx-auto px-4 w-full pt-8">
             <button
-              onClick={() => onContinueShopping ? onContinueShopping() : window.location.href = '/products'}
-              className="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                onClick={() => onContinueShopping ? onContinueShopping() : window.location.href = '/products'}
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium transition-colors mb-8"
             >
-              Continue Shopping
+                <ChevronLeft className="w-5 h-5" />
+                Back
             </button>
-          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center -mt-20 px-4">
+            <div className="bg-white rounded-3xl p-12 md:p-16 text-center shadow-sm max-w-2xl w-full mx-auto animate-in fade-in zoom-in-95 duration-300">
+                <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <ShoppingBag className="w-12 h-12 text-gray-300" strokeWidth={1.5} />
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Cart is Empty</h2>
+                <p className="text-gray-500 text-lg mb-10">Add some products to get started!</p>
+                <button
+                    onClick={() => onContinueShopping ? onContinueShopping() : window.location.href = '/products'}
+                    className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-600/25 active:scale-95 text-base"
+                >
+                    Continue Shopping
+                </button>
+            </div>
         </div>
       </div>
     );
@@ -75,12 +79,12 @@ export function CartPage({
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {items.map((item) => (
-              <div key={item.product.id} className="bg-white rounded-xl p-6">
+              <div key={item.id} className="bg-white rounded-xl p-6">
                 <div className="flex gap-4">
                   {/* Product Image */}
                   <img
-                    src={item.product.image}
-                    alt={item.product.name}
+                    src={item.image}
+                    alt={item.name}
                     className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
                   />
 
@@ -88,21 +92,21 @@ export function CartPage({
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h3 className="font-semibold text-lg mb-1">{item.product.name}</h3>
+                        <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
                         <div className="flex items-center gap-2 mb-2">
                           <Badge className="text-xs">
-                            {item.product.badge}
+                            {item.badge}
                           </Badge>
-                          {item.product.deliveryType === 'auto' && (
+                          {item.deliveryType === 'auto' && (
                             <Badge className="bg-green-500 text-white text-xs">
                               ⚡ Instant
                             </Badge>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600">Duration: {item.product.duration}</p>
+                        <p className="text-sm text-gray-600">Duration: {item.duration}</p>
                       </div>
                       <button
-                        onClick={() => onRemoveItem(item.product.id)}
+                        onClick={() => onRemoveItem(item.id)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       >
                         <Trash2 className="w-5 h-5" />
@@ -112,10 +116,10 @@ export function CartPage({
                     {/* Price & Quantity */}
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex items-baseline gap-2">
-                        <span className="font-bold text-xl">৳{item.product.price}</span>
-                        {item.product.originalPrice && (
+                        <span className="font-bold text-xl">৳{item.price}</span>
+                        {item.originalPrice && (
                           <span className="text-sm text-gray-500 line-through">
-                            ৳{item.product.originalPrice}
+                            ৳{item.originalPrice}
                           </span>
                         )}
                       </div>
@@ -123,14 +127,14 @@ export function CartPage({
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() => onUpdateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                          onClick={() => onUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
                           className="w-8 h-8 flex items-center justify-center border rounded-lg hover:bg-gray-100 transition-colors"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
                         <span className="font-semibold w-8 text-center">{item.quantity}</span>
                         <button
-                          onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                           className="w-8 h-8 flex items-center justify-center border rounded-lg hover:bg-gray-100 transition-colors"
                         >
                           <Plus className="w-4 h-4" />

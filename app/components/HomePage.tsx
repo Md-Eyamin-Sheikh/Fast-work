@@ -83,13 +83,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
                   Start Exploring
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link
-                  href="/bundles"
-                  className="group w-full sm:w-auto px-2 py-4 bg-white text-indigo-700 border-2 border-indigo-200 rounded-xl font-semibold hover:bg-linear-to-r hover:from-indigo-50 hover:to-blue-50 hover:border-indigo-300 transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 hover:scale-[1.02] duration-300"
-                >
-                  View Bundles
-                  <Gift className="w-5 h-5 text-indigo-600 group-hover:rotate-12 transition-transform" />
-                </Link>
+                
               </motion.div>
 
               {/* Trust Badges - Enhanced */}
@@ -185,31 +179,31 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
           <div className="grid grid-cols-4 md:grid-cols-4 gap-0.5 md:gap-8">
             <div className="text-center group p-2 md:p-4 rounded-2xl hover:bg-gray-50 transition-colors">
               <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Users className="w-6 h-6 text-blue-600" />
+                <Users className="w-6 h-6 md:h-10 md:w-10 text-blue-600" />
               </div>
-              <h3 className="lg:text-2xl text-xl md:text-3xl font-bold text-gray-900 mb-1">15K+</h3>
-              <p className="text-gray-500 text-sm">Active Users</p>
+              <h3 className="lg:text-2xl text-xl md:text-4xl font-bold text-gray-900 mb-1">15K+</h3>
+              <p className="text-gray-500 text-sm md:text-lg">Active Users</p>
             </div>
             <div className="text-center group p-2 md:p-4 rounded-2xl hover:bg-gray-50 transition-colors">
               <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-6 h-6 text-green-600" />
+                <TrendingUp className="w-6 h-6 md:h-10 md:w-10 text-green-600" />
               </div>
-              <h3 className="lg:text-2xl text-xl md:text-3xl font-bold text-gray-900 mb-1">50K+</h3>
-              <p className="text-gray-500 text-sm">Orders Completed</p>
+              <h3 className="lg:text-2xl text-xl md:text-4xl font-bold text-gray-900 mb-1">50K+</h3>
+              <p className="text-gray-500 text-sm md:text-lg">Orders Completed</p>
             </div>
             <div className="text-center group p-2 md:p-4 rounded-2xl hover:bg-gray-50 transition-colors">
               <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Star className="w-6 h-6 text-indigo-600" />
+                <Star className="w-6 h-6 md:h-10 md:w-10 text-indigo-600" />
               </div>
-              <h3 className="lg:text-2xl text-xl md:text-3xl font-bold text-gray-900 mb-1">4.9/5</h3>
-              <p className="text-gray-500 text-sm">Customer Rating</p>
+              <h3 className="lg:text-2xl text-xl md:text-4xl font-bold text-gray-900 mb-1">4.9/5</h3>
+              <p className="text-gray-500 text-sm md:text-lg">Customer Rating</p>
             </div>
             <div className="text-center group p-2 md:p-4 rounded-2xl hover:bg-gray-50 transition-colors">
               <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Trophy className="w-6 h-6 text-blue-600" />
+                <Trophy className="w-6 h-6 md:h-10 md:w-10 text-blue-600" />
               </div>
-              <h3 className="lg:text-2xl text-xl md:text-3xl font-bold text-gray-900 mb-1">Top #1</h3>
-              <p className="text-gray-500 text-sm">In Bangladesh</p>
+              <h3 className="lg:text-2xl text-xl md:text-4xl font-bold text-gray-900 mb-1">Top #1</h3>
+              <p className="text-gray-500 text-sm md:text-lg">In Bangladesh</p>
             </div>
           </div>
         </div>
