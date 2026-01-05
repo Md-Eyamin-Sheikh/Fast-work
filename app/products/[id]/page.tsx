@@ -5,45 +5,54 @@ import { MegaMenu } from '../../components/MegaMenu';
 import { notFound } from 'next/navigation';
 import clientPromise from '@/app/lib/mongodb';
 
-async function getProduct(id: string): Promise<Product | undefined> {
+async function getProductAndRelated(id: string): Promise<{ product: Product | undefined, relatedProducts: Product[] }> {
   try {
     const client = await clientPromise;
     const db = client.db('test');
     const collection = db.collection('products');
     
-    // First try finding by custom string 'id' field
+    // 1. Fetch main product
     const productById = await collection.findOne({ id: id });
-    if (productById) {
-       return {
-          ...productById,
-          _id: productById._id.toString(),
-          id: productById.id || productById._id.toString()
-       } as unknown as Product;
+    if (!productById) {
+        return { product: undefined, relatedProducts: [] };
     }
 
-    // Try finding by MongoDB _id if needed (optional)
-    // ...
+    const product = {
+        ...productById,
+        _id: productById._id.toString(),
+        id: productById.id || productById._id.toString()
+    } as unknown as Product;
 
-    return undefined;
+    // 2. Fetch related products (same category or random, excluding current)
+    // Using simple logic: 4 random products excluding current
+    const relatedDocs = await collection.aggregate([
+        { $match: { id: { $ne: id } } },
+        { $sample: { size: 4 } }
+    ]).toArray();
+
+    const relatedProducts = relatedDocs.map(p => ({
+        ...p,
+        _id: p._id.toString(),
+        id: p.id || p._id.toString()
+    })) as unknown as Product[];
+
+    return { product, relatedProducts };
+    
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
        console.info('ℹ️ Using demo products for detail view (database offline)');
     }
     // Fallback to static products
-    return staticProducts.find(p => p.id === id);
+    const product = staticProducts.find(p => p.id === id);
+    const relatedProducts = staticProducts.filter(p => p.id !== id).slice(0, 4);
+    return { product, relatedProducts };
   }
 }
 
 export default async function ProductDetailsRoute({ params }: { params: { id: string } }) {
-  // In Next.js 15, we might need to await params, but in 14 it's props. 
-  // Let's assume params is available directly; if 15+, might need await.
-  // Safest for latest Next.js 15 breaking changes:
-  // const { id } = await params;
-  
-  // Note: The previous code implies Next.js 14 or lower or non-async params yet.
-  // We'll treat params as normal object for now, unless errors arise.
+  // In Next.js 15, we might need to await params.
   const id = params.id;
-  const product = await getProduct(id);
+  const { product, relatedProducts } = await getProductAndRelated(id);
 
   if (!product) {
     return notFound();
@@ -54,6 +63,7 @@ export default async function ProductDetailsRoute({ params }: { params: { id: st
       <MegaMenu />
       <ProductDetailsPage
         product={product}
+        relatedProducts={relatedProducts}
       />
     </>
   );

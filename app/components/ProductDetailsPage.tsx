@@ -19,13 +19,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { useCart } from '../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ProductCard } from './ProductCard'; // Import ProductCard
 
 interface ProductDetailsPageProps {
   product: Product;
+  relatedProducts: Product[];
   onBack?: () => void;
 }
 
-export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps) {
+export function ProductDetailsPage({ product, relatedProducts, onBack }: ProductDetailsPageProps) {
   const { addToCart } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -47,9 +49,6 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
   // Breadcrumbs
   const categoryName = categories[product.category as keyof typeof categories]?.name || product.category;
 
-  // Related Products (Simulated by taking first 4 other products)
-  const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 4);
-
   return (
     <div className="min-h-screen bg-gray-50 pb-16">
       <div className="max-w-7xl mx-auto px-4 py-6">
@@ -59,7 +58,7 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
           <ChevronRight className="w-4 h-4" />
           <Link href={`/products?category=${product.category}`} className="hover:text-blue-600">{categoryName}</Link>
           <ChevronRight className="w-4 h-4" />
-          <span className="text-gray-900 font-medium truncate max-w-[200px]">{product.name}</span>
+          <span className="text-gray-900 font-medium truncate min-w-0 flex-1">{product.name}</span>
         </div>
 
         {/* Hero Section */}
@@ -152,7 +151,7 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                 <div className="flex border border-gray-300 rounded-lg h-12 w-32">
+                 <div className="flex border border-gray-300 rounded-lg h-12 w-full sm:w-32">
                     <button 
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
                         className="w-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-l-lg transition"
@@ -224,6 +223,12 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
                                 Description
                             </TabsTrigger>
                             <TabsTrigger 
+                                value="additional-information" 
+                                className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-2 md:px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-xs md:text-sm tracking-wide whitespace-nowrap"
+                            >
+                                Additional Information
+                            </TabsTrigger>
+                            <TabsTrigger 
                                 value="reviews" 
                                 className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-2 md:px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-xs md:text-sm tracking-wide whitespace-nowrap"
                             >
@@ -242,16 +247,16 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
                 <div className="p-6 md:p-8">
                     <TabsContent value="description" className="mt-0 space-y-8 animate-in fade-in-50 duration-300">
                         <div>
-                             <p className="text-gray-600 leading-relaxed text-lg">{product.description}</p>
+                             <p className="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{product.description}</p>
                              <h3 className="text-xl font-bold mt-4 mb-2">{product.name}</h3>
                              <div className="w-20 h-1 bg-green-500 rounded-full mb-6"></div>
                         </div>
 
                         {/* What you get section */}
                         {product.whatYouGet && product.whatYouGet.length > 0 && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                                 <div>
-                                    <h4 className="text-green-600 font-bold text-lg mb-1">What You will get ?</h4>
+                                    <h4 className="text-green-600 font-bold text-lg mb-1">What You will get?</h4>
                                     <h3 className="text-xl font-bold mb-6">Best {product.highlights?.[0] || 'Value'}</h3>
                                     <p className="text-gray-600 mb-6 text-sm">
                                         Boost your efficiency and productivity with our premium digital assets. Tailored for professionals, students, and anyone seeking a productivity boost.
@@ -274,6 +279,103 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
                                 </div>
                             </div>
                         )}
+
+                        {/* Why Choose Us Section */}
+                        <div className="border-t border-gray-100 pt-8">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Why Choose Us?</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="bg-gray-50 p-6 rounded-xl">
+                                    <h4 className="font-bold text-lg mb-2 text-gray-900">Effective Payment</h4>
+                                    <p className="text-sm text-gray-600">With bKash, Nagad, and Rocket, the leading mobile financial services in Bangladesh, you can conveniently purchase your subscription.</p>
+                                </div>
+                                <div className="bg-gray-50 p-6 rounded-xl">
+                                    <h4 className="font-bold text-lg mb-2 text-gray-900">Bangladesh Friendly</h4>
+                                    <p className="text-sm text-gray-600">We understand local needs. Integrated local payment options ensure a hassle-free experience tailored to your preferences.</p>
+                                </div>
+                                <div className="bg-gray-50 p-6 rounded-xl">
+                                    <h4 className="font-bold text-lg mb-2 text-gray-900">Instant Activation</h4>
+                                    <p className="text-sm text-gray-600">No waiting around. Once payment is made, your account or license key will be delivered instantly via dashboard/email.</p>
+                                </div>
+                                <div className="bg-gray-50 p-6 rounded-xl">
+                                    <h4 className="font-bold text-lg mb-2 text-gray-900">Secure Transactions</h4>
+                                    <p className="text-sm text-gray-600">Your security matters to us. We use robust security measures to give you peace of mind when making purchases.</p>
+                                </div>
+                                <div className="bg-gray-50 p-6 rounded-xl">
+                                    <h4 className="font-bold text-lg mb-2 text-gray-900">Affordable Access</h4>
+                                    <p className="text-sm text-gray-600">Premium subscriptions offer incredible value for your money, eliminating worries about currency conversions or international payments.</p>
+                                </div>
+                                <div className="bg-gray-50 p-6 rounded-xl">
+                                    <h4 className="font-bold text-lg mb-2 text-gray-900">Customer Support</h4>
+                                    <p className="text-sm text-gray-600">Need assistance? Our friendly customer support team is ready to guide you through every step and answer any questions.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* FAQ Section */}
+                        <div className="border-t border-gray-100 pt-8">
+                             <h3 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h3>
+                             <div className="space-y-4">
+                                <div className="border border-gray-200 rounded-lg p-5">
+                                    <h5 className="font-bold text-gray-900 mb-2">How do I receive access after purchase?</h5>
+                                    <p className="text-sm text-gray-600">After payment, you will receive login credentials or a license key via email and on your specific user dashboard. Instructions will be provided.</p>
+                                </div>
+                                <div className="border border-gray-200 rounded-lg p-5">
+                                    <h5 className="font-bold text-gray-900 mb-2">Is this a one-time payment?</h5>
+                                    <p className="text-sm text-gray-600">It depends on the product. Some are monthly subscriptions (like shared accounts) while others might be one-time purchases (like keys). Check the product details.</p>
+                                </div>
+                                <div className="border border-gray-200 rounded-lg p-5">
+                                    <h5 className="font-bold text-gray-900 mb-2">Can I return to the free version?</h5>
+                                    <p className="text-sm text-gray-600">Yes, you can switch back to free versions of services at any time by simply not renewing your subscription with us.</p>
+                                </div>
+                                <div className="border border-gray-200 rounded-lg p-5">
+                                    <h5 className="font-bold text-gray-900 mb-2">What payment methods are available?</h5>
+                                    <p className="text-sm text-gray-600">We accept bKash, Nagad, Rocket, and direct bank transfers for easy local payments.</p>
+                                </div>
+                             </div>
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="additional-information" className="mt-0">
+                        <div className="border rounded-xl overflow-hidden">
+                            <table className="w-full text-sm text-left text-gray-600">
+                                <tbody>
+                                    <tr className="bg-gray-50 border-b">
+                                        <th className="px-6 py-4 font-medium text-gray-900 w-1/3">Product Name</th>
+                                        <td className="px-6 py-4">{product.name}</td>
+                                    </tr>
+                                    <tr className="border-b">
+                                        <th className="px-6 py-4 font-medium text-gray-900">Category</th>
+                                        <td className="px-6 py-4 capitalize">{product.category.replace('-', ' ')}</td>
+                                    </tr>
+                                    <tr className="bg-gray-50 border-b">
+                                        <th className="px-6 py-4 font-medium text-gray-900">Product Type</th>
+                                        <td className="px-6 py-4">{product.productType}</td>
+                                    </tr>
+                                    <tr className="border-b">
+                                        <th className="px-6 py-4 font-medium text-gray-900">Delivery Method</th>
+                                        <td className="px-6 py-4">{product.deliveryType === 'auto' ? 'Instant Delivery (Email/Dashboard)' : 'Manual Delivery (Within 30 mins)'}</td>
+                                    </tr>
+                                    <tr className="bg-gray-50 border-b">
+                                        <th className="px-6 py-4 font-medium text-gray-900">Duration</th>
+                                        <td className="px-6 py-4">{product.duration}</td>
+                                    </tr>
+                                    <tr className="border-b">
+                                        <th className="px-6 py-4 font-medium text-gray-900">Warranty</th>
+                                        <td className="px-6 py-4">{product.warranty}</td>
+                                    </tr>
+                                    <tr className="bg-gray-50">
+                                        <th className="px-6 py-4 font-medium text-gray-900">Stock Status</th>
+                                        <td className="px-6 py-4">
+                                            {product.stock > 0 ? (
+                                                <span className="text-green-600 font-bold">In Stock ({product.stock} items)</span>
+                                            ) : (
+                                                <span className="text-red-600 font-bold">Out of Stock</span>
+                                            )}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </TabsContent>
 
                     <TabsContent value="reviews" className="mt-0">
@@ -331,7 +433,7 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
                                         <textarea className="w-full h-32 rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" placeholder="Write your review here..."></textarea>
                                      </div>
 
-                                     <div className="grid grid-cols-2 gap-4">
+                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                          <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
                                             <input type="text" className="w-full rounded-lg border border-gray-200 p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none" />
@@ -369,38 +471,13 @@ export function ProductDetailsPage({ product, onBack }: ProductDetailsPageProps)
         {/* Related Products */}
         <div>
             <h2 className="text-2xl font-bold mb-8">Related Products</h2>
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                 {relatedProducts.map(related => (
-                    <div key={related.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow group">
-                        <div className="relative aspect-video bg-gray-100">
-                             <img src={related.image} alt={related.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                             {related.originalPrice && related.originalPrice > related.price && (
-                                <span className="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                    -{Math.round(((related.originalPrice - related.price) / related.originalPrice) * 100)}%
-                                </span>
-                             )}
-                              {related.badge && (
-                                <span className="absolute top-2 right-2 bg-yellow-400 text-black text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase">
-                                    {related.badge}
-                                </span>
-                             )}
-                        </div>
-                        <div className="p-4">
-                            <h3 className="font-bold text-gray-900 mb-1 truncate">{related.name}</h3>
-                            <p className="text-xs text-gray-500 mb-3 line-clamp-2">{related.deliveryType === 'auto' ? 'Instant Delivery' : 'Manual Delivery'} - {related.category}</p>
-                            
-                            <div className="flex items-center justify-between">
-                                <div className="flex flex-col">
-                                     {related.originalPrice && <span className="text-xs text-gray-400 line-through">৳{related.originalPrice}</span>}
-                                    <span className="font-bold text-green-600">৳{related.price}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                                    <span className="text-xs font-bold">{related.rating}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ProductCard 
+                        key={related.id} 
+                        product={related} 
+                        onAddToCart={onAddToCart}
+                    />
                 ))}
              </div>
         </div>

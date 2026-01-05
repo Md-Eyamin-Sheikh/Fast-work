@@ -118,7 +118,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex sm:flex-row gap-4">
+        <div className="flex gap-2 sm:gap-4">
           <Link
             href={`/products/${product.id}`}
             className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 border-2 border-blue-600 text-blue-600 rounded-lg md:rounded-xl hover:bg-blue-50 transition-all font-semibold text-xs md:text-sm active:scale-95"
