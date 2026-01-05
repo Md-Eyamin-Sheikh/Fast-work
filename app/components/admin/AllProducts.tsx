@@ -1,18 +1,35 @@
 'use client';
 
-import { useState } from 'react';
-import { Edit, Trash2, Plus, Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Edit, Trash2, Plus, Search, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { DeleteConfirmModal } from './DeleteConfirmModal';
-import { products as staticProducts } from '@/app/data/products';
+import { Product } from '@/app/data/products';
 
 // Inline SVG placeholder for broken images
 const PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Ctext fill='%239ca3af' font-family='system-ui, sans-serif' font-size='24' font-weight='600' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3ENo Image%3C/text%3E%3C/svg%3E";
 
 export function AllProducts() {
-  const [products, setProducts] = useState(staticProducts);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [deleteModal, setDeleteModal] = useState({ open: false, id: '', name: '' });
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/products');
+        const data = await response.json();
+        setProducts(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
 
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -61,7 +78,13 @@ export function AllProducts() {
       </div>
 
       {/* Product Cards Grid - Mobile Responsive */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 pb-24 lg:pb-0">
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mr-2" />
+          <span className="text-gray-500">Loading products...</span>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 pb-24 lg:pb-0">
         {filteredProducts.map((product) => (
           <div
             key={product.id}
@@ -127,6 +150,7 @@ export function AllProducts() {
           </div>
         ))}
       </div>
+      )}
 
       {/* Empty State */}
       {filteredProducts.length === 0 && (

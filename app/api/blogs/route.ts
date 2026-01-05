@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     const status = searchParams.get('status'); // published or draft
     
     const client = await clientPromise;
-    const db = client.db('my-app-db');
+    const db = client.db('test');
     const collection = db.collection('blogs');
 
     let query: any = {};
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('my-app-db');
+    const db = client.db('test');
     const collection = db.collection('blogs');
 
     // Check if slug already exists
@@ -119,7 +119,7 @@ export async function PUT(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('my-app-db');
+    const db = client.db('test');
     const collection = db.collection('blogs');
 
     const result = await collection.updateOne(
@@ -166,7 +166,7 @@ export async function DELETE(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('my-app-db');
+    const db = client.db('test');
     const collection = db.collection('blogs');
 
     const result = await collection.deleteOne({ slug });
