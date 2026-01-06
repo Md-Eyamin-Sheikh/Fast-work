@@ -20,6 +20,8 @@ import { useCart } from '../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ProductCard } from './ProductCard'; // Import ProductCard
+import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
 
 interface ProductDetailsPageProps {
   product: Product;
@@ -28,9 +30,12 @@ interface ProductDetailsPageProps {
 }
 
 export function ProductDetailsPage({ product, relatedProducts, onBack }: ProductDetailsPageProps) {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const { addToCart } = useCart();
   const router = useRouter();
+  const { user } = useAuth(); // Get user from AuthContext
   const [quantity, setQuantity] = useState(1);
+  /* eslint-enable @typescript-eslint/no-unused-vars */
   
   // Review Form State
   const [rating, setRating] = useState(0);
@@ -41,6 +46,17 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
     message: '',
     saveInfo: false
   });
+
+  // Pre-fill form if user is logged in
+  useEffect(() => {
+    if (user) {
+        setReviewForm(prev => ({
+            ...prev,
+            name: user.displayName || '',
+            email: user.email || ''
+        }));
+    }
+  }, [user]);
 
   const onAddToCart = (product: Product) => {
     addToCart(product);
@@ -436,11 +452,47 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                             </div>
 
                             {/* Add Review Form */}
+                            {/* Add Review Form */}
                             <div className="bg-gray-50 p-6 md:p-8 rounded-2xl border border-gray-100">
                                 <h3 className="text-xl font-bold mb-2 text-gray-900">Add a review</h3>
                                 <p className="text-sm text-gray-500 mb-6">Your email address will not be published. Required fields are marked *</p>
                                 
-                                <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); /* Handle submit */ }}>
+                                <form className="space-y-5" onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    
+                                    try {
+                                        const response = await fetch('/api/reviews', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({
+                                                productId: product.id,
+                                                rating,
+                                                content: reviewForm.message,
+                                                name: reviewForm.name,
+                                                email: reviewForm.email,
+                                                userId: user?.uid, // Send user ID if logged in
+                                            }),
+                                        });
+
+                                        const data = await response.json();
+
+                                        if (response.ok) {
+                                            // Handle success
+                                            alert(data.message); // Replace with SweetAlert later if needed
+                                            setReviewForm({ name: '', email: '', message: '', saveInfo: false });
+                                            setRating(0);
+                                        } else {
+                                           // Handle error
+                                           alert(data.message);
+                                        }
+
+                                    } catch (error) {
+                                        console.error('Submission error:', error);
+                                        alert('Something went wrong. Please try again.');
+                                    }
+                                }}>
                                      <div>
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Your rating *</label>
                                         <div className="flex gap-1">
@@ -483,7 +535,8 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                                                 type="text" 
                                                 value={reviewForm.name}
                                                 onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})}
-                                                className="w-full rounded-xl border border-gray-200 p-3 text-gray-700 h-11 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all bg-white" 
+                                                className={`w-full rounded-xl border border-gray-200 p-3 text-gray-700 h-11 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all ${user ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
+                                                readOnly={!!user} // Read-only if logged in
                                                 required
                                             />
                                          </div>
@@ -493,7 +546,8 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                                                 type="email" 
                                                 value={reviewForm.email}
                                                 onChange={(e) => setReviewForm({...reviewForm, email: e.target.value})}
-                                                className="w-full rounded-xl border border-gray-200 text-gray-700 p-3 h-11 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all bg-white" 
+                                                className={`w-full rounded-xl border border-gray-200 text-gray-700 p-3 h-11 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all ${user ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
+                                                readOnly={!!user} // Read-only if logged in
                                                 required
                                             />
                                          </div>
