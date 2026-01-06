@@ -1,8 +1,11 @@
 "use client";
 
+
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
+import { MegaMenu } from '../components/MegaMenu';
+import { CartPage } from '../components/CartPage';
 
 export default function CartRoute() {
   const router = useRouter();

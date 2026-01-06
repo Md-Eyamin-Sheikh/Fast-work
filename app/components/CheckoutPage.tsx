@@ -78,15 +78,15 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
         {/* Notification */}
         <div className="bg-white border-t-2 border-green-500 p-4 mb-8 flex items-center gap-2 text-sm text-gray-700 shadow-sm">
             <Check className="w-5 h-5 text-green-500" />
-            <span><span className="text-gray-400">Continue shopping</span> "{items[0].name}" has been added to your cart.</span>
+            <span><span className="text-gray-800">Continue shopping</span> "{items[0].name}" has been added to your cart.</span>
         </div>
 
         {/* Auth Links */}
         <div className="space-y-3 mb-8 text-sm">
-            <div>
+            <div className="text-gray-700">
                 Returning customer? <a href="#" className="text-green-600 hover:underline">Click here to login</a>
             </div>
-            <div>
+            <div className="text-gray-700">
                  Have a coupon? <a href="#" className="text-green-600 hover:underline">Click here to enter your code</a>
             </div>
         </div>

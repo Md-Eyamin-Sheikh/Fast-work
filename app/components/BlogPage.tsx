@@ -84,7 +84,7 @@ export function BlogPage() {
       </section>
 
       {/* Blog Grid */}
-      <section className="max-w-7xl mx-auto px-4 py-8 md:py-16">
+      <section className="max-w-7xl mx-auto px-4 py-4 md:py-16">
         {/* Loading State */}
         {loading && (
           <div className="flex items-center justify-center py-16">
@@ -185,7 +185,7 @@ export function BlogPage() {
 
             {/* Empty State */}
             {parseBlogs.length === 0 && (
-              <div className="text-center py-16">
+              <div className="text-center py-10">
                 <p className="text-gray-500 text-lg mb-4">No blog posts available at the moment.</p>
                 <p className="text-gray-400 text-sm">Check back soon for new content!</p>
               </div>

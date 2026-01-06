@@ -73,71 +73,72 @@ export function CartPage({
           Continue Shopping
         </button>
 
-        <h1 className="text-3xl font-bold mb-8">Shopping Cart ({items.length} items)</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-gray-900">Shopping Cart ({items.length} items)</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {items.map((item) => (
-              <div key={item.id} className="bg-white rounded-xl p-6">
+              <div key={item.id} className="bg-white rounded-xl p-4 sm:p-6 shadow-sm">
                 <div className="flex gap-4">
                   {/* Product Image */}
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                    className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg flex-shrink-0 border border-gray-100"
                   />
 
                   {/* Product Details */}
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="text-xs">
+                      <div className="pr-4">
+                        <h3 className="font-semibold text-gray-900 text-sm sm:text-lg mb-1 line-clamp-2">{item.name}</h3>
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <Badge className="text-[10px] sm:text-xs px-1.5 py-0.5" variant="secondary">
                             {item.badge}
                           </Badge>
                           {item.deliveryType === 'auto' && (
-                            <Badge className="bg-green-500 text-white text-xs">
+                            <Badge className="bg-green-500 text-white text-[10px] sm:text-xs px-1.5 py-0.5 hover:bg-green-600">
                               ⚡ Instant
                             </Badge>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600">Duration: {item.duration}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Duration: {item.duration}</p>
                       </div>
                       <button
                         onClick={() => onRemoveItem(item.id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                        aria-label="Remove item"
                       >
-                        <Trash2 className="w-5 h-5" />
+                        <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                       </button>
                     </div>
 
                     {/* Price & Quantity */}
-                    <div className="flex items-center justify-between mt-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4">
                       <div className="flex items-baseline gap-2">
-                        <span className="font-bold text-xl">৳{item.price}</span>
+                        <span className="font-bold text-lg sm:text-xl text-gray-900">৳{item.price}</span>
                         {item.originalPrice && (
-                          <span className="text-sm text-gray-500 line-through">
+                          <span className="text-sm text-gray-400 line-through">
                             ৳{item.originalPrice}
                           </span>
                         )}
                       </div>
 
                       {/* Quantity Controls */}
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 self-end sm:self-auto">
                         <button
                           onClick={() => onUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                          className="w-8 h-8 flex items-center justify-center border rounded-lg hover:bg-gray-100 transition-colors"
+                          className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors"
                         >
-                          <Minus className="w-4 h-4" />
+                          <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </button>
-                        <span className="font-semibold w-8 text-center">{item.quantity}</span>
+                        <span className="font-semibold w-6 sm:w-8 text-center text-sm sm:text-base text-gray-900">{item.quantity}</span>
                         <button
                           onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center border rounded-lg hover:bg-gray-100 transition-colors"
+                          className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors"
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </button>
                       </div>
                     </div>
@@ -150,7 +151,7 @@ export function CartPage({
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl p-6 sticky top-24">
-              <h2 className="text-xl font-bold mb-6">Order Summary</h2>
+              <h2 className="text-xl font-bold mb-6 text-gray-700">Order Summary</h2>
 
               <div className="space-y-3 mb-6 pb-6 border-b">
                 <div className="flex justify-between text-gray-600">
@@ -166,8 +167,8 @@ export function CartPage({
               </div>
 
               <div className="flex justify-between mb-6">
-                <span className="font-bold text-lg">Total</span>
-                <span className="font-bold text-2xl text-blue-600">৳{total}</span>
+                <span className="font-bold text-lg text-gray-700">Total</span>
+                <span className="font-bold text-2xl  text-blue-600">৳{total}</span>
               </div>
 
               <button
@@ -179,7 +180,7 @@ export function CartPage({
 
               <button
                 onClick={() => onContinueShopping ? onContinueShopping() : window.location.href = '/products'}
-                className="block w-full text-center py-3 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                className="block w-full text-center py-3 border text-gray-600 border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors"
               >
                 Continue Shopping
               </button>
