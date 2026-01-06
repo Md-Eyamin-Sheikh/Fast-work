@@ -64,7 +64,7 @@ export function BlogPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 py-12 md:py-20">
+      <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 py-6 md:py-20">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
         <div className="max-w-6xl mx-auto px-4 relative">
           <motion.div

@@ -20,8 +20,10 @@ import { useCart } from '../context/CartContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ProductCard } from './ProductCard'; // Import ProductCard
+
 import { useAuth } from '../context/AuthContext';
-import { useEffect } from 'react';
+import { useEffect } from 'react'; 
+import { showSuccess, showError } from '../lib/sweetalert';
 
 interface ProductDetailsPageProps {
   product: Product;
@@ -38,6 +40,8 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
   /* eslint-enable @typescript-eslint/no-unused-vars */
   
   // Review Form State
+  const [reviews, setReviews] = useState<any[]>([]); // Use appropriate type if available, e.g. Review[]
+  const [isLoadingReviews, setIsLoadingReviews] = useState(true);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [reviewForm, setReviewForm] = useState({
@@ -46,6 +50,24 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
     message: '',
     saveInfo: false
   });
+
+  const fetchReviews = async () => {
+    try {
+        const res = await fetch(`/api/reviews?productId=${product.id}`);
+        if (res.ok) {
+            const data = await res.json();
+            setReviews(data);
+        }
+    } catch (error) {
+        console.error("Failed to fetch reviews", error);
+    } finally {
+        setIsLoadingReviews(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, [product.id]);
 
   // Pre-fill form if user is logged in
   useEffect(() => {
@@ -121,22 +143,23 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                 {product.name}
               </h1>
 
-              {/* Rating */}
               <div className="flex items-center gap-2 mb-6">
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
                       className={`w-5 h-5 ${
-                        i < Math.floor(product.rating)
+                        i < Math.floor(reviews.length > 0 ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length) : product.rating)
                           ? 'fill-yellow-400 text-yellow-400'
                           : 'text-gray-200'
                       }`}
                     />
                   ))}
                 </div>
-                <span className="text-sm text-gray-500">({product.reviews} customer reviews)</span>
+                {/* Show total reviews count from DB if available, else product.reviews as fallback or just DB count */}
+                <span className="text-sm text-gray-500">({reviews.length} customer reviews)</span>
               </div>
+
 
               {/* Price */}
               <div className="flex items-end gap-3 mb-6">
@@ -263,7 +286,7 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                                 value="reviews" 
                                 className="bg-transparent border-b-2 border-transparent data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none px-2 md:px-0 py-4 font-semibold text-gray-500 data-[state=active]:text-green-600 uppercase text-xs md:text-sm tracking-wide whitespace-nowrap"
                             >
-                                Reviews ({product.reviews})
+                                Reviews ({reviews.length})
                             </TabsTrigger>
                              <TabsTrigger 
                                 value="referral" 
@@ -412,21 +435,24 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
                     <TabsContent value="reviews" className="mt-0">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                             {/* Reviews List */}
+                            {/* Reviews List */}
                             <div className="space-y-6">
-                                <h3 className="text-xl font-bold text-gray-900">{product.reviews} reviews for {product.name}</h3>
-                                {product.reviewsList && product.reviewsList.length > 0 ? (
-                                    product.reviewsList.map((review) => (
-                                        <div key={review.id} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
+                                <h3 className="text-xl font-bold text-gray-900">{reviews.length} reviews for {product.name}</h3>
+                                {reviews.length > 0 ? (
+                                    reviews.map((review) => (
+                                        <div key={review._id || review.id} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
                                             <div className="flex items-center gap-4 mb-4">
                                                 <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold text-lg">
-                                                    {review.author.charAt(0)}
+                                                    {(review.name || review.author || 'A').charAt(0).toUpperCase()}
                                                 </div>
                                                 <div>
                                                     <div className="flex items-center gap-2">
-                                                        <h5 className="font-bold text-gray-900">{review.author}</h5>
-                                                        {review.verified && <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-green-200 text-xs py-0.5">Verified</Badge>}
+                                                        <h5 className="font-bold text-gray-900">{review.name || review.author}</h5>
+                                                        {review.verified && <span className="bg-green-100 text-green-700 border border-green-200 text-xs px-2 py-0.5 rounded-full">Verified</span>}
                                                     </div>
-                                                    <p className="text-xs text-gray-500 mt-0.5">{review.date}</p>
+                                                    <p className="text-xs text-gray-500 mt-0.5">
+                                                        {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : review.date}
+                                                    </p>
                                                 </div>
                                             </div>
                                              <div className="flex items-center mb-3">
@@ -480,17 +506,18 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
 
                                         if (response.ok) {
                                             // Handle success
-                                            alert(data.message); // Replace with SweetAlert later if needed
+                                            showSuccess(data.message, 'Thank You!');
                                             setReviewForm({ name: '', email: '', message: '', saveInfo: false });
                                             setRating(0);
+                                            fetchReviews(); // Refresh reviews
                                         } else {
                                            // Handle error
-                                           alert(data.message);
+                                           showError(data.message);
                                         }
 
                                     } catch (error) {
                                         console.error('Submission error:', error);
-                                        alert('Something went wrong. Please try again.');
+                                        showError('Something went wrong. Please try again.');
                                     }
                                 }}>
                                      <div>
