@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Footer } from "./components/Footer";
+import { ClientFooter } from "./components/ClientFooter";
 import { ButtonNavbar } from "./components/ButtonNavbar";
 import { AdminButtonNavbar } from "./components/AdminButtonNavbar";
 import { Providers } from "./components/Providers";
@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <Providers>
           {children}
-          <Footer />
+          <ClientFooter />
           <ButtonNavbar />
           <AdminButtonNavbar />
         </Providers>

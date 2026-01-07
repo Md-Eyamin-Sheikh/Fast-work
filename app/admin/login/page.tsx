@@ -1,11 +1,10 @@
-
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Lock, Mail, ArrowRight, Loader2, Sparkles } from 'lucide-react';
-import { auth, googleProvider, facebookProvider } from '../../lib/firebase';
+import { auth, googleProvider } from '../../lib/firebase';
 import { signInWithPopup } from 'firebase/auth';
 
 export default function AdminLogin() {
@@ -98,7 +97,7 @@ export default function AdminLogin() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 gap-4 mb-6">
             <button
               onClick={() => handleSocialLogin(googleProvider)}
               type="button"
@@ -111,16 +110,6 @@ export default function AdminLogin() {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               </svg>
               Google
-            </button>
-            <button
-               onClick={() => handleSocialLogin(facebookProvider)}
-               type="button"
-               className="flex items-center justify-center gap-2 py-3 px-4 bg-[#1877F2] text-white rounded-xl font-bold text-sm hover:bg-[#166fe5] transition-all duration-300 shadow-md"
-            >
-              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 2.848-6.326 5.862-6.326 1.494 0 3.018.263 3.018.263v3.138h-1.972c-1.676 0-2.269 1.055-2.269 2.225v1.682h3.882l-1.04 3.667h-2.842v7.98c-5.28-.711-4.632-6.526-4.643-9.591" />
-              </svg>
-              Facebook
             </button>
           </div>
 
@@ -186,27 +175,6 @@ export default function AdminLogin() {
               )}
             </button>
           </form>
-
-          <div className="mt-8 text-center space-y-4 relative z-10">
-            <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/10"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-transparent text-gray-400 backdrop-blur-md">Or</span>
-                </div>
-            </div>
-            
-            <Link 
-                href="/register" 
-                className="group inline-flex items-center gap-2 text-sm text-blue-300 hover:text-white transition-colors duration-300"
-            >
-                 <span>Don&apos;t have an account?</span>
-                 <span className="flex items-center gap-1 font-semibold underline decoration-transparent group-hover:decoration-blue-400 underline-offset-4 transition-all">
-                    Register Now <Sparkles className="w-3 h-3 text-yellow-300" />
-                 </span>
-            </Link>
-          </div>
         </div>
       </div>
     </div>
