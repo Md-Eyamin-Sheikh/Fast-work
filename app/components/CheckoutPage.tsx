@@ -31,26 +31,73 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
     country: 'Bangladesh',
     phone: '',
     email: '',
-    createAccount: false
+    createAccount: false,
+    senderNumber: '',
+    transactionId: ''
   });
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal;
 
-  const handleCheckout = () => {
-    // Save order to localStorage for Success Page
-    // We only save basic info needed for display
-    localStorage.setItem('lastOrder', JSON.stringify(items));
-    
-    // Create an order ID
-    const orderId = `ORD-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-    localStorage.setItem('lastOrderId', orderId);
+  const handleCheckout = async () => {
+    // Basic Validation
+    if (!billingInfo.fullName || !billingInfo.phone || !billingInfo.email) {
+      alert('Please fill in all required billing fields.');
+      return;
+    }
 
-    // Simulate payment processing
-    setTimeout(() => {
-      clearCart();
-      router.push('/order-success');
-    }, 2000);
+    if (paymentMethod !== 'online') {
+        if (!billingInfo.senderNumber || !billingInfo.transactionId) {
+            alert('Please provide Sender Number and Transaction ID.');
+            return;
+        }
+        if (billingInfo.senderNumber.length < 11) {
+             alert('Please provide a valid 11-digit Sender Number.');
+             return;
+        }
+    }
+
+    try {
+        const orderData = {
+            items,
+            total,
+            customer: {
+                fullName: billingInfo.fullName,
+                email: billingInfo.email,
+                phone: billingInfo.phone,
+                country: billingInfo.country
+            },
+            payment: {
+                method: paymentMethod,
+                senderNumber: billingInfo.senderNumber,
+                transactionId: billingInfo.transactionId
+            }
+        };
+
+        const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            // Save basic info for success page
+            localStorage.setItem('lastOrder', JSON.stringify(items));
+            localStorage.setItem('lastOrderId', result.orderId);
+            
+            clearCart();
+            router.push('/order-success');
+        } else {
+            console.error('Order failed');
+            alert('Failed to place order. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error placing order:', error);
+        alert('An error occurred. Please check your connection.');
+    }
   };
 
   if (items.length === 0) {
@@ -78,7 +125,7 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
         {/* Notification */}
         <div className="bg-white border-t-2 border-green-500 p-4 mb-8 flex items-center gap-2 text-sm text-gray-700 shadow-sm">
             <Check className="w-5 h-5 text-green-500" />
-            <span><span className="text-gray-800">Continue shopping</span> "{items[0].name}" has been added to your cart.</span>
+            <span><span className="text-gray-600">Continue shopping</span> "{items[0].name}" has been added to your cart.</span>
         </div>
 
         {/* Auth Links */}
@@ -197,88 +244,101 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
             </div>
 
             {/* Payment Methods */}
-            <div className="space-y-4 mb-8">
-                {/* Pay Online */}
-                <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="flex items-start gap-3">
-                         <input 
-                            type="radio" 
-                            id="pay-online" 
-                            name="payment" 
-                            value="online"
-                            checked={paymentMethod === 'online'}
-                            onChange={() => setPaymentMethod('online')}
-                            className="mt-1 text-blue-600 focus:ring-blue-500"
-                        />
-                        <div className="flex-1">
-                            <label htmlFor="pay-online" className="block text-sm font-bold text-gray-900 cursor-pointer">
-                                Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
-                            </label>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                <VisaIcon />
-                                <MastercardIcon />
-                                <AmexIcon />
-                                <BkashIcon />
-                                {/* Add more icons as needed */}
-                            </div>
-                        </div>
-                    </div>
-                    {paymentMethod === 'online' && (
-                         <div className="mt-3 text-xs text-gray-600 bg-white p-3 rounded border border-gray-200">
-                            Accept global payments securely via VISA, MasterCard, bKash, or Bank. Select BDT (৳) from the right side before placing your order.
-                         </div>
-                    )}
+            <div className="space-y-6 mb-8">
+                <h3 className="font-bold text-gray-900 text-lg">Select Payment Method</h3>
+                
+                {/* Method Tabs */}
+                <div className="grid grid-cols-3 gap-3">
+                    {['bKash', 'Nagad', 'Rocket'].map((method) => (
+                        <button
+                            key={method}
+                            onClick={() => setPaymentMethod(method as any)}
+                            className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
+                                paymentMethod === method 
+                                ? 'border-[#e2136e] bg-pink-50 text-[#e2136e]' 
+                                : method === 'Nagad' && paymentMethod === 'Nagad' ? 'border-[#ec1d24] bg-red-50'
+                                : method === 'Rocket' && paymentMethod === 'Rocket' ? 'border-[#8c3494] bg-purple-50'
+                                : 'border-gray-100 hover:border-gray-200 bg-white text-gray-600'
+                            }`}
+                        >
+                            <span className={`font-bold text-sm ${
+                                method === 'bKash' ? 'text-[#e2136e]' : 
+                                method === 'Nagad' ? 'text-[#ec1d24]' : 
+                                'text-[#8c3494]'
+                            }`}>{method}</span>
+                        </button>
+                    ))}
+                    <button
+                         onClick={() => setPaymentMethod('online')}
+                         className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
+                             paymentMethod === 'online'
+                             ? 'border-blue-600 bg-blue-50 text-blue-600'
+                             : 'border-gray-100 hover:border-gray-200 bg-white text-gray-600'
+                         }`}
+                    >
+                         <span className="font-bold text-sm">Card/Other</span>
+                    </button>
                 </div>
 
-                 {/* Binance */}
-                 <div className="flex items-center gap-3">
-                     <input 
-                            type="radio" 
-                            id="binance" 
-                            name="payment" 
-                            value="binance"
-                            checked={paymentMethod === 'binance'}
-                            onChange={() => setPaymentMethod('binance')}
-                            className="text-yellow-500 focus:ring-yellow-500"
-                        />
-                    <label htmlFor="binance" className="text-sm font-bold text-gray-900 flex items-center gap-2 cursor-pointer">
-                        Binnace Payment <div className="bg-black text-yellow-500 rounded-full p-0.5"><div className="w-4 h-4 bg-yellow-500 rounded-full"></div></div>
-                    </label>
-                 </div>
+                {/* Manual Payment Details */}
+                {['bKash', 'Nagad', 'Rocket'].includes(paymentMethod) && (
+                    <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <div>
+                                <p className="text-xs text-gray-500 mb-1">Send Money (Personal)</p>
+                                <p className="font-mono font-bold text-gray-900 text-lg">01734612345</p>
+                            </div>
+                            <button 
+                                onClick={() => {
+                                    navigator.clipboard.writeText('01734612345');
+                                    // Could add toast here
+                                }}
+                                className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                Copy
+                            </button>
+                        </div>
 
-                  {/* Bybit */}
-                 <div className="flex items-center gap-3">
-                     <input 
-                            type="radio" 
-                            id="bybit" 
-                            name="payment" 
-                            value="bybit"
-                            checked={paymentMethod === 'bybit'}
-                            onChange={() => setPaymentMethod('bybit')}
-                            className="text-gray-900 focus:ring-gray-900"
-                        />
-                    <label htmlFor="bybit" className="text-sm font-bold text-gray-900 flex items-center gap-2 cursor-pointer">
-                        Bybit Payment <span className="font-bold">BYB<span className="text-yellow-500">i</span>T</span>
-                    </label>
-                 </div>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Sender Number (Your Number)</label>
+                                <input 
+                                    type="tel"
+                                    placeholder="01XXXXXXXXX"
+                                    maxLength={11}
+                                    onChange={(e) => setBillingInfo({...billingInfo, senderNumber: e.target.value})}
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono"
+                                />
+                                <p className="text-[10px] text-gray-500 mt-1">The number you sent money from</p>
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Transaction ID (TrxID)</label>
+                                <input 
+                                    type="text"
+                                    placeholder="8N7..."
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono uppercase"
+                                    onChange={(e) => setBillingInfo({...billingInfo, transactionId: e.target.value})}
+                                />
+                                <p className="text-[10px] text-gray-500 mt-1">Found in the payment confirmation message</p>
+                            </div>
+                        </div>
 
-                  {/* Crypto */}
-                 <div className="flex items-center gap-3">
-                     <input 
-                            type="radio" 
-                            id="crypto" 
-                            name="payment" 
-                            value="crypto"
-                            checked={paymentMethod === 'crypto'}
-                            onChange={() => setPaymentMethod('crypto')}
-                            className="text-blue-500 focus:ring-blue-500"
-                        />
-                    <label htmlFor="crypto" className="text-sm font-bold text-gray-900 flex items-center gap-2 cursor-pointer">
-                        Crypto Payment <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full border">Pay with crypto</span>
-                        {/* Icons row */}
-                    </label>
-                 </div>
-
+                        <div className="bg-blue-50 text-blue-800 text-xs p-3 rounded-lg border border-blue-100 flex gap-2">
+                             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                             <div>
+                                After verifying your payment (usually 10-15 mins), you will receive the product access via email.
+                             </div>
+                        </div>
+                    </div>
+                )}
+                
+                {paymentMethod === 'online' && (
+                    <div className="bg-gray-50 p-4 rounded-xl text-center text-sm text-gray-500">
+                        Secure online payment gateway coming soon. Please use Mobile Banking for now.
+                    </div>
+                )}
             </div>
             
             <p className="text-xs text-gray-500 mb-6 leading-relaxed">
