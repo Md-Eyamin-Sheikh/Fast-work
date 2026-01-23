@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { DashboardCharts } from './DashboardCharts';
 
 interface DashboardStats {
   products: {
@@ -207,6 +208,11 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
           </motion.div>
         )}
 
+        {/* Charts Section */}
+        {!loading && (
+          <DashboardCharts />
+        )}
+
         {/* Orders Section */}
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -364,3 +370,4 @@ function OrdersTable() {
             </div>
         </div>
     );
+}

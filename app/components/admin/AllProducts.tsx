@@ -84,7 +84,7 @@ export function AllProducts() {
           <span className="text-gray-500">Loading products...</span>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 pb-24 lg:pb-0">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 pb-24 lg:pb-0">
         {filteredProducts.map((product) => (
           <div
             key={product.id}

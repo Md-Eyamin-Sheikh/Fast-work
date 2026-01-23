@@ -118,10 +118,13 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             >
               {/* Logo */}
               <div className="p-6 border-b border-gray-200">
-                <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                  Victorians Academy
-                </h1>
-                <p className="text-sm text-gray-600 mt-1">Admin Panel</p>
+                <div className="flex items-center gap-3 mb-2">
+                    <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                    <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                    Victorians
+                    </h1>
+                </div>
+                <p className="text-sm text-gray-600">Admin Panel</p>
               </div>
 
               {/* Navigation */}
