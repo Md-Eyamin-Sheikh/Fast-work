@@ -29,6 +29,7 @@ async function getProducts(): Promise<Product[]> {
   } catch (error) {
     // Gracefully fallback to demo data when database is unavailable
     if (process.env.NODE_ENV === 'development') {
+      console.error('❌ Database connection failure:', error);
       console.info('ℹ️ Using demo products (database offline)');
     }
     // Import static products as fallback
