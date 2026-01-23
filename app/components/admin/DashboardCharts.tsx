@@ -56,9 +56,9 @@ export function DashboardCharts() {
           <div className="w-2 h-2 rounded-full bg-blue-500"></div>
           Revenue Overview
         </h3>
-        <div className="h-[300px] w-full">
+        <div className="h-[250px] sm:h-[300px] w-full min-w-0">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={revenueData}>
+            <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.2}/>
@@ -70,13 +70,13 @@ export function DashboardCharts() {
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{fill: '#9CA3AF', fontSize: 12}} 
+                tick={{fill: '#9CA3AF', fontSize: 10}} 
                 dy={10}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{fill: '#9CA3AF', fontSize: 12}} 
+                tick={{fill: '#9CA3AF', fontSize: 10}} 
                 tickFormatter={(value) => `৳${value}`}
               />
               <Tooltip 
@@ -108,9 +108,9 @@ export function DashboardCharts() {
           <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
           Order Distribution
         </h3>
-        <div className="h-[250px] w-full relative">
+        <div className="h-[250px] w-full relative min-w-0">
             <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
+            <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                 <Pie
                     data={orderStatusData}
                     cx="50%"
@@ -125,7 +125,7 @@ export function DashboardCharts() {
                     ))}
                 </Pie>
                 <Tooltip contentStyle={{ borderRadius: '8px' }} />
-                <Legend verticalAlign="bottom" height={36} />
+                <Legend verticalAlign="bottom" height={36} iconType="circle" />
             </PieChart>
             </ResponsiveContainer>
              {/* Center Text */}
@@ -147,15 +147,15 @@ export function DashboardCharts() {
            <div className="w-2 h-2 rounded-full bg-purple-500"></div>
           Customer Growth
         </h3>
-        <div className="h-[250px] w-full">
+        <div className="h-[200px] sm:h-[250px] w-full min-w-0">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={customerActivityData}>
+            <BarChart data={customerActivityData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
               <XAxis 
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{fill: '#9CA3AF', fontSize: 12}}
+                tick={{fill: '#9CA3AF', fontSize: 10}}
                 dy={10} 
               />
               <Tooltip 
