@@ -39,7 +39,7 @@ export function ButtonNavbar() {
   return (
     <>
       {/* Spacer to prevent content from being hidden behind fixed navbar */}
-      <div className="h-20 lg:hidden" />
+      <div className="h-16 lg:hidden" />
       
       {/* Bottom Button Navigation - Mobile & Tablet Only */}
       <nav 
@@ -47,11 +47,11 @@ export function ButtonNavbar() {
         aria-label="Mobile navigation"
       >
         {/* Gradient accent line at top with shimmer effect */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 via-indigo-600 to-blue-600 opacity-90" />
+        {/* <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 via-indigo-600 to-blue-600 opacity-90" /> */}
         
         <div className="max-w-7xl mx-auto px-2 sm:px-4 py-2.5 sm:py-3">
           {/* Optimized 5-column grid for perfect spacing */}
-          <div className="grid grid-cols-5 gap-1.5 sm:gap-2.5">
+          <div className="grid grid-cols-5 ">
             {navItems.map((item) => {
               const isActive = pathname === item.path || 
                               (item.path !== '/' && pathname.startsWith(item.path));
@@ -69,7 +69,7 @@ export function ButtonNavbar() {
                   <motion.div
                     className={`
                       relative flex flex-col items-center justify-center
-                      w-full min-h-[64px] sm:min-h-[72px] md:min-h-[80px]
+                      w-full min-h-[54px] sm:min-h-[58px] md:min-h-[66px]
                       rounded-2xl sm:rounded-3xl transition-all duration-300
                       ${isActive 
                         ? 'bg-linear-to-br from-blue-600 via-blue-600 to-indigo-600 shadow-xl shadow-blue-500/40' 
