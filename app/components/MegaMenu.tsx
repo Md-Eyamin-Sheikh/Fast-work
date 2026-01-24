@@ -53,8 +53,8 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
           <div className="flex items-center justify-between h-20 md:h-24"> {/* Reduced mobile height */}
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 md:gap-4 group">
-              <div className="relative w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center p-2 border border-blue-100 shadow-sm group-hover:shadow-md transition-all duration-300 shrink-0">
-                 <img src="/logo.png" alt="Victorians Academy" className="object-contain" />
+              <div className="relative w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center  border border-blue-100 shadow-sm group-hover:shadow-md transition-all duration-300 shrink-0">
+                 <img src="https://i.postimg.cc/d19GKJPt/logo-removebg-preview-(1).png" alt="Victorians Academy" className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col">
                 <h1 className="font-bold text-lg md:text-2xl text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors leading-tight">

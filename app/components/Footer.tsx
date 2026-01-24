@@ -21,8 +21,8 @@ export function Footer() {
           {/* Brand & About */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden">
-                 <img src="/logo.png" alt="Victorians Academy" className="w-full h-full object-contain" />
+              <div className="w-12 h-12 bg-white rounded-full  flex items-center justify-center overflow-hidden">
+                 <img src="https://i.postimg.cc/d19GKJPt/logo-removebg-preview-(1).png" alt="Victorians Academy" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white">Victorians Academy</h3>
