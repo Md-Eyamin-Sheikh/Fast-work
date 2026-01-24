@@ -4,6 +4,8 @@ import { MegaMenu } from '../components/MegaMenu';
 import { products as staticProducts, Product } from '../data/products';
 import clientPromise from '@/app/lib/mongodb';
 
+export const dynamic = 'force-dynamic';
+
 async function getProducts(): Promise<Product[]> {
   try {
     const client = await clientPromise;

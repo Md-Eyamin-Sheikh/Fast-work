@@ -14,7 +14,7 @@ export async function GET() {
     await collection.deleteMany({});
 
     if (products.length > 0) {
-      await collection.insertMany(products);
+      await collection.insertMany(products as any);
     }
 
     return NextResponse.json({ 

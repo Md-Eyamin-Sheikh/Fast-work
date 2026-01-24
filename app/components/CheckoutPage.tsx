@@ -25,7 +25,7 @@ interface CheckoutPageProps {
 export function CheckoutPage({ items }: CheckoutPageProps) {
   const router = useRouter();
   const { clearCart } = useCart(); // Use hook
-  const [paymentMethod, setPaymentMethod] = useState<'online' | 'binance' | 'bybit' | 'crypto'>('online');
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'bKash' | 'Nagad' | 'Rocket'>('online');
   const [billingInfo, setBillingInfo] = useState({
     fullName: '',
     country: 'Bangladesh',
@@ -252,7 +252,7 @@ export function CheckoutPage({ items }: CheckoutPageProps) {
                     {['bKash', 'Nagad', 'Rocket'].map((method) => (
                         <button
                             key={method}
-                            onClick={() => setPaymentMethod(method as any)}
+                            onClick={() => setPaymentMethod(method as 'bKash' | 'Nagad' | 'Rocket')}
                             className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
                                 paymentMethod === method 
                                 ? 'border-[#e2136e] bg-pink-50 text-[#e2136e]' 
