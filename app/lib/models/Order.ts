@@ -19,7 +19,7 @@ const OrderSchema = new mongoose.Schema({
   }],
   totalAmount: { type: Number, required: true },
   payment: {
-    method: { type: String, enum: ['bKash', 'Nagad', 'Rocket', 'Binance', 'Bybit', 'Crypto'], required: true },
+    method: { type: String, required: true },
     senderNumber: { type: String }, // For mobile banking
     transactionId: { type: String, required: true }
   },
