@@ -21,11 +21,30 @@ export async function POST(request: Request) {
         const store_id = process.env.SSLC_STORE_ID;
         const store_passwd = process.env.SSLC_STORE_PASS;
         
-        // Mode selection: Explicit Env > 'test' in ID > sandbox (default safety)
-        const isLive = process.env.SSLC_MODE === 'live' || process.env.SSLC_MODE === 'secure';
-        const sslcz_mode = isLive ? 'securepay' : 'sandbox';
+        // Mode selection: Explicit Env > Guess based on ID > Default to Sandbox
+        const modeEnv = process.env.SSLC_MODE?.toLowerCase();
+        const isLive = modeEnv === 'live' || modeEnv === 'secure';
+        const isSandbox = modeEnv === 'sandbox' || modeEnv === 'test';
+        
+        let sslcz_mode = 'sandbox';
+
+        if (isLive) {
+            sslcz_mode = 'securepay';
+        } else if (isSandbox) {
+            sslcz_mode = 'sandbox';
+        } else {
+            // Auto-detect: If ID doesn't contain 'test', assume it's a real live store
+            const id = store_id?.toLowerCase() || '';
+            sslcz_mode = id.includes('test') ? 'sandbox' : 'securepay';
+        }
         
         const init_url = `https://${sslcz_mode}.sslcommerz.com/gwprocess/v4/api.php`;
+        
+        console.log('SSLCommerz Config:', { 
+            mode: sslcz_mode, 
+            store_id_hint: store_id ? store_id.substring(0, 3) + '...' : 'MISSING',
+            is_explicit_env: !!modeEnv
+        });
 
         const data = {
             store_id,
@@ -75,8 +94,11 @@ export async function POST(request: Request) {
         if (sslData.status === 'SUCCESS') {
             return NextResponse.json({ gatewayUrl: sslData.GatewayPageURL });
         } else {
-            console.error('SSLCommerz Init Failed:', sslData);
-            return NextResponse.json({ error: 'SSLCommerz Init Failed', details: sslData }, { status: 400 });
+            console.error('SSLCommerz Error Response:', JSON.stringify(sslData, null, 2));
+            return NextResponse.json({ 
+                error: 'SSLCommerz Init Failed', 
+                details: sslData 
+            }, { status: 400 });
         }
 
     } catch (error) {

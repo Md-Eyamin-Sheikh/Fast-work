@@ -40,10 +40,38 @@ export function AllProducts() {
     setDeleteModal({ open: true, id, name });
   };
 
-  const confirmDelete = () => {
-    setProducts(products.filter(p => p.id !== deleteModal.id));
-    console.log('Deleted product:', deleteModal.id);
-    // TODO: Add API call to delete from database
+  const confirmDelete = async () => {
+    try {
+      const response = await fetch(`/api/products?id=${deleteModal.id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setProducts(products.filter(p => p.id !== deleteModal.id));
+        console.log('Deleted product:', deleteModal.id);
+      } else {
+        console.error('Failed to delete product');
+        alert('Failed to delete product');
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      alert('Error deleting product');
+    } finally {
+      // Close modal in any case
+      // We might want to keep it open on error, but for now simple UX is fine
+      // Actually the original code didn't close it explicitly here because themodal state controls visible
+      // Wait, the original code had: setProducts(...) which triggers re-render?
+      // No, setDeleteModal({ open: false ... }) call is in the JSX onConfirm prop wrapper or onClose?
+      // Ah, looking at the JSX: 
+      // onConfirm={confirmDelete}
+      // onClose={() => setDeleteModal({ open: false, id: '', name: '' })}
+      // So confirmDelete needs to close it or the modal component handles it? 
+      // Let's check the modal component usage in the file view...
+      // The DeleteConfirmModal probably calls onConfirm then onClose? or relies on parent to close?
+      // Checking local file ... line 172: onConfirm={confirmDelete}
+      // Usually confirmDelete is expected to handle the action. The modal doesn't necessarily close itself.
+      setDeleteModal({ open: false, id: '', name: '' });
+    }
   };
 
   return (
@@ -66,13 +94,13 @@ export function AllProducts() {
       {/* Search Bar - Mobile Responsive */}
       <div className="mb-4 sm:mb-6">
         <div className="relative w-full sm:max-w-md">
-          <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+          <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-800" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products..."
-            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 text-gray-800 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
           />
         </div>
       </div>
