@@ -42,7 +42,7 @@ export function ContactPage() {
       </section>
 
       {/* Main Content */}
-      <section className="max-w-6xl mx-auto px-4 py-16">
+      <section className="max-w-[1600px] mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
           {/* Contact Information */}
           <motion.div

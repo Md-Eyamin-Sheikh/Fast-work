@@ -99,7 +99,7 @@ export function ProductDetailsPage({ product, relatedProducts, onBack }: Product
 
   return (
     <div className="min-h-screen bg-gray-50 pb-16">
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-[1600px] mx-auto px-4 py-6">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
           <Link href="/" className="hover:text-blue-600">Home</Link>

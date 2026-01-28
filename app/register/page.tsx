@@ -50,7 +50,7 @@ export default function RegisterPage() {
           <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/30 rounded-full blur-[100px] animate-pulse delay-1000"></div>
       </div>
 
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+      <div className="w-full max-w-[1600px] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
         
         {/* Left Side - Animation */}
         <div className="hidden lg:flex flex-col items-center justify-center space-y-6">

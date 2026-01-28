@@ -48,7 +48,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
         <div className="absolute inset-0 bg-linear-to-tr from-transparent via-blue-100/30 to-indigo-100/40" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15]" />
         
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 pt-6 pb-6 sm:pt-16 sm:pb-20 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28 relative">
+        <div className="max-w-[1600px] mx-auto px-2 sm:px-6 pt-6 pb-6 sm:pt-16 sm:pb-20 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28 relative">
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-20 items-center">
             
             {/* Left: Content */}
@@ -175,7 +175,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
 
       {/* Stats Section */}
       <section className="bg-white py-4 md:py-16 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-2">
+        <div className="max-w-[1500px] mx-auto px-2">
           <div className="grid grid-cols-4 md:grid-cols-4 gap-0.5 md:gap-8">
             <div className="text-center group p-2 md:p-4 rounded-2xl hover:bg-gray-50 transition-colors">
               <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -211,7 +211,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
 
       {/* Categories Grid - Revised for visibility */}
       {/* <section className="py-4 md:py-16 lg:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between mb-6 md:mb-12">
             <div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 md:mb-3">Shop by Category</h2>
@@ -250,7 +250,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
       {flashSaleProducts.length > 0 && (
         <section className="py-8 bg-gradient-to-r from-rose-50 to-orange-50 overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-rose-200 rounded-full blur-[100px] opacity-30" />
-          <div className="max-w-7xl mx-auto px-4 relative">
+          <div className="max-w-[1600px] mx-auto px-4 relative">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-12 gap-4">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
@@ -280,7 +280,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
 
       {/* Trust / How it Works */}
       <section className="py-8 md:py-16 lg:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="max-w-[1500px] mx-auto px-4 md:px-6">
           <div className="text-center max-w-2xl mx-auto mb-6 md:mb-12 lg:mb-16">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">How It Works</h2>
             <p className="text-gray-600 text-sm md:text-base lg:text-lg">Get your premium tools in 3 simple steps</p>
@@ -366,7 +366,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
 
       {/* Featured Products */}
       <section className="py-4 md:py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1600px] mx-auto px-4">
           <div className="flex items-center justify-between mb-6 md:mb-12">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2  md:mb-3">Featured Products</h2>
@@ -404,7 +404,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
 
       {/* Bundle Offers */}
       {/* <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1600px] mx-auto px-4">
           <div className="bg-gradient-to-br from-blue-700 via-indigo-700 to-indigo-800 rounded-3xl p-8 md:p-16 text-white overflow-hidden relative shadow-2xl">
             <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-[150px] opacity-20" />
             <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-400 rounded-full blur-[120px] opacity-20" />
@@ -452,7 +452,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
 
       {/* Testimonials */}
       <section className="py-8 md:py-16 lg:py-20 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-6">
           <div className="text-center max-w-2xl mx-auto mb-6 md:mb-12 lg:mb-16">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">What Our Customers Say</h2>
             <p className="text-gray-600 text-sm md:text-base lg:text-lg">Join thousands of satisfied customers</p>

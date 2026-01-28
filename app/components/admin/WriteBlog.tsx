@@ -109,7 +109,7 @@ export function WriteBlog() {
         <p className="text-gray-600 text-sm md:text-base">Create engaging content with our clean editor</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-5xl">
+      <form onSubmit={handleSubmit} className="max-w-[1600px]">
         {/* Main Card */}
         <div className="bg-white rounded-2xl shadow-md md:p-8 p-4 border border-gray-100 mb-6">
           

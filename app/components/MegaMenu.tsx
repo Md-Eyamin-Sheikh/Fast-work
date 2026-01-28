@@ -49,7 +49,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
     <>
       {/* Main Header */}
       <header className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1600px] mx-auto px-4">
           <div className="flex items-center justify-between h-20 md:h-24"> {/* Reduced mobile height */}
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 md:gap-4 group">

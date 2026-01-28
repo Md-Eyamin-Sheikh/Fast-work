@@ -32,7 +32,7 @@ export function CartPage({
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="max-w-6xl mx-auto px-4 w-full pt-8">
+        <div className="max-w-[1600px] mx-auto px-4 w-full pt-8">
             <button
                 onClick={() => onContinueShopping ? onContinueShopping() : window.location.href = '/products'}
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium transition-colors mb-8"
@@ -63,7 +63,7 @@ export function CartPage({
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-[1600px] mx-auto px-4">
         {/* Back Button */}
         <button
           onClick={() => onContinueShopping ? onContinueShopping() : window.location.href = '/products'}

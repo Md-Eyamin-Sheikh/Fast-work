@@ -49,7 +49,7 @@ export function ButtonNavbar() {
         {/* Gradient accent line at top with shimmer effect */}
         {/* <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 via-indigo-600 to-blue-600 opacity-90" /> */}
         
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 py-2.5 sm:py-3">
+        <div className="max-w-[1600px] mx-auto px-2 sm:px-4 py-2.5 sm:py-3">
           {/* Optimized 5-column grid for perfect spacing */}
           <div className="grid grid-cols-5 ">
             {navItems.map((item) => {

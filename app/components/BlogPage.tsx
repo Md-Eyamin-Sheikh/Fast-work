@@ -66,7 +66,7 @@ export function BlogPage() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 py-6 md:py-20">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-        <div className="max-w-6xl mx-auto px-4 relative">
+        <div className="max-w-[1600px] mx-auto px-4 relative">
           <motion.div
             initial="initial"
             animate="animate"
@@ -84,7 +84,7 @@ export function BlogPage() {
       </section>
 
       {/* Blog Grid */}
-      <section className="max-w-7xl mx-auto px-4 py-4 md:py-16">
+      <section className="max-w-[1600px] mx-auto px-4 py-4 md:py-16">
         {/* Loading State */}
         {loading && (
           <div className="flex items-center justify-center py-16">

@@ -77,7 +77,7 @@ export default function AdminLogin() {
           <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-blue-500/20 rounded-full blur-[80px] animate-pulse delay-2000"></div>
       </div>
 
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+      <div className="w-full max-w-[1600px] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
         
         {/* Left Side - Animation */}
         <div className="hidden lg:flex flex-col items-center justify-center space-y-6">

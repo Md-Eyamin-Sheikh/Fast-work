@@ -150,7 +150,7 @@ export default function BlogDetailPage() {
           
           {/* Title Overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 lg:p-12">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-[1600px] mx-auto">
               <Link
                 href="/blog"
                 className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-3 sm:mb-4 transition-colors text-sm sm:text-base group"
@@ -195,7 +195,7 @@ export default function BlogDetailPage() {
         </div>
 
         {/* Content */}
-        <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 md:py-12">
+        <article className="max-w-[1600px] mx-auto px-4 sm:px-6 py-8 sm:py-10 md:py-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
