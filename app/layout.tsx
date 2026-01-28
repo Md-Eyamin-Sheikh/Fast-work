@@ -5,6 +5,7 @@ import { ClientFooter } from "./components/ClientFooter";
 import { ButtonNavbar } from "./components/ButtonNavbar";
 import { AdminButtonNavbar } from "./components/AdminButtonNavbar";
 import { Providers } from "./components/Providers";
+import { ChatWidget } from "./components/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
           <ClientFooter />
           <ButtonNavbar />
           <AdminButtonNavbar />
+          <ChatWidget />
         </Providers>
       </body>
     </html>
