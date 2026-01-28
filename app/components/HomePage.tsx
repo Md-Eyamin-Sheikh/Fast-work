@@ -30,7 +30,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
   // Use dynamic products if available, otherwise fall back to static data (mostly for dev/demo if DB empty)
   const displayProducts = initialProducts.length > 0 ? initialProducts : staticProducts;
 
-  const featuredProducts = displayProducts.slice(0, 6);
+  const featuredProducts = displayProducts.slice(0, 8);
   // Simple heuristic for flash sale if no explicit field exists, or use existing logic if compatible
   const flashSaleProducts = displayProducts.filter(p => p.originalPrice && p.originalPrice > p.price).slice(0, 4);
 
@@ -380,7 +380,7 @@ export function HomePage({ initialProducts = [] }: HomePageProps) {
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {featuredProducts.map((product) => (
               <ProductCard
                 key={product.id}
