@@ -7,7 +7,8 @@ import {
   Package, 
   BookOpen, 
   ShoppingCart, 
-  User 
+  User,
+  Info 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -25,7 +26,7 @@ const navItems: NavItem[] = [
   { id: 'products', label: 'Products', icon: Package, path: '/products' },
   { id: 'blog', label: 'Blog', icon: BookOpen, path: '/blog' },
   { id: 'cart', label: 'Cart', icon: ShoppingCart, path: '/cart', badge: 0 }, // Badge can be dynamic
-  { id: 'profile', label: 'Profile', icon: User, path: '/dashboard' },
+  { id: 'about', label: 'About', icon: Info, path: '/about' },
 ];
 
 export function ButtonNavbar() {

@@ -21,9 +21,9 @@ export function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 py-20">
+      <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 py-10 md:py-20">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-        <div className="max-w-4xl mx-auto px-4 relative">
+        <div className="max-w-7xl mx-auto px-4 relative">
           <motion.div
             initial="initial"
             animate="animate"
@@ -41,12 +41,12 @@ export function AboutPage() {
       </section>
 
       {/* Main Content */}
-      <section className="max-w-[1600px] mx-auto px-4 py-16">
+      <section className="max-w-[1600px] mx-auto px-4 py-8 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12"
+          className="bg-white rounded-2xl shadow-xl p-4 md:p-12 mb-12"
         >
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
             We are Bangladesh's leading online tools provider agency, committed to delivering <span className="font-bold text-blue-600">100% official & genuine services</span> that empower freelancers, entrepreneurs, and businesses to thrive in today's digital world. At Victorians Academy, trust and authenticity are at the core of everything we do.
@@ -127,7 +127,7 @@ export function AboutPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl shadow-xl p-8 md:p-12 text-white"
+          className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl shadow-xl p-4 md:p-12 text-white"
         >
           <h2 className="text-3xl font-bold mb-8 text-center">Contact Us</h2>
           
