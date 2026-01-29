@@ -129,7 +129,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
 
               {/* User Profile Dropdown */}
               <div className="relative group ml-1 z-50">
-                <button className="flex items-center gap-2 p-1 rounded-full border border-gray-200 hover:border-blue-300 transition-all focus:outline-none">
+                {/* <button className="flex items-center gap-2 p-1 rounded-full border border-gray-200 hover:border-blue-300 transition-all focus:outline-none">
                   <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors overflow-hidden">
                     {isAuthenticated && user?.photoURL ? (
                        <img src={user.photoURL} alt={user.displayName || "User"} className="w-full h-full object-cover" />
@@ -137,7 +137,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                        <User className="w-5 h-5" />
                     )}
                   </div>
-                </button>
+                </button> */}
 
                 {/* Dropdown Menu */}
                 <div className="absolute right-0 top-full pt-4 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
