@@ -83,7 +83,7 @@ export default function AdminLogin() {
         <div className="hidden lg:flex flex-col items-center justify-center space-y-6">
              <div className="relative w-full max-w-lg aspect-square">
                  <div className="absolute inset-0 bg-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
-                 <LottieAnimation path="/Loti-animesun/Login.json" className="relative z-10 w-full h-full" />
+                 <LottieAnimation path="/Loti-animesun/Creat-account.json" className="relative z-10 w-full h-full" />
              </div>
              <div className="text-center space-y-2">
                  <h1 className="text-4xl font-bold text-white tracking-tight">Welcome Back!</h1>
@@ -99,9 +99,10 @@ export default function AdminLogin() {
             <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 mb-4 shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                <Lock className="w-8 h-8 text-white" />
-                </div>
+                {/* <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 mb-4 shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+               
+                <LottieAnimation path="/Loti-animesun/Creat-account.json" className="relative z-10 w-full h-full" />
+                </div> */}
                 <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Admin Login</h2>
                 <p className="text-blue-200 text-sm">Enter your credentials to access the panel</p>
             </div>
@@ -113,7 +114,7 @@ export default function AdminLogin() {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 gap-4 mb-6">
+            {/* <div className="grid grid-cols-1 gap-4 mb-6">
                 <button
                 onClick={() => handleSocialLogin(googleProvider)}
                 type="button"
@@ -127,15 +128,18 @@ export default function AdminLogin() {
                 </svg>
                 Google
                 </button>
-            </div>
+            </div> */}
 
-            <div className="relative mb-6">
+            {/* <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-white/10"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-transparent text-gray-400 backdrop-blur-md">Or Login with Email</span>
                 </div>
+            </div> */}
+            <div className="lg:hidden w-full max-w-[200px] mx-auto aspect-square mb-6 relative">
+                 <LottieAnimation path="/Loti-animesun/Creat-account.json" className="w-full h-full" />
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -192,7 +196,7 @@ export default function AdminLogin() {
                 </button>
             </form>
             
-            <div className="mt-8 text-center space-y-4 relative z-10">
+            {/* <div className="mt-8 text-center space-y-4 relative z-10">
                 <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                         <div className="w-full border-t border-white/10"></div>
@@ -211,7 +215,7 @@ export default function AdminLogin() {
                         Register Now <Sparkles className="w-3 h-3 text-yellow-300" />
                     </span>
                 </Link>
-            </div>
+            </div> */}
 
             </div>
         </div>

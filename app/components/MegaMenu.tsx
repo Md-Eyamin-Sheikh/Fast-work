@@ -185,7 +185,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                           </Link> */}
                         </div>
 
-                        <div className="p-2 border-t border-gray-50">
+                        {/* <div className="p-2 border-t border-gray-50">
                           <button 
                             onClick={handleLogout}
                             className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors"
@@ -195,7 +195,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                             </div>
                             Log Out
                           </button>
-                        </div>
+                        </div> */}
                       </>
                     ) : (
                       // Guest View
@@ -336,7 +336,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                   </Link>
                 </nav>
 
-                <div className="pt-6 border-t border-gray-100">
+                {/* <div className="pt-6 border-t border-gray-100">
                     {isAuthenticated ? (
                        <button 
                          onClick={handleLogout}
@@ -363,7 +363,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
                         </Link>
                       </div>
                     )}
-                </div>
+                </div> */}
               </div>
             </motion.div>
           )}

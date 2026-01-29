@@ -30,8 +30,8 @@ const adminNavItems: NavItem[] = [
 export function AdminButtonNavbar() {
   const pathname = usePathname();
 
-  // Only show in admin routes
-  if (!pathname?.startsWith('/admin')) {
+  // Only show in admin routes, exclude login
+  if (!pathname?.startsWith('/admin') || pathname === '/admin/login') {
     return null;
   }
 
