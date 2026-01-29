@@ -21,30 +21,37 @@ export async function POST(request: Request) {
         const store_id = process.env.SSLC_STORE_ID;
         const store_passwd = process.env.SSLC_STORE_PASS;
         
-        // Mode selection: Explicit Env > Guess based on ID > Default to Sandbox
-        const modeEnv = process.env.SSLC_MODE?.toLowerCase();
-        const isLive = modeEnv === 'live' || modeEnv === 'secure';
-        const isSandbox = modeEnv === 'sandbox' || modeEnv === 'test';
-        
-        let sslcz_mode = 'sandbox';
+        let init_url = process.env.SSLC_INIT_URL;
 
-        if (isLive) {
-            sslcz_mode = 'securepay';
-        } else if (isSandbox) {
-            sslcz_mode = 'sandbox';
+        if (!init_url) {
+            const modeEnv = process.env.SSLC_MODE?.toLowerCase();
+            const isLive = modeEnv === 'live' || modeEnv === 'secure';
+            const isSandbox = modeEnv === 'sandbox' || modeEnv === 'test';
+            
+            let sslcz_mode = 'sandbox';
+
+            if (isLive) {
+                sslcz_mode = 'securepay';
+            } else if (isSandbox) {
+                sslcz_mode = 'sandbox';
+            } else {
+                // Auto-detect: If ID doesn't contain 'test', assume it's a real live store
+                const id = store_id?.toLowerCase() || '';
+                sslcz_mode = id.includes('test') ? 'sandbox' : 'securepay';
+            }
+            
+            init_url = `https://${sslcz_mode}.sslcommerz.com/gwprocess/v4/api.php`;
+            
+            console.log('SSLCommerz Config (Auto-Detected):', { 
+                mode: sslcz_mode, 
+                store_id_hint: store_id ? store_id.substring(0, 3) + '...' : 'MISSING'
+            });
         } else {
-            // Auto-detect: If ID doesn't contain 'test', assume it's a real live store
-            const id = store_id?.toLowerCase() || '';
-            sslcz_mode = id.includes('test') ? 'sandbox' : 'securepay';
+             console.log('SSLCommerz Config (Env):', { 
+                init_url,
+                store_id_hint: store_id ? store_id.substring(0, 3) + '...' : 'MISSING'
+            });
         }
-        
-        const init_url = `https://${sslcz_mode}.sslcommerz.com/gwprocess/v4/api.php`;
-        
-        console.log('SSLCommerz Config:', { 
-            mode: sslcz_mode, 
-            store_id_hint: store_id ? store_id.substring(0, 3) + '...' : 'MISSING',
-            is_explicit_env: !!modeEnv
-        });
 
         const data = {
             store_id,
