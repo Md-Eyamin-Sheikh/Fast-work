@@ -30,10 +30,19 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
         await dbConnect();
-        const orders = await Order.find({}).sort({ createdAt: -1 });
+        const { searchParams } = new URL(request.url);
+        const limit = parseInt(searchParams.get('limit') || '0');
+
+        let query = Order.find({}).sort({ createdAt: -1 });
+        
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+
+        const orders = await query;
         return NextResponse.json(orders);
     } catch (error) {
         return NextResponse.json(

@@ -48,6 +48,12 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     },
     { 
       icon: Package, 
+      label: 'All Orders', 
+      href: '/admin/orders',
+      emoji: '🛍️'
+    },
+    { 
+      icon: Package, 
       label: 'All Products', 
       href: '/admin/products',
       emoji: '📦'
