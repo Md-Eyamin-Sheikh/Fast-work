@@ -49,7 +49,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
     <>
       {/* Main Header */}
       <header className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
-        <div className="max-w-[1600px] mx-auto px-4">
+        <div className="max-w-[1600px] mx-auto px-2 md:px-4">
           <div className="flex items-center justify-between h-20 md:h-24"> {/* Reduced mobile height */}
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 md:gap-4 group">
@@ -119,13 +119,13 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
               </Link>
 
               {/* Wallet - Desktop & Tablet */}
-              <Link
+              {/* <Link
                 href="/dashboard"
                 className="hidden sm:flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 rounded-full border border-emerald-100 hover:shadow-sm transition-all"
               >
                 <Wallet className="w-4 h-4" />
                 <span className="text-sm font-bold">৳00</span>
-              </Link>
+              </Link> */}
 
               {/* User Profile Dropdown */}
               <div className="relative group ml-1 z-50">

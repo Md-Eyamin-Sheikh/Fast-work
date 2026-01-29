@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, ShieldCheck, Youtube } from 'lucide-react';
 
 export function Footer() {
   const pathname = usePathname();
@@ -33,14 +33,11 @@ export function Footer() {
               Your Trusted Agency in Bangladesh. We provide 100% official & genuine online tools to support your business growth. Trusted by professionals, powered by authenticity.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
+              <a href="https://www.facebook.com/VictoriansAcademy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
-                <Linkedin className="w-5 h-5" />
+              <a href="https://www.youtube.com/channel/UChRexHVpQaOEtbJgAvA0j4w" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors">
+                <Youtube className="w-5 h-5" />
               </a>
             </div>
           </div>
