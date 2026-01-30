@@ -38,6 +38,12 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const searchQuery = formData.get('search');
+    if (searchQuery) {
+        router.push(`/products?search=${searchQuery}`);
+        setSearchOpen(false);
+    }
   };
 
   const handleLogout = async () => {
@@ -92,6 +98,7 @@ export function MegaMenu({ cartCount }: MegaMenuProps) {
             <div className="flex items-center gap-2 md:gap-3">
               {/* Search Toggle */}
               <button
+                type="button"
                 onClick={() => setSearchOpen(!searchOpen)}
                 className={`p-2 md:p-2.5 rounded-full transition-all ${searchOpen ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-gray-600'}`}
               >
